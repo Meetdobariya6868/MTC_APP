@@ -85,7 +85,7 @@
                     android:textColor="@color/darkGrey" />
 
                 <TextView
-                    android:id="@+id/contactInfo"
+                    android:id="@+id/email_staff"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Email: john.doe@example.com"

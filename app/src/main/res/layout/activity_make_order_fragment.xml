@@ -6,6 +6,7 @@
     android:background="@color/white">
 
     <LinearLayout
+        android:id="@+id/pointsGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -1886,18 +1887,18 @@
 
 
 
-            <!-- Submit Button -->
-            <Button
-                android:layout_width="match_parent"
-                android:id="@+id/submit_button"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/teal_700"
-                android:text="Submit"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:elevation="4dp"
-                android:layout_marginTop="16dp" />
+        <!-- Submit Button -->
+        <Button
+            android:layout_width="match_parent"
+            android:id="@+id/submit_button"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/teal_700"
+            android:text="Submit"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:elevation="4dp"
+            android:layout_marginTop="16dp" />
 
     </LinearLayout>
 

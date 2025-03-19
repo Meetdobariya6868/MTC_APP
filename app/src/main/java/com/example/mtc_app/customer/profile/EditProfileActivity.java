@@ -30,7 +30,7 @@ public class EditProfileActivity extends AppCompatActivity {
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int REQUEST_IMAGE_PICK = 2;
 
-    private EditText nameEditText, addressEditText, phoneEditText;
+    private EditText emailEditText, addressEditText, phoneEditText;
     private Button saveButton, tryAgainButton, okButton;
     private ImageView profileImage;
     private View buttonsLayout;
@@ -47,7 +47,7 @@ public class EditProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
 
-        nameEditText = findViewById(R.id.edit_name);
+//        emailEditText = findViewById(R.id.edit_email);
         addressEditText = findViewById(R.id.edit_address);
         phoneEditText = findViewById(R.id.edit_phone);
         saveButton = findViewById(R.id.save_button);
@@ -67,7 +67,7 @@ public class EditProfileActivity extends AppCompatActivity {
         okButton.setOnClickListener(v -> uploadImageToStorage());
 
         saveButton.setOnClickListener(v -> {
-            String newEmail = nameEditText.getText().toString().trim();
+            String newEmail = emailEditText.getText().toString().trim();
             String newAddress = addressEditText.getText().toString().trim();
             String newPhone = phoneEditText.getText().toString().trim();
 
@@ -99,7 +99,7 @@ public class EditProfileActivity extends AppCompatActivity {
         String phone = documentSnapshot.getString("phone");
         String imageUrl = documentSnapshot.getString("image");
 
-        nameEditText.setText(email);
+        emailEditText.setText(email);
         addressEditText.setText(address);
         phoneEditText.setText(phone);
 

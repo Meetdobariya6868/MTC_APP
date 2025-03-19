@@ -5,62 +5,74 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
-import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.mtc_app.R;
 import com.example.mtc_app.staff.staff_detailed_page;
 
 import java.util.List;
 
-public class adapter_home extends RecyclerView.Adapter<adapter_home.ViewHolder> {
-    private List<ItemData> itemList;
+public class adapter_home extends RecyclerView.Adapter<adapter_home.HomeViewHolder> {
+    private List<ItemData> dataItems;
     private Context context;
 
-    public adapter_home(List<ItemData> itemList, Context context) {
-        this.itemList = itemList;
+    public adapter_home(List<ItemData> dataItems, Context context) {
+        this.dataItems = dataItems;
         this.context = context;
     }
 
-    @NonNull
+    public void updateList(List<ItemData> newList) {
+        dataItems.clear();
+        dataItems.addAll(newList);
+        notifyDataSetChanged();
+    }
+
+
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_home_list, parent, false);
-        return new ViewHolder(view);
+    public HomeViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(context).inflate(R.layout.item_home_list, parent, false);
+        return new HomeViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        ItemData item = itemList.get(position);
-        holder.itemTitle.setText(item.getCustomerName());
-        holder.itemSubtitle.setText("Status: " + item.getStatus());
-        holder.itemSampleName.setText("Sample: " + item.getSampleName());
+    public void onBindViewHolder(HomeViewHolder holder, int position) {
+        ItemData item = dataItems.get(position);
+        holder.itemTitle.setText(item.getTitle());
+        holder.itemSubtitle.setText(item.getSubtitle());
+        holder.itemIcon.setImageResource(item.getIconResId());
+        holder.itemActionIcon.setImageResource(R.drawable.ic_chevron_right);
 
-        // Handle click event
-        holder.itemView.setOnClickListener(v -> {
+        holder.cardView.setOnClickListener(v -> {
             Intent intent = new Intent(context, staff_detailed_page.class);
-            intent.putExtra("orderId", item.getOrderId());
-            intent.putExtra("customerName", item.getCustomerName());
-            intent.putExtra("status", item.getStatus());
-            intent.putExtra("sampleName", item.getSampleName());
+            intent.putExtra("customerName", item.getTitle());
+            intent.putExtra("dispatchAddress", item.getSubtitle());
+            intent.putExtra("email", item.getCategory());
             context.startActivity(intent);
         });
     }
 
     @Override
     public int getItemCount() {
-        return itemList.size();
+        return dataItems.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView itemTitle, itemSubtitle, itemSampleName;
 
-        public ViewHolder(View itemView) {
+
+
+    public static class HomeViewHolder extends RecyclerView.ViewHolder {
+        TextView itemTitle, itemSubtitle;
+        ImageView itemIcon, itemActionIcon;
+        CardView cardView;
+
+        public HomeViewHolder(View itemView) {
             super(itemView);
             itemTitle = itemView.findViewById(R.id.itemTitle);
             itemSubtitle = itemView.findViewById(R.id.itemSubtitle);
-            itemSampleName = itemView.findViewById(R.id.itemSampleName);
+            itemIcon = itemView.findViewById(R.id.itemIcon);
+            itemActionIcon = itemView.findViewById(R.id.itemActionIcon);
+            cardView = itemView.findViewById(R.id.cardView);
         }
     }
 }

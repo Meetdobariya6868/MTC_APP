@@ -1,8 +1,9 @@
 package com.example.mtc_app.staff;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Button;
-import android.widget.ImageView;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -10,75 +11,68 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mtc_app.R;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-
-import java.util.List;
 
 public class staff_detailed_page extends AppCompatActivity {
 
-    private TextView customerName, contactInfo, phoneNo, sampleName, quantity, labJobNo, dispatchMode, status, testsPerformed;
-    private Button updateInfoButton, deleteInfoButton;
+    private TextView customerName, dispatchAddress, email1, totalPrice, complianceStatement, modeOfDispatch, mobileNumber;
     private FirebaseFirestore db;
-    private String orderId;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_staff_detailed_page);
 
-        customerName = findViewById(R.id.customerName);
-        contactInfo = findViewById(R.id.contactInfo);
-        phoneNo = findViewById(R.id.phoneNo);
-        sampleName = findViewById(R.id.sampleName);
-        quantity = findViewById(R.id.quantity);
-        labJobNo = findViewById(R.id.labJobNo);
-        dispatchMode = findViewById(R.id.dispatchMode);
-        status = findViewById(R.id.status);
-        testsPerformed = findViewById(R.id.testsPerformed);
-
-        updateInfoButton = findViewById(R.id.buttonUpdate);
-        deleteInfoButton = findViewById(R.id.buttonDelete);
+        customerName  = findViewById(R.id.customerName);
+        dispatchAddress  = findViewById(R.id.quantity);
+        email1  = findViewById(R.id.email_staff);
+        totalPrice = findViewById(R.id.price);
+        complianceStatement = findViewById(R.id.testsPerformed);
+        modeOfDispatch = findViewById(R.id.dispatchMode);
+        mobileNumber = findViewById(R.id.phoneNo);
 
         db = FirebaseFirestore.getInstance();
-        orderId = getIntent().getStringExtra("orderId");
 
-        if (orderId != null) {
-            loadOrderDetails(orderId);
+        Intent intent = getIntent();
+
+        if (intent != null && intent.hasExtra("email")) {
+            String emailValue = intent.getStringExtra("email");
+            fetchOrderDetails(emailValue);
+        } else {
+            Toast.makeText(this, "No Order ID provided", Toast.LENGTH_SHORT).show();
         }
 
-        deleteInfoButton.setOnClickListener(v -> deleteOrder(orderId));
+//        if (intent != null) {
+//            customerName.setText(intent.getStringExtra("customerName"));
+//            dispatchAddress.setText(intent.getStringExtra("dispatchAddress"));
+//            email.setText(intent.getStringExtra("email"));
+//        }
     }
 
-    private void loadOrderDetails(String orderId) {
-        DocumentReference orderRef = db.collection("Total Orders").document(orderId);
-
-        orderRef.get().addOnSuccessListener(document -> {
-            if (document.exists()) {
-                customerName.setText("Customer Name: " + document.getString("customer Name"));
-                contactInfo.setText("Email: " + document.getString("email"));
-                phoneNo.setText("Phone No: " + document.getString("mobile Number"));
-                sampleName.setText("Sample Name: " + document.getString("sampleName"));
-                quantity.setText("Quantity: " + document.getString("quantity"));
-                labJobNo.setText("Lab Job No: " + document.getString("labJobNo"));
-                dispatchMode.setText("Mode of Dispatch: " + document.getString("mode Of Dispatch"));
-                status.setText("Status: " + document.getString("status"));
-
-                List<String> testList = (List<String>) document.get("testsPerformed");
-                testsPerformed.setText("Tests Performed: " + (testList != null ? String.join(", ", testList) : "N/A"));
-            } else {
-                Toast.makeText(this, "Order not found", Toast.LENGTH_SHORT).show();
-            }
-        }).addOnFailureListener(e -> Toast.makeText(this, "Error fetching data", Toast.LENGTH_SHORT).show());
-    }
-
-    private void deleteOrder(String orderId) {
-        db.collection("Total Orders").document(orderId)
-                .delete()
-                .addOnSuccessListener(aVoid -> {
-                    Toast.makeText(staff_detailed_page.this, "Order Deleted", Toast.LENGTH_SHORT).show();
-                    finish();
+    private void fetchOrderDetails(String email) {
+        db.collection("Total Orders")
+                .whereEqualTo("email", email)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (!queryDocumentSnapshots.isEmpty()) {
+                        for (DocumentSnapshot doc : queryDocumentSnapshots.getDocuments()) {
+                            customerName.setText(doc.getString("customer Name"));
+                            dispatchAddress.setText(doc.getString("dispatch Address"));
+                            email1.setText(doc.getString("email"));
+//                            totalPrice.setText(String.valueOf(doc.getDouble("Total Price")));
+                            complianceStatement.setText(doc.getString("compliance Statement"));
+                            modeOfDispatch.setText(doc.getString("mode Of Dispatch"));
+                            mobileNumber.setText(doc.getString("mobile Number"));
+                        }
+                    } else {
+                        Toast.makeText(this, "No data found", Toast.LENGTH_SHORT).show();
+                    }
                 })
-                .addOnFailureListener(e -> Toast.makeText(staff_detailed_page.this, "Error deleting order", Toast.LENGTH_SHORT).show());
+                .addOnFailureListener(e -> {
+                    Log.e("Firestore", "Error fetching order details", e);
+                    Toast.makeText(this, "Error loading data", Toast.LENGTH_SHORT).show();
+                });
     }
 }

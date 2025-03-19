@@ -26,7 +26,7 @@ import java.util.Map;
 
 public class AddCustomer extends Fragment {
 
-    private TextInputEditText editTextName, editTextMobile, editTextEmail, editTextPassword, editTextRole;
+    private TextInputEditText editTextName, editTextMobile, editTextEmail, editTextPassword, editTextAddress;
     private Button addCustomerButton;
     private ProgressBar progressBar;
     private FirebaseAuth auth;
@@ -47,7 +47,7 @@ public class AddCustomer extends Fragment {
         editTextMobile = view.findViewById(R.id.editTextMobile);
         editTextEmail = view.findViewById(R.id.editTextEmail);
         editTextPassword = view.findViewById(R.id.editTextPassword);
-        editTextRole = view.findViewById(R.id.editTextRole);
+//        editTextAddress = view.findViewById(R.id.editTextAddress);
         addCustomerButton = view.findViewById(R.id.addCustomerButton);
         progressBar = view.findViewById(R.id.progressBar);
 
@@ -61,12 +61,13 @@ public class AddCustomer extends Fragment {
 
     private void addCustomer() {
         String name = editTextName.getText().toString();
-        String mobile = editTextMobile.getText().toString();
+        String phone = editTextMobile.getText().toString();
         String email = editTextEmail.getText().toString();
         String password = editTextPassword.getText().toString();
-        String role = editTextRole.getText().toString();
+        String address = editTextAddress.getText().toString();
+        String role = "customer";
 
-        if (TextUtils.isEmpty(name) || TextUtils.isEmpty(mobile) || TextUtils.isEmpty(email) || TextUtils.isEmpty(password) || TextUtils.isEmpty(role)) {
+        if (TextUtils.isEmpty(name) || TextUtils.isEmpty(phone) || TextUtils.isEmpty(email) || TextUtils.isEmpty(password) || TextUtils.isEmpty(address)) {
             Toast.makeText(getContext(), "All fields are required", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -79,7 +80,7 @@ public class AddCustomer extends Fragment {
                     if (task.isSuccessful()) {
                         // Get the newly created user's UID
                         String userId = auth.getCurrentUser().getUid();
-                        saveCustomerToFirestore(userId, name, mobile, email, role);
+                        saveCustomerToFirestore(userId, name, phone, email, address, role);
                     } else {
                         progressBar.setVisibility(View.GONE);
                         Toast.makeText(getContext(), "Registration failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
@@ -87,14 +88,15 @@ public class AddCustomer extends Fragment {
                 });
     }
 
-    private void saveCustomerToFirestore(String userId, String name, String mobile, String email, String role) {
+    private void saveCustomerToFirestore(String userId, String name, String phone, String email, String address, String role) {
         // Create user data
         String createdAt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
 
         Map<String, Object> customer = new HashMap<>();
         customer.put("name", name);
-        customer.put("mobile", mobile);
+        customer.put("phone", phone);
         customer.put("email", email);
+        customer.put("address", address);
         customer.put("role", role);
         customer.put("created_at", createdAt);
 
@@ -119,6 +121,6 @@ public class AddCustomer extends Fragment {
         editTextMobile.setText("");
         editTextEmail.setText("");
         editTextPassword.setText("");
-        editTextRole.setText("");
+        editTextAddress.setText("");
     }
 }

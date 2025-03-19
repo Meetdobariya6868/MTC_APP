@@ -1,5 +1,6 @@
 package com.example.mtc_app.customer.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +17,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.mtc_app.R;
 import com.example.mtc_app.customer.adapters.CustomerOrderAdapter;
 import com.example.mtc_app.customer.models.CustomerHomePageOrder;
+import com.example.mtc_app.customer.orders.CustomerOrderDetails;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -34,7 +37,7 @@ public class CustomerHomeFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.activity_customer_home_fragment, container, false); // Corrected layout file
+        return inflater.inflate(R.layout.activity_customer_home_fragment, container, false);
     }
 
     @Override
@@ -43,13 +46,12 @@ public class CustomerHomeFragment extends Fragment {
 
         db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
-        recyclerView = view.findViewById(R.id.recyclerView); // Make sure this ID is correct
+        recyclerView = view.findViewById(R.id.recyclerView);
         progressBar = view.findViewById(R.id.progressBar);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        // Fix here: Pass Context (getContext()) along with the List<Order>
-        customerOrderAdapter = new CustomerOrderAdapter(getContext(), orderList);
+        customerOrderAdapter = new CustomerOrderAdapter(getContext(), orderList, this::onOrderClick);
         recyclerView.setAdapter(customerOrderAdapter);
 
         fetchOrders();
@@ -65,7 +67,7 @@ public class CustomerHomeFragment extends Fragment {
         progressBar.setVisibility(View.VISIBLE);
 
         db.collection("Total Orders")
-                .whereEqualTo("email", userEmail)
+                .whereEqualTo("Email", userEmail)
                 .get()
                 .addOnCompleteListener(task -> {
                     progressBar.setVisibility(View.GONE);
@@ -76,10 +78,10 @@ public class CustomerHomeFragment extends Fragment {
                         } else {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 CustomerHomePageOrder order = new CustomerHomePageOrder(
+                                        document.getId(), // Store order ID
                                         document.getString("status"),
-                                        document.getString("mode Of Dispatch"),
-                                        document.getString("created_at"),
-                                        document.getString("segment"),
+                                        document.getString("Mode of Dispatch"),
+                                        document.getString("Created At"),
                                         document.getLong("Total Price") != null ? document.getLong("Total Price").intValue() : 0
                                 );
                                 orderList.add(order);
@@ -90,5 +92,11 @@ public class CustomerHomeFragment extends Fragment {
                         Toast.makeText(getContext(), "Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    private void onOrderClick(String orderId) {
+        Intent intent = new Intent(getContext(), CustomerOrderDetails.class);
+        intent.putExtra("orderId", orderId);
+        startActivity(intent);
     }
 }

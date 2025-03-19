@@ -1,6 +1,8 @@
 package com.example.mtc_app.customer.fragments;
 
+import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -62,15 +64,37 @@ public class CustomerProfileFragment extends Fragment {
         });
 
         // Log Out button click listener
-        logOutButton.setOnClickListener(v -> {
-            auth.signOut();
-            Intent intent = new Intent(getActivity(), CustomerLoginActivity.class);
-            startActivity(intent);
-            getActivity().finish();
-        });
+        // Log Out button click listener
+        logOutButton.setOnClickListener(v -> showLogoutConfirmation());
 
         return view;
     }
+
+    private void showLogoutConfirmation() {
+        new AlertDialog.Builder(requireContext())
+                .setTitle("Logout")
+                .setMessage("Are you sure you want to logout?")
+                .setPositiveButton("Yes", (dialog, which) -> logoutUser())
+                .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
+                .show();
+    }
+
+    private void logoutUser() {
+        // Sign out from Firebase
+        auth.signOut();
+
+        // Clear SharedPreferences if user data is stored
+        SharedPreferences preferences = requireActivity().getSharedPreferences("MyAppPrefs", 0);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.clear();
+        editor.apply();
+
+        // Redirect to LoginActivity and clear the activity stack
+        Intent intent = new Intent(getActivity(), CustomerLoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
+
 
     private void loadUserDetails() {
         FirebaseUser currentUser = auth.getCurrentUser();

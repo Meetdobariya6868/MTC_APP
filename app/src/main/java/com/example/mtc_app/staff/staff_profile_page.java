@@ -1,12 +1,10 @@
 package com.example.mtc_app.staff;
 
-import com.example.mtc_app.profile.EditProfileActivity;
 import com.example.mtc_app.utils.CloudinaryManager;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -36,7 +34,7 @@ public class staff_profile_page extends AppCompatActivity {
     private static final String TAG = "StaffProfilePage";
     private ImageView profilePicture;
     private TextView profileName, profileEmail, profilePhone, addressValue;
-    private Button btnLogout, editProfile;
+    private Button btnLogout, btnEditProfile;
     private FirebaseFirestore db;
     private Uri imageUri;
     private static final int GALLERY_REQUEST_CODE = 100;
@@ -47,15 +45,6 @@ public class staff_profile_page extends AppCompatActivity {
     private static final String CLOUDINARY_UPLOAD_PRESET = "profile_pictures";  // Replace with your preset name
     private static final String CLOUDINARY_FOLDER_NAME = "profile_images"; // Folder name on Cloudinary
 
-    // SharedPreferences constants
-    private SharedPreferences sharedPreferences;
-    private static final String PREF_NAME = "ProfileData";
-    private static final String KEY_PROFILE_NAME = "profileName";
-    private static final String KEY_PROFILE_EMAIL = "profileEmail";
-    private static final String KEY_PROFILE_PHONE = "profilePhone";
-    private static final String KEY_PROFILE_ADDRESS = "profileAddress";
-    private static final String KEY_PROFILE_IMAGE_URL = "profileImageUrl";
-
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,10 +52,9 @@ public class staff_profile_page extends AppCompatActivity {
         setContentView(R.layout.activity_staff_profile_page);
 
         db = FirebaseFirestore.getInstance();
+
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = auth.getCurrentUser();
-
-        sharedPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
 
         profilePicture = findViewById(R.id.profile_image);
         profileName = findViewById(R.id.username);
@@ -74,11 +62,8 @@ public class staff_profile_page extends AppCompatActivity {
         profilePhone = findViewById(R.id.phoneValue);
         addressValue = findViewById(R.id.addressValue);
         btnLogout = findViewById(R.id.btnLogout);
-        editProfile = findViewById(R.id.edit_profile_button);
 
-        if (isProfileDataAvailable()) {
-            displayProfileData();
-        } else if (currentUser != null) {
+        if (currentUser != null) {
             String userId = currentUser.getUid();
             fetchProfileData(userId);
         } else {
@@ -89,66 +74,12 @@ public class staff_profile_page extends AppCompatActivity {
         ImageView editProfileIcon = findViewById(R.id.edit_icon);
         editProfileIcon.setOnClickListener(v -> showImagePickerDialog());
 
-        btnLogout.setOnClickListener(v -> {
-            clearLocalData();
-            showLogoutConfirmation();
-        });
+//        btnEditProfile.setOnClickListener(v -> {
+//            Intent intent = new Intent(this, staff_profile_page.class);
+//            startActivity(intent);
+//        });
 
-        editProfile.setOnClickListener(v -> {
-            Intent intent = new Intent(staff_profile_page.this, EditProfileActivity.class);
-            startActivity(intent);
-        });
-    }
-
-    private boolean isProfileDataAvailable() {
-        return sharedPreferences.contains(KEY_PROFILE_NAME);
-    }
-
-    private void displayProfileData() {
-        profileName.setText(sharedPreferences.getString(KEY_PROFILE_NAME, ""));
-        profileEmail.setText(sharedPreferences.getString(KEY_PROFILE_EMAIL, ""));
-        profilePhone.setText(sharedPreferences.getString(KEY_PROFILE_PHONE, ""));
-        addressValue.setText(sharedPreferences.getString(KEY_PROFILE_ADDRESS, ""));
-
-        String profileImageUrl = sharedPreferences.getString(KEY_PROFILE_IMAGE_URL, "");
-        if (!profileImageUrl.isEmpty()) {
-            Glide.with(this)
-                    .load(profileImageUrl)
-                    .placeholder(R.drawable.cust_profile)
-                    .into(profilePicture);
-        }
-    }
-
-    private void fetchProfileData(String userId) {
-        db.collection("users")
-                .document(userId)
-                .get()
-                .addOnSuccessListener(documentSnapshot -> {
-                    if (documentSnapshot.exists()) {
-                        String name = documentSnapshot.getString("name");
-                        String email = documentSnapshot.getString("email");
-                        String phone = documentSnapshot.getString("phone");
-                        String address = documentSnapshot.getString("address");
-                        String profileImageUrl = documentSnapshot.getString("profileImageUrl");
-
-                        // Save data to SharedPreferences
-                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putString(KEY_PROFILE_NAME, name);
-                        editor.putString(KEY_PROFILE_EMAIL, email);
-                        editor.putString(KEY_PROFILE_PHONE, phone);
-                        editor.putString(KEY_PROFILE_ADDRESS, address);
-                        editor.putString(KEY_PROFILE_IMAGE_URL, profileImageUrl);
-                        editor.apply();
-
-                        displayProfileData();
-                    } else {
-                        Toast.makeText(this, "User not found.", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .addOnFailureListener(e -> {
-                    Log.e("Firestore", "Error fetching profile data", e);
-                    Toast.makeText(this, "Failed to load profile.", Toast.LENGTH_SHORT).show();
-                });
+        btnLogout.setOnClickListener(v -> showLogoutConfirmation());
     }
 
     private void showImagePickerDialog() {
@@ -224,11 +155,6 @@ public class staff_profile_page extends AppCompatActivity {
                 .addOnSuccessListener(aVoid -> {
                     Toast.makeText(this, "Profile Updated", Toast.LENGTH_SHORT).show();
                     Glide.with(this).load(imageUrl).into(profilePicture);
-
-                    // Update local data
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString(KEY_PROFILE_IMAGE_URL, imageUrl);
-                    editor.apply();
                 })
                 .addOnFailureListener(e -> Toast.makeText(this, "Failed to update profile", Toast.LENGTH_SHORT).show());
     }
@@ -244,12 +170,51 @@ public class staff_profile_page extends AppCompatActivity {
 
     private void logout() {
         AuthUtils.logout(this);
-        clearLocalData();
     }
 
-    private void clearLocalData() {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.clear(); // Clears all stored data
-        editor.apply();
+    private void fetchProfileData(String userId) {
+        db.collection("users")
+                .document(userId)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        // Fetch and display email
+                        String email = documentSnapshot.getString("email");
+                        if (email != null) {
+                            profileEmail.setText(email);
+                        }
+
+                        // Fetch and display address
+                        String address = documentSnapshot.getString("address");
+                        if (address != null) {
+                            addressValue.setText(address);
+                        }
+
+                        // Fetch and display phone number
+                        String phone = documentSnapshot.getString("phone");
+                        if (phone != null) {
+                            profilePhone.setText(phone);
+                        }
+
+                        // Fetch and display profile image
+                        String profileImageUrl = documentSnapshot.getString("profileImageUrl");
+                        if (profileImageUrl != null && !profileImageUrl.isEmpty()) {
+                            Log.d("Firestore", "Loading image from Firestore: " + profileImageUrl);
+                            Glide.with(this)
+                                    .load(profileImageUrl)
+                                    .placeholder(R.drawable.cust_profile)
+                                    .into(profilePicture);
+                        } else {
+                            Log.w("Firestore", "profileImageUrl is null or empty");
+                        }
+                    } else {
+                        Toast.makeText(staff_profile_page.this, "User not found.", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("Firestore", "Error fetching profile data", e);
+                    Toast.makeText(staff_profile_page.this, "Failed to load profile.", Toast.LENGTH_SHORT).show();
+                });
     }
+
 }

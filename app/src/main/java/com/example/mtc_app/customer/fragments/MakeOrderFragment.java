@@ -34,81 +34,103 @@ import java.util.Map;
 
 public class MakeOrderFragment extends Fragment {
 
+
+    // CheckBox Declarations
+
+    // Main Categories
     private CheckBox cbCementCube, cbPowerBlock, cbSteel, cbBrick, cbSoil, cbAacBlock, cbConstWater, cbWasteWater, cbMixDesign;
     private CheckBox cbAggregateFine, cbAggregateCoarse, cbCement, cbNDT, cbFlyAsh, cbBitumen;
 
     // Aggregate Fine
     private CheckBox finenessModulusBygradationFine, siltContentFine, specificGravityAndWaterAbsorptionFine, soundnessFine, alkaliReactivityFine;
 
-    //Aggregate Coarse
-    private CheckBox cbImpactValueCoarse, SpecificGravityAndWaterAbsorptionCoarse, cbCrushingValueCoarse, cbSoundnessCyclesCoarse,  cbFlakinessIndexAndElongationIndexCoarse, cbGradingOfAggregateCoarse, cbAbrasionValueCoarse, cbAlkaliReactivityCoarse;
+    // Aggregate Coarse
+    private CheckBox cbImpactValueCoarse, SpecificGravityAndWaterAbsorptionCoarse, cbCrushingValueCoarse, cbSoundnessCyclesCoarse;
+    private CheckBox cbFlakinessIndexAndElongationIndexCoarse, cbGradingOfAggregateCoarse, cbAbrasionValueCoarse, cbAlkaliReactivityCoarse;
 
-    //Paver Block
+    // Paver Block
     private CheckBox cbCompressiveStrengthPaver, cbWaterAbsorptionPaver;
 
-    //Cement
-    private CheckBox cbFinessByBlainCement, cbInitialSettingTimeCement, cbConsistencyCement, cbCompressiveCement, cbFinenessCement,cbSoundenessCemenet, cbCompressiveStrengthMortarCement, cbChemicalAnalysisCement;
+    // Cement
+    private CheckBox cbFinessByBlainCement, cbInitialSettingTimeCement, cbConsistencyCement, cbCompressiveCement;
+    private CheckBox cbFinenessCement, cbSoundenessCemenet, cbCompressiveStrengthMortarCement, cbChemicalAnalysisCement;
 
-    //Steel
+    // Steel
     private CheckBox cbUnitWaitSteel, cbEnsileTestYieldAndElogationTestSteel, cbBendTestSteel, cbRebendTestSteel, cbChemicalAnalysisSteel;
-    //Brick
-    private CheckBox cbWaterAbsorptionBrick,cbDimensionTestBrick, cbCompressiveStrengthBrick, cbEfflorescenceBrick;
 
-    //Soil
-    private CheckBox cbCBRTestUnsoakedSoil, cbGrainSizeAnalysisSoil, cbTestSoakedSoil, cbPlasticLimitSoil,
-            cbLightCompactionTestSoil, cbHeavyCompactionTestSoil, cbFreeSwellIndexSoil, cbUnconfinedCompressionSoil, cbTriaxialTestUUSoil, cbTriaxialTestCUSoil,  cbSwellingPressureSoil, cbSpecificGravitySoil, cbShrinkageLimitSoil,
-            cbDirectShearSoil, cbPermeabilityTestSoil, cbRelativeDensitySoil, cbFieldDensityAndMoistureContentSoil, cbConsolidationSoil;
+    // Brick
+    private CheckBox cbWaterAbsorptionBrick, cbDimensionTestBrick, cbCompressiveStrengthBrick, cbEfflorescenceBrick;
 
-    //AAC & NDT
-    private CheckBox cbMeasurementOfDimensionsAac, cbCompressiveStrengthAac, cbBlocksDensityAac, cbWaterAbsorptionAac,
-            cbDryingShrinkageAac, cbMoistureMovementAac,cbUltrasonicPulseVelocityNDT, cbReboundHammerTestNDT;
+    // Soil
+    private CheckBox cbCBRTestUnsoakedSoil, cbGrainSizeAnalysisSoil, cbTestSoakedSoil, cbPlasticLimitSoil;
+    private CheckBox cbLightCompactionTestSoil, cbHeavyCompactionTestSoil, cbFreeSwellIndexSoil, cbUnconfinedCompressionSoil;
+    private CheckBox cbTriaxialTestUUSoil, cbTriaxialTestCUSoil, cbSwellingPressureSoil, cbSpecificGravitySoil, cbShrinkageLimitSoil;
+    private CheckBox cbDirectShearSoil, cbPermeabilityTestSoil, cbRelativeDensitySoil, cbFieldDensityAndMoistureContentSoil, cbConsolidationSoil;
 
-    //CEMENT CONC.CUBE
+    // AAC & NDT
+    private CheckBox cbMeasurementOfDimensionsAac, cbCompressiveStrengthAac, cbBlocksDensityAac, cbWaterAbsorptionAac;
+    private CheckBox cbDryingShrinkageAac, cbMoistureMovementAac, cbUltrasonicPulseVelocityNDT, cbReboundHammerTestNDT;
+
+    // Cement Conc. Cube
     private CheckBox cbCompressiveStrengthOfCube, cbCastingPreparingCubesOfGivenMixCube, cbFlexurerStrengthOfBeamCube, cbCastingPreparingBeamCube;
 
-    //Const. Water
-    private CheckBox cbSulphatesSO4CWater, cbAlkalinityCWater, cbPHValueCWater, cbOrganicImpuritiesCWater, cbInorganicImpuritiesCWater, cbChlorideAsClCWater, cbSuspendedMatterCWater, cbTDSTotalDissolvedSolidsCWater;
+    // Const. Water
+    private CheckBox cbSulphatesSO4CWater, cbAlkalinityCWater, cbPHValueCWater, cbOrganicImpuritiesCWater;
+    private CheckBox cbInorganicImpuritiesCWater, cbChlorideAsClCWater, cbSuspendedMatterCWater, cbTDSTotalDissolvedSolidsCWater;
 
-    //Waste Water
-    private CheckBox cbChlorideAsClWasteWater, cbPhValueWasteWater, cbSulphatesSo4WasteWater, cbTdsTotalDissolvedSolidsWasteWater, cbTssTotalSuspendedSolidsWasteWater;
+    // Waste Water
+    private CheckBox cbChlorideAsClWasteWater, cbPhValueWasteWater, cbSulphatesSo4WasteWater;
+    private CheckBox cbTdsTotalDissolvedSolidsWasteWater, cbTssTotalSuspendedSolidsWasteWater;
 
     // Concrete Mix Design
     private CheckBox cbWithCubeMixDesign, cbWithFlexurerStrengthMixDesign, cbWithAdmixtureMixDesign;
 
-    // FLY ASH Checkbox
+    // Fly Ash
     private CheckBox cbSpecificGravityFlyAsh, cbSoundnessFlyAsh, cbCompressiveStrengthFlyAsh;
 
     // Bitumen
-    private CheckBox  cbPenetrationValueBitumen, cbSofteningPointBitumen, cbDuctilityBitumen, cbSpecificGravityBitumen;
-    private TextInputLayout tilPowerBlockQuantity, tilSteelQuantity, tillCemenetCubeQuantity, tilBrickQuantity, tilSoilQuantity, tilAacBlockQuantity;
-    private TextInputLayout tilAggregateFineQuantity, tilAggregateCoarseQuantity, tilCementQuantity, tillConstWaterQuantity, tilWasteWaterQuantity, tillFlyAsh, tilMixDesignQuantity, tilBitumenQuantity, tilNDTQuantity;
+    private CheckBox cbPenetrationValueBitumen, cbSofteningPointBitumen, cbDuctilityBitumen, cbSpecificGravityBitumen;
 
-    // Date Input
-    // Prices for each item
+    // Quantity Input Fields
+    private TextInputLayout tilPowerBlockQuantity, tilSteelQuantity, tillCemenetCubeQuantity, tilBrickQuantity, tilSoilQuantity, tilAacBlockQuantity;
+    private TextInputLayout tilAggregateFineQuantity, tilAggregateCoarseQuantity, tilCementQuantity, tillConstWaterQuantity, tilWasteWaterQuantity;
+    private TextInputLayout tillFlyAsh, tilMixDesignQuantity, tilBitumenQuantity, tilNDTQuantity;
+
+    // Price Calculation
     private final Map<CheckBox, Integer> priceMap = new HashMap<>();
     private TextView tvTotalPrice;
     private int totalPrice = 0;
 
-    //Database variables
-    private EditText customerNameField, dispatchAddressField, mobileNumberField, emailField;
-    RadioGroup modeOfDispatchGroup;
-    private Button submitButton;
+    // Customer & Dispatch Details
+    private EditText etCustomerName, etDispatchAddress, etMobile, etEmail, etQuantity, etAdditionalTesting, etDiscussion;
     private EditText termsAndConditionsField;
-    private LinearLayout pointsGroup; // Assuming pointsGroup contains CheckBoxes in a LinearLayout
+
+    // Dispatch Mode
+    private RadioGroup modeOfDispatchGroup;
+    private RadioButton rbPost, rbCourier, rbSealed, rbOpen, rbReqYes, rbResYes, rbSampleSealed;
+
+    // Sample Condition & Compliance
     private RadioGroup sampleConditionGroup, complianceStatementGroup, standardDeviationGroup;
 
-    // UI elements for review remarks
+    // Review Remarks
     private RadioGroup radioGroupRemark1, radioGroupRemark2, radioGroupRemark3;
 
-    // LinearLayout and other UI elements
+    // Additional Inputs
     private CheckBox cbOnemethedOfTEsting, cbTwoTestingService, cbThreeTermsAndCondition;
     private TextInputEditText deviationInput, discussionInput;
 
-    // Firestore Database instance
+    // Firestore Instance
     private FirebaseFirestore db;
 
-    // State management
+    // State Management
     private boolean isSubmitting = false;
+
+    // Submit Button
+    private Button submitButton;
+
+    // LinearLayout container for checkboxes
+    private LinearLayout pointsGroup;
+
 
 
     @SuppressLint("MissingInflatedId")
@@ -118,14 +140,16 @@ public class MakeOrderFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.activity_make_order_fragment, container, false);
 
+        pointsGroup = view.findViewById(R.id.pointsGroup);
+
         // Initialize Firestore
         db = FirebaseFirestore.getInstance();
 
         // Initialize UI elements
-        customerNameField = view.findViewById(R.id.customer_name);
-        dispatchAddressField = view.findViewById(R.id.dispatch_address); // Ensure this exists in XML
-        mobileNumberField = view.findViewById(R.id.mobile_number);
-        emailField = view.findViewById(R.id.email);
+        etCustomerName = view.findViewById(R.id.customer_name);
+        etDispatchAddress = view.findViewById(R.id.dispatch_address); // Ensure this exists in XML
+        etMobile = view.findViewById(R.id.mobile_number);
+        etEmail = view.findViewById(R.id.email);
         termsAndConditionsField = view.findViewById(R.id.terms_and_conditions);
         modeOfDispatchGroup = view.findViewById(R.id.mode_of_dispatch_group);
         sampleConditionGroup = view.findViewById(R.id.sample_condition_group);
@@ -138,6 +162,11 @@ public class MakeOrderFragment extends Fragment {
 
         deviationInput = view.findViewById(R.id.deviation_input);
         discussionInput = view.findViewById(R.id.discussion_input);
+
+        radioGroupRemark1 = view.findViewById(R.id.radio_group_remark1);
+        radioGroupRemark2 = view.findViewById(R.id.radio_group_remark2);
+        radioGroupRemark3 = view.findViewById(R.id.radio_group_remark3);
+
 
         // Add the ProgressBar
         ProgressBar loadingProgress = view.findViewById(R.id.loading_progress);
@@ -920,273 +949,127 @@ public class MakeOrderFragment extends Fragment {
         }
     }
 
-    private void setListeners(View view) {
-        // Set the OnClickListener for the submit button
-        submitButton.setOnClickListener(v -> submitData(view));
-    }
 
     private void submitData(View view) {
-        // Disable button to prevent multiple submissions
         isSubmitting = true;
         submitButton.setEnabled(false);
 
-        // Get current date and time
+        // Get current date
         String createdAt = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
 
-        // Collect data from checkboxes
-        boolean isCheckbox1Checked = cbOnemethedOfTEsting.isChecked();
-        boolean isCheckbox2Checked = cbTwoTestingService.isChecked();
-        boolean isCheckbox3Checked = cbThreeTermsAndCondition.isChecked();
-
-        // Initialize RadioGroups for Review Remarks
-        radioGroupRemark1 = view.findViewById(R.id.radio_group_remark1);
-        radioGroupRemark2 = view.findViewById(R.id.radio_group_remark2);
-        radioGroupRemark3 = view.findViewById(R.id.radio_group_remark3);
-
-        // Collect text from input fields
-        String customerName = customerNameField.getText().toString().trim();
-        String dispatchAddress = dispatchAddressField.getText().toString().trim();
-        String mobileNumber = mobileNumberField.getText().toString().trim();
-        String email = emailField.getText().toString().trim();
+        // Collect basic form data
+        String customerName = etCustomerName.getText().toString().trim();
+        String dispatchAddress = etDispatchAddress.getText().toString().trim();
+        String mobileNumber = etMobile.getText().toString().trim();
+        String email = etEmail.getText().toString().trim();
         String termsAndConditions = termsAndConditionsField.getText().toString().trim();
 
-        // Collect radio button selections
-        String modeOfDispatch = getSelectedRadioButtonText(modeOfDispatchGroup);
-        String sampleCondition = getSelectedRadioButtonText(sampleConditionGroup);
-        String complianceStatement = getSelectedRadioButtonText(complianceStatementGroup);
-        String standardDeviation = getSelectedRadioButtonText(standardDeviationGroup);
-
         // Validate inputs
-        if (customerName.isEmpty() || dispatchAddress.isEmpty() || mobileNumber.isEmpty() || email.isEmpty() || termsAndConditions.isEmpty()) {
-            showError("All fields are required");
-            return;
-        }
+        if (!validateInputs(customerName, dispatchAddress, mobileNumber, email, termsAndConditions)) return;
 
-        if (!mobileNumber.matches("\\d{10}")) {
-            showError("Please enter a valid 10-digit mobile number");
-            return;
-        }
+        // Collect radio button selections
+        Map<String, String> radioSelections = new HashMap<>();
+        radioSelections.put("Mode of Dispatch", getSelectedRadioButtonText(modeOfDispatchGroup));
+        radioSelections.put("Sample Condition", getSelectedRadioButtonText(sampleConditionGroup));
+        radioSelections.put("Compliance Statement", getSelectedRadioButtonText(complianceStatementGroup));
+        radioSelections.put("Standard Deviation", getSelectedRadioButtonText(standardDeviationGroup));
 
-        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            showError("Please enter a valid email address");
-            return;
-        }
-
-        // Prepare data for Firestore
-        Map<String, Object> data = new HashMap<>();
-        data.put("customer Name", customerName);
-        data.put("dispatch Address", dispatchAddress);
-        data.put("mobile Number", mobileNumber);
-        data.put("email", email);
-        data.put("mode Of Dispatch", modeOfDispatch);
-        data.put("terms And Conditions", termsAndConditions);
-        data.put("sample Condition", sampleCondition);
-        data.put("compliance Statement", complianceStatement);
-        data.put("standard Deviation", standardDeviation);
-        data.put("Total Price", totalPrice);
-        data.put("created_at", createdAt);
-
-
-        // Collect additional data for points (checkboxes)
+        // Collect checkboxes selections
         Map<String, Boolean> selectedPoints = new HashMap<>();
-        selectedPoints.put("Method of testing capability and resources acceptable", isCheckbox1Checked);
-        selectedPoints.put("Testing services requested may please be carried out", isCheckbox2Checked);
-        selectedPoints.put("Terms and Conditions of Testing acceptable as per review remarks", isCheckbox3Checked);
-        // Add the selected points to the data
-        data.put("selectedPoints", selectedPoints);
+        selectedPoints.put("Method of Testing", cbOnemethedOfTEsting.isChecked());
+        selectedPoints.put("Testing Services Approved", cbTwoTestingService.isChecked());
+        selectedPoints.put("Terms & Conditions Accepted", cbThreeTermsAndCondition.isChecked());
 
-
-        // Collect data for review remarks
+        // Collect review remarks (only if selected)
         Map<String, String> reviewRemarks = new HashMap<>();
-        reviewRemarks.put("Requirements defined and understood", getSelectedRadioButtonText(radioGroupRemark1));
-        reviewRemarks.put("Capability and Resources available", getSelectedRadioButtonText(radioGroupRemark2));
-        reviewRemarks.put("Condition of Sample Received", getSelectedRadioButtonText(radioGroupRemark3));
-        // Add the review remarks to the data
-        data.put("reviewRemarks", reviewRemarks);
-
+        if (radioGroupRemark1.getCheckedRadioButtonId() != -1) {
+            reviewRemarks.put("Requirements Defined", getSelectedRadioButtonText(radioGroupRemark1));
+        }
+        if (radioGroupRemark2.getCheckedRadioButtonId() != -1) {
+            reviewRemarks.put("Capability Available", getSelectedRadioButtonText(radioGroupRemark2));
+        }
+        if (radioGroupRemark3.getCheckedRadioButtonId() != -1) {
+            reviewRemarks.put("Condition of Sample", getSelectedRadioButtonText(radioGroupRemark3));
+        }
 
         // Collect deviation and discussion details
         String deviationDetails = deviationInput.getText().toString().trim();
         String discussionDetails = discussionInput.getText().toString().trim();
+
+        // Collect segment-wise test selections (only if the main checkbox is checked)
+        Map<String, List<String>> testSelections = new HashMap<>();
+
+        // Aggregate Fine (Example logic for sub-checkbox storage)
+        if (cbAggregateFine.isChecked()) {
+            testSelections.put("Aggregate Fine", getSelectedTests(
+                    finenessModulusBygradationFine, "WITH CUBE",
+                    siltContentFine, "WITH FLEXURER STRENGTH",
+                    specificGravityAndWaterAbsorptionFine, "WITH ADMIXTURE",
+                    soundnessFine, "WITH FLEXURER STRENGTH",
+                    alkaliReactivityFine, "WITH ADMIXTURE"
+            ));
+        }
+
+        // Aggregate Coarse
+        if (cbAggregateCoarse.isChecked()) {
+            testSelections.put("Aggregate Coarse", getSelectedTests(
+                    cbImpactValueCoarse, "IMPACT VALUE",
+                    SpecificGravityAndWaterAbsorptionCoarse, "SPECIFIC GRAVITY AND WATER ABSORPTION",
+                    cbCrushingValueCoarse, "CRUSHING VALUE",
+                    cbSoundnessCyclesCoarse, "SOUNDNESS CYCLES",
+                    cbFlakinessIndexAndElongationIndexCoarse, "FLAKINESS AND ELONGATION INDEX",
+                    cbGradingOfAggregateCoarse, "GRADING OF AGGREGATE",
+                    cbAbrasionValueCoarse, "ABRASION VALUE",
+                    cbAlkaliReactivityCoarse, "ALKALI REACTIVITY"
+            ));
+        }
+
+        // Cement
+        if (cbCement.isChecked()) {
+            testSelections.put("Cement", getSelectedTests(
+                    cbFinessByBlainCement, "FINENESS BY BLAIN",
+                    cbInitialSettingTimeCement, "INITIAL SETTING TIME",
+                    cbConsistencyCement, "CONSISTENCY",
+                    cbCompressiveCement, "COMPRESSIVE STRENGTH",
+                    cbFinenessCement, "FINENESS",
+                    cbSoundenessCemenet, "SOUNDNESS",
+                    cbCompressiveStrengthMortarCement, "COMPRESSIVE STRENGTH OF MORTAR",
+                    cbChemicalAnalysisCement, "CHEMICAL ANALYSIS"
+            ));
+        }
+
+        // Steel
+        if (cbSteel.isChecked()) {
+            testSelections.put("Steel", getSelectedTests(
+                    cbUnitWaitSteel, "UNIT WEIGHT",
+                    cbEnsileTestYieldAndElogationTestSteel, "TENSILE TEST YIELD AND ELONGATION TEST",
+                    cbBendTestSteel, "BEND TEST",
+                    cbRebendTestSteel, "REBEND TEST",
+                    cbChemicalAnalysisSteel, "CHEMICAL ANALYSIS"
+            ));
+        }
+
+        // Prepare final data object
+        Map<String, Object> data = new HashMap<>();
+        data.put("Customer Name", customerName);
+        data.put("Dispatch Address", dispatchAddress);
+        data.put("Mobile Number", mobileNumber);
+        data.put("Email", email);
+        data.put("Terms And Conditions", termsAndConditions);
+        data.put("Created At", createdAt);
+        data.put("Total Price", totalPrice);
+        data.put("Radio Selections", radioSelections);
+        data.put("Selected Points", selectedPoints);
+
+        if (!reviewRemarks.isEmpty()) {
+            data.put("Review Remarks", reviewRemarks);
+        }
+
         data.put("Deviation Details", deviationDetails);
         data.put("Discussion Details", discussionDetails);
 
-        // Collect selected points for Aggregate Fine
-        List<String> AggregateFine = new ArrayList<>();
-        if (finenessModulusBygradationFine.isChecked()) AggregateFine.add("WITH CUBE");
-        if (siltContentFine.isChecked()) AggregateFine.add("WITH FLEXURER STRENGTH");
-        if (specificGravityAndWaterAbsorptionFine.isChecked()) AggregateFine.add("WITH ADMIXTURE");
-        if (soundnessFine.isChecked()) AggregateFine.add("WITH FLEXURER STRENGTH");
-        if (alkaliReactivityFine.isChecked()) AggregateFine.add("WITH ADMIXTURE");
-
-        // Collect selected points for Aggregate Coarse
-        List<String> AggregateCoarse = new ArrayList<>();
-        if (cbImpactValueCoarse.isChecked()) AggregateCoarse.add("IMPACT VALUE");
-        if (SpecificGravityAndWaterAbsorptionCoarse.isChecked()) AggregateCoarse.add("SPECIFIC GRAVITY AND WATER ABSORPTION");
-        if (cbCrushingValueCoarse.isChecked()) AggregateCoarse.add("CRUSHING VALUE");
-        if (cbSoundnessCyclesCoarse.isChecked()) AggregateCoarse.add("SOUNDNESS CYCLES");
-        if (cbFlakinessIndexAndElongationIndexCoarse.isChecked()) AggregateCoarse.add("FLAKINESS AND ELONGATION INDEX");
-        if (cbGradingOfAggregateCoarse.isChecked()) AggregateCoarse.add("GRADING OF AGGREGATE");
-        if (cbAbrasionValueCoarse.isChecked()) AggregateCoarse.add("ABRASION VALUE");
-        if (cbAlkaliReactivityCoarse.isChecked()) AggregateCoarse.add("ALKALI REACTIVITY");
-
-        // Collect selected points for Cement
-        List<String> Cement = new ArrayList<>();
-        if (cbFinessByBlainCement.isChecked()) Cement.add("FINENESS BY BLAIN");
-        if (cbInitialSettingTimeCement.isChecked()) Cement.add("INITIAL SETTING TIME");
-        if (cbConsistencyCement.isChecked()) Cement.add("CONSISTENCY");
-        if (cbCompressiveCement.isChecked()) Cement.add("COMPRESSIVE STRENGTH");
-        if (cbFinenessCement.isChecked()) Cement.add("FINENESS");
-        if (cbSoundenessCemenet.isChecked()) Cement.add("SOUNDNESS");
-        if (cbCompressiveStrengthMortarCement.isChecked()) Cement.add("COMPRESSIVE STRENGTH OF MORTAR");
-        if (cbChemicalAnalysisCement.isChecked()) Cement.add("CHEMICAL ANALYSIS");
-
-        // Collect selected points for Steel
-        List<String> Steel = new ArrayList<>();
-        if (cbUnitWaitSteel.isChecked()) Steel.add("UNIT WEIGHT");
-        if (cbEnsileTestYieldAndElogationTestSteel.isChecked()) Steel.add("TENSILE TEST YIELD AND ELONGATION TEST");
-        if (cbBendTestSteel.isChecked()) Steel.add("BEND TEST");
-        if (cbRebendTestSteel.isChecked()) Steel.add("REBEND TEST");
-        if (cbChemicalAnalysisSteel.isChecked()) Steel.add("CHEMICAL ANALYSIS");
-
-        // Collect selected points for ConcCube
-        List<String> ConcCube = new ArrayList<>();
-        if (cbCompressiveStrengthOfCube.isChecked()) ConcCube.add("COMPRESSIVE STRENGTH OF CUBE");
-        if (cbCastingPreparingCubesOfGivenMixCube.isChecked()) ConcCube.add("CASTING AND PREPARING CUBES OF GIVEN MIX");
-        if (cbFlexurerStrengthOfBeamCube.isChecked()) ConcCube.add("FLEXURER STRENGTH OF BEAM");
-        if (cbCastingPreparingBeamCube.isChecked()) ConcCube.add("CASTING AND PREPARING BEAM");
-
-        // Collect selected points for AAC
-        List<String> Aac = new ArrayList<>();
-        if (cbMeasurementOfDimensionsAac.isChecked()) Aac.add("MEASUREMENT OF DIMENSIONS");
-        if (cbCompressiveStrengthAac.isChecked()) Aac.add("COMPRESSIVE STRENGTH");
-        if (cbBlocksDensityAac.isChecked()) Aac.add("BLOCKS DENSITY");
-        if (cbWaterAbsorptionAac.isChecked()) Aac.add("WATER ABSORPTION");
-        if (cbDryingShrinkageAac.isChecked()) Aac.add("DRYING SHRINKAGE");
-        if (cbMoistureMovementAac.isChecked()) Aac.add("MOISTURE MOVEMENT");
-
-        // Collect selected points for Paver Block
-        List<String> PaverBlock = new ArrayList<>();
-        if (cbCompressiveStrengthPaver.isChecked()) PaverBlock.add("COMPRESSIVE STRENGTH");
-        if (cbWaterAbsorptionPaver.isChecked()) PaverBlock.add("WATER ABSORPTION");
-
-        // Collect selected points for Brick
-        List<String> Brick = new ArrayList<>();
-        if (cbWaterAbsorptionBrick.isChecked()) Brick.add("WATER ABSORPTION");
-        if (cbDimensionTestBrick.isChecked()) Brick.add("DIMENSION TEST");
-        if (cbCompressiveStrengthBrick.isChecked()) Brick.add("COMPRESSIVE STRENGTH");
-        if (cbEfflorescenceBrick.isChecked()) Brick.add("EFFLORESCENCE");
-
-
-        // Collect selected points for Soil
-        List<String> Soil = new ArrayList<>();
-        if (cbCBRTestUnsoakedSoil.isChecked()) Soil.add("CBR TEST UNSOAKED");
-        if (cbGrainSizeAnalysisSoil.isChecked()) Soil.add("GRAIN SIZE ANALYSIS");
-        if (cbTestSoakedSoil.isChecked()) Soil.add("CBR TEST SOAKED");
-        if (cbPlasticLimitSoil.isChecked()) Soil.add("PLASTIC LIMIT");
-        if (cbLightCompactionTestSoil.isChecked()) Soil.add("LIGHT COMPACTION TEST");
-        if (cbHeavyCompactionTestSoil.isChecked()) Soil.add("HEAVY COMPACTION TEST");
-        if (cbFreeSwellIndexSoil.isChecked()) Soil.add("FREE SWELL INDEX");
-        if (cbUnconfinedCompressionSoil.isChecked()) Soil.add("UNCONFINED COMPRESSION TEST");
-        if (cbTriaxialTestUUSoil.isChecked()) Soil.add("TRIAXIAL TEST UU");
-        if (cbTriaxialTestCUSoil.isChecked()) Soil.add("TRIAXIAL TEST CU");
-        if (cbSwellingPressureSoil.isChecked()) Soil.add("SWELLING PRESSURE");
-        if (cbSpecificGravitySoil.isChecked()) Soil.add("SPECIFIC GRAVITY");
-        if (cbShrinkageLimitSoil.isChecked()) Soil.add("SHRINKAGE LIMIT");
-        if (cbDirectShearSoil.isChecked()) Soil.add("DIRECT SHEAR TEST");
-        if (cbPermeabilityTestSoil.isChecked()) Soil.add("PERMEABILITY TEST");
-        if (cbRelativeDensitySoil.isChecked()) Soil.add("RELATIVE DENSITY");
-        if (cbFieldDensityAndMoistureContentSoil.isChecked()) Soil.add("FIELD DENSITY AND MOISTURE CONTENT");
-        if (cbConsolidationSoil.isChecked()) Soil.add("CONSOLIDATION TEST");
-
-        // Collect selected points for NDT
-        List<String> Ndt = new ArrayList<>();
-        if (cbUltrasonicPulseVelocityNDT.isChecked()) Ndt.add("ULTRASONIC PULSE VELOCITY");
-        if (cbReboundHammerTestNDT.isChecked()) Ndt.add("REBOUND HAMMER TEST");
-
-        // Collect selected points for ConstWater
-        List<String> ConstWater = new ArrayList<>();
-        if (cbSulphatesSO4CWater.isChecked()) ConstWater.add("SULPHATES (SO4)");
-        if (cbAlkalinityCWater.isChecked()) ConstWater.add("ALKALINITY");
-        if (cbPHValueCWater.isChecked()) ConstWater.add("PH VALUE");
-        if (cbOrganicImpuritiesCWater.isChecked()) ConstWater.add("ORGANIC IMPURITIES");
-        if (cbInorganicImpuritiesCWater.isChecked()) ConstWater.add("INORGANIC IMPURITIES");
-        if (cbChlorideAsClCWater.isChecked()) ConstWater.add("CHLORIDE AS CL");
-        if (cbSuspendedMatterCWater.isChecked()) ConstWater.add("SUSPENDED MATTER");
-        if (cbTDSTotalDissolvedSolidsCWater.isChecked()) ConstWater.add("TDS (TOTAL DISSOLVED SOLIDS)");
-
-        // Collect selected points for WasteWater
-        List<String> WasteWater = new ArrayList<>();
-        if (cbChlorideAsClWasteWater.isChecked()) WasteWater.add("CHLORIDE AS CL");
-        if (cbPhValueWasteWater.isChecked()) WasteWater.add("PH VALUE");
-        if (cbSulphatesSo4WasteWater.isChecked()) WasteWater.add("SULPHATES (SO4)");
-        if (cbTdsTotalDissolvedSolidsWasteWater.isChecked()) WasteWater.add("TDS (TOTAL DISSOLVED SOLIDS)");
-        if (cbTssTotalSuspendedSolidsWasteWater.isChecked()) WasteWater.add("TSS (TOTAL SUSPENDED SOLIDS)");
-
-        // Collect selected points for Concrete Mix Design
-        List<String> concreteMixDesign = new ArrayList<>();
-        if (cbWithCubeMixDesign.isChecked()) concreteMixDesign.add("WITH CUBE");
-        if (cbWithFlexurerStrengthMixDesign.isChecked()) concreteMixDesign.add("WITH FLEXURER STRENGTH");
-        if (cbWithAdmixtureMixDesign.isChecked()) concreteMixDesign.add("WITH ADMIXTURE");
-
-        // Collect selected points for Fly Ash
-        List<String> flyAsh = new ArrayList<>();
-        if (cbSpecificGravityFlyAsh.isChecked()) flyAsh.add("WITH SPECIFIC GRAVITY");
-        if (cbSoundnessFlyAsh.isChecked()) flyAsh.add("SOUNDNESS");
-        if (cbCompressiveStrengthFlyAsh.isChecked()) flyAsh.add("COMPRESSIVE STRENGTH");
-
-        // Collect selected points for Bitumen
-        List<String> Bitumen = new ArrayList<>();
-        if (cbPenetrationValueBitumen.isChecked()) Bitumen.add("PENETRATION VALUE");
-        if (cbSofteningPointBitumen.isChecked()) Bitumen.add("SOFTENING POINT");
-        if (cbDuctilityBitumen.isChecked()) Bitumen.add("DUCTILITY");
-        if (cbSpecificGravityBitumen.isChecked()) Bitumen.add("SPECIFIC GRAVITY");
-
-        // Add selected checkboxes for All Segments Checkboxes
-        if (!AggregateFine.isEmpty()) {
-            data.put("AGGREGATE FINE", AggregateFine);
-        }
-        if (!AggregateCoarse.isEmpty()) {
-            data.put("AGGREGATE COARSE", AggregateCoarse);
-        }
-        if (!Cement.isEmpty()) {
-            data.put("CEMENT", Cement);
-        }
-        if (!Steel.isEmpty()) {
-            data.put("STEEL", Steel);
-        }
-        if (!ConcCube.isEmpty()) {
-            data.put("CONC CUBE", ConcCube);
-        }
-        if (!Aac.isEmpty()) {
-            data.put("AAC", Aac);
-        }
-        if (!PaverBlock.isEmpty()) {
-            data.put("CONCRETE PAVER BLOCK", PaverBlock);
-        }
-        if (!Brick.isEmpty()) {
-            data.put("BRICK", Brick);
-        }
-        if (!Soil.isEmpty()) {
-            data.put("SOIL", Soil);
-        }
-        if (!Ndt.isEmpty()) {
-            data.put("NDT", Ndt);
-        }
-        if (!ConstWater.isEmpty()) {
-            data.put("CONST WATER", ConstWater);
-        }
-        if (!WasteWater.isEmpty()) {
-            data.put("WASTE WATER", WasteWater);
-        }
-        if (!concreteMixDesign.isEmpty()) {
-            data.put("CONCRETE MIX DESIGN", concreteMixDesign);
-        }
-        if (!flyAsh.isEmpty()) {
-            data.put("FLY ASH", flyAsh);
-        }
-        if (!Bitumen.isEmpty()) {
-            data.put("BITUMEN", Bitumen);
+        if (!testSelections.isEmpty()) {
+            data.put("Test Selections", testSelections);
         }
 
         // Store data in Firestore
@@ -1205,6 +1088,61 @@ public class MakeOrderFragment extends Fragment {
                 });
     }
 
+
+    private void addTestSelection(Map<String, List<String>> testSelections, String category, CheckBox mainCheckbox, CheckBox... subCheckboxes) {
+        if (mainCheckbox.isChecked()) {
+            List<String> selectedTests = new ArrayList<>();
+            for (CheckBox subCheckbox : subCheckboxes) {
+                if (subCheckbox.isChecked()) {
+                    selectedTests.add(subCheckbox.getText().toString()); // Get text directly from checkbox
+                }
+            }
+            if (!selectedTests.isEmpty()) {
+                testSelections.put(category, selectedTests);
+            }
+        }
+    }
+
+
+    /**
+     * Validates required input fields.
+     */
+    private boolean validateInputs(String customerName, String dispatchAddress, String mobileNumber, String email, String termsAndConditions) {
+        if (customerName.isEmpty() || dispatchAddress.isEmpty() || mobileNumber.isEmpty() || email.isEmpty() || termsAndConditions.isEmpty()) {
+            showError("All fields are required");
+            return false;
+        }
+        if (!mobileNumber.matches("\\d{10}")) {
+            showError("Please enter a valid 10-digit mobile number");
+            return false;
+        }
+        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            showError("Please enter a valid email address");
+            return false;
+        }
+        return true;
+    }
+
+    private List<String> getSelectedTests(Object... items) {
+        List<String> selectedTests = new ArrayList<>();
+
+        for (int i = 0; i < items.length; i += 2) {
+            if (items[i] instanceof CheckBox && items[i + 1] instanceof String) {
+                CheckBox checkBox = (CheckBox) items[i];
+                String label = (String) items[i + 1];
+
+                if (checkBox.isChecked()) {
+                    selectedTests.add(label);
+                }
+            }
+        }
+
+        return selectedTests;
+    }
+
+
+
+
     private String getSelectedRadioButtonText(RadioGroup radioGroup) {
         if (radioGroup == null) {
             return "";
@@ -1220,10 +1158,10 @@ public class MakeOrderFragment extends Fragment {
     }
 
     private void clearForm() {
-        customerNameField.setText("");
-        dispatchAddressField.setText("");
-        mobileNumberField.setText("");
-        emailField.setText("");
+        etCustomerName.setText("");
+        etDispatchAddress.setText("");
+        etMobile.setText("");
+        etEmail.setText("");
         termsAndConditionsField.setText("");
         for (int i = 0; i < pointsGroup.getChildCount(); i++) {
             View child = pointsGroup.getChildAt(i);

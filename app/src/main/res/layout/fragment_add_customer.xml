@@ -12,7 +12,8 @@
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent">
+    app:layout_constraintTop_toTopOf="parent"
+    android:fitsSystemWindows="true">
 
     <TextView
         android:layout_width="wrap_content"
@@ -73,25 +74,27 @@
             android:maxLines="1" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- Role Field -->
+    <!-- Address Field -->
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputRole"
+        android:id="@+id/textInputAddress"
         style="@style/parent"
         android:layout_marginTop="@dimen/loginViewsMargin">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/editTextRole"
+            android:id="@+id/editTextAddress"
             style="@style/modifiedEditText"
-            android:hint="Role"
-            android:inputType="text"
+            android:hint="Address"
+            android:inputType="textPostalAddress"
             android:maxLines="1" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <!-- Signup Button -->
     <Button
         android:id="@+id/addCustomerButton"
+        android:layout_width="match_parent"
         style="@style/loginButton"
         android:text="Add"
+        android:textSize="20sp"
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/loginViewsMargin" />
 

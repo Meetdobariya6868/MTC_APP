@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:queryHint="Search orders..."
-        android:background="@drawable/search_bar_bg"
+        android:background="@drawable/search_bar_background"
         android:elevation="6dp"
         android:padding="12dp"
         android:layout_marginTop="30dp"

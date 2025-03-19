@@ -1,35 +1,31 @@
 package com.example.mtc_app.staff.adapter;
 
 public class ItemData {
-    private String orderId;
-    private String customerName;
-    private String status;
-    private String sampleName;
+    private String title;
+    private String subtitle;
+    private int iconResId;
+    private String category; // New field for filtering
 
-    // Empty constructor for Firestore deserialization
-    public ItemData(String orderId, String title, String subtitle, int ic_placeholder) {}
-
-    public ItemData(String orderId, String customerName, String status, String sampleName) {
-        this.orderId = orderId;
-        this.customerName = customerName;
-        this.status = status;
-        this.sampleName = sampleName;
+    public ItemData(String title, String subtitle, int iconResId, String category) {
+        this.title = title;
+        this.subtitle = subtitle;
+        this.iconResId = iconResId;
+        this.category = category;
     }
 
-    // Getter for orderId
-    public String getOrderId() {
-        return orderId;
+    public String getTitle() {
+        return title;
     }
 
-    public String getCustomerName() {
-        return customerName;
+    public String getSubtitle() {
+        return subtitle;
     }
 
-    public String getStatus() {
-        return status;
+    public int getIconResId() {
+        return iconResId;
     }
 
-    public String getSampleName() {
-        return sampleName;
+    public String getCategory() {
+        return category;
     }
 }
