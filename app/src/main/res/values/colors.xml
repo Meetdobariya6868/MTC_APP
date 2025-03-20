@@ -14,7 +14,7 @@
         <color name="teal_700">#FF018786</color>
         <color name="black">#FF000000</color>
         <color name="white">#FFFFFFFF</color>
-        <color name="lavender">#8692f7</color>
+        <color name="lavender">#28156e</color>
 
     <!-- Background Colors -->
     <color name="backgroundColor">#F5F5F5</color> <!-- Light Background -->
@@ -38,7 +38,7 @@
     <color name="neutralDark">#616161</color> <!-- Dark Neutral -->
     <color name="background">#F5F5F5</color>
     <color name="textSecondary">#757575</color>
-    <color name="Lavender">#8692f7</color>
+    <color name="Lavender">#28156e</color>
 
     <color name="sunset_orange">#FF5733</color> <!-- Vibrant orange for action elements -->
     <color name="deep_blue_sea">#1A73E8</color> <!-- Deep blue for calm and professional look -->
@@ -49,5 +49,8 @@
 
     <color name="blue">#4A90E2</color>
     <color name="nav_item_color">#000000</color>
+
+
+    <color name="rippleColor">#FFBB86FC</color>
 
 </resources>

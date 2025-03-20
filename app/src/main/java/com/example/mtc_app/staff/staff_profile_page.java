@@ -31,7 +31,6 @@ import java.util.Map;
 
 public class staff_profile_page extends AppCompatActivity {
 
-    private static final String TAG = "StaffProfilePage";
     private ImageView profilePicture;
     private TextView profileName, profileEmail, profilePhone, addressValue;
     private Button btnLogout, btnEditProfile;

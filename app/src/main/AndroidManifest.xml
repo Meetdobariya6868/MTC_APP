@@ -62,9 +62,11 @@
             android:exported="false" />
         <activity
             android:name=".MainActivity"
+            android:windowSoftInputMode="adjustPan"
             android:exported="false" />
         <activity
             android:name=".customerRepresentative.CrMain"
+            android:windowSoftInputMode="adjustPan"
             android:exported="true" />
         <activity
             android:name=".splashScreen.SplashScreenActivity"

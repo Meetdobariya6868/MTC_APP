@@ -132,11 +132,11 @@ public class CrMain extends AppCompatActivity {
         // Set up BottomNavigationView
         bottomNavigationView.setBackground(null); // Remove background for FAB overlap
         bottomNavigationView.setOnItemSelectedListener(item -> {
-            if (item.getItemId() == R.id.home) {
+            if (item.getItemId() == R.id.nav_home) {
                 replaceFragment(new CRHomeFragment());
 //            } else if (item.getItemId() == R.id.addcustomer) {
 //                replaceFragment(new AddCustomer());
-            } else if (item.getItemId() == R.id.profile) {
+            } else if (item.getItemId() == R.id.nav_profile) {
                 replaceFragment(new CRProfile());
             } else {
                 return false;

@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="685dp"
+    android:layout_height="match_parent"
     android:background="#FFFFFF">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <!-- Oval Background (at the back) -->
         <View
             android:layout_width="match_parent"
             android:layout_height="400dp"
             android:background="@drawable/oval_background" />
 
-        <!-- Profile Content (on top) -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -22,18 +20,29 @@
             android:layout_marginTop="90dp"
             android:paddingTop="16dp">
 
-            <!-- Profile Image -->
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center">
 
-            <!-- Username -->
-            <ImageView
-                android:id="@+id/profile_image"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:layout_gravity="center"
+                <ImageView
+                    android:id="@+id/profile_image"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:scaleType="centerCrop"
+                    android:background="@drawable/rounded_image_background"
+                    android:contentDescription="Profile Image" />
 
-                android:background="@drawable/profile"
-                android:contentDescription="Profile Image"/>
-<!--                android:src="@drawable/ic_placeholder" />-->
+                <ImageView
+                    android:id="@+id/edit_icon"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="bottom|end"
+                    android:background="@drawable/rounded_edit_icon"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_edit"
+                    android:contentDescription="Edit Profile" />
+            </FrameLayout>
 
             <TextView
                 android:id="@+id/username"
@@ -41,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="8dp"
-                android:text="Harsh Patel"
+                android:text="Staff_name"
                 android:textColor="#FFFFFF"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -52,11 +61,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginBottom="16dp"
-                android:text="Customer Representative"
+                android:text="Staff"
                 android:textColor="#FFFFFF"
                 android:textSize="14sp" />
 
-            <!-- Rounded Information Box -->
             <LinearLayout
                 android:layout_width="370dp"
                 android:layout_height="wrap_content"
@@ -79,14 +87,13 @@
                         android:textColor="@color/Lavender"
                         android:textSize="18sp"
                         android:textStyle="bold"
-                        android:layout_gravity="start"/>
+                        android:layout_gravity="start" />
 
                     <TextView
-                        android:id="@+id/email_value"
+                        android:id="@+id/emailValue"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="mtcapp@gmail.com"
                         android:textColor="#000000"
                         android:textSize="16sp"
                         android:gravity="end" />
@@ -111,14 +118,13 @@
                         android:textColor="@color/Lavender"
                         android:textSize="18sp"
                         android:textStyle="bold"
-                        android:layout_gravity="start"/>
+                        android:layout_gravity="start" />
 
                     <TextView
-                        android:id="@+id/password_value"
+                        android:id="@+id/addressValue"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Vadodara, India "
                         android:textColor="#000000"
                         android:textSize="16sp"
                         android:gravity="end" />
@@ -144,22 +150,18 @@
                         android:textColor="@color/Lavender"
                         android:textSize="18sp"
                         android:textStyle="bold"
-                        android:layout_gravity="start"/>
+                        android:layout_gravity="start" />
 
                     <TextView
-                        android:id="@+id/phone_value"
+                        android:id="@+id/phoneValue"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="9876543210"
                         android:textColor="#000000"
                         android:textSize="16sp"
                         android:gravity="end" />
                 </LinearLayout>
-
             </LinearLayout>
-
-            <!-- Edit Profile Button -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -177,7 +179,7 @@
                     android:textColor="#FFFFFF"
                     android:textStyle="bold"
                     android:layout_gravity="center"
-                    android:layout_marginRight="20dp"/>
+                    android:layout_marginRight="20dp" />
 
                 <Button
                     android:id="@+id/logOut"
@@ -188,7 +190,7 @@
                     android:text="Log Out"
                     android:textColor="#FFFFFF"
                     android:textStyle="bold"
-                    android:layout_gravity="center"/>
+                    android:layout_gravity="center" />
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>

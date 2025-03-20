@@ -47,7 +47,7 @@ public class AddCustomer extends Fragment {
         editTextMobile = view.findViewById(R.id.editTextMobile);
         editTextEmail = view.findViewById(R.id.editTextEmail);
         editTextPassword = view.findViewById(R.id.editTextPassword);
-//        editTextAddress = view.findViewById(R.id.editTextAddress);
+        editTextAddress = view.findViewById(R.id.editTextAddress);
         addCustomerButton = view.findViewById(R.id.addCustomerButton);
         progressBar = view.findViewById(R.id.progressBar);
 

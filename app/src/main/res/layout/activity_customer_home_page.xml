@@ -75,11 +75,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="@color/lavender"
         android:padding="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="@drawable/ripple_effect">
 
         <!-- Home Icon -->
         <LinearLayout
@@ -94,14 +96,14 @@
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/cust_home" />
+                android:src="@drawable/home" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Home"
-                android:textColor="#FFFFFF"
-                android:textSize="12sp" />
+                app:itemIconTint="@color/nav_item_color"
+                app:itemTextColor="@color/nav_item_color"/>
         </LinearLayout>
 
         <!-- Make Order Icon -->
@@ -123,8 +125,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Make Orders"
-                android:textColor="#FFFFFF"
-                android:textSize="12sp" />
+                app:itemIconTint="@color/nav_item_color"
+                android:textColor="@color/nav_item_color"
+                android:textSize="14sp"/>
         </LinearLayout>
 
         <!-- Profile Icon -->
@@ -140,14 +143,16 @@
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/cust_profile" />
+                android:src="@drawable/user"
+                app:itemIconTint="@color/nav_item_color"
+                app:itemTextColor="@color/nav_item_color"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Profile"
-                android:textColor="#FFFFFF"
-                android:textSize="12sp" />
+                app:itemIconTint="@color/nav_item_color"
+                android:textColor="@color/nav_item_color" />
         </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
