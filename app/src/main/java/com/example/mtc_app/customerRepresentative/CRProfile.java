@@ -124,7 +124,7 @@ public class CRProfile extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == requireActivity().RESULT_OK) {
+        if (isAdded() && resultCode == requireActivity().RESULT_OK) {
             if (requestCode == GALLERY_REQUEST_CODE && data != null) {
                 imageUri = data.getData();
                 uploadImageToCloudinary();
@@ -146,7 +146,11 @@ public class CRProfile extends Fragment {
                 Map uploadResult = CloudinaryManager.getInstance().uploader().upload(inputStream, uploadParams);
                 String imageUrl = (String) uploadResult.get("secure_url");
 
-                requireActivity().runOnUiThread(() -> updateProfileImageUrl(imageUrl));
+//                requireActivity().runOnUiThread(() -> updateProfileImageUrl(imageUrl));
+
+                if (isAdded()) {
+                    requireActivity().runOnUiThread(() -> updateProfileImageUrl(imageUrl));
+                }
 
             } catch (Exception e) {
                 requireActivity().runOnUiThread(() -> Toast.makeText(requireContext(), "Upload Failed", Toast.LENGTH_SHORT).show());
@@ -171,12 +175,14 @@ public class CRProfile extends Fragment {
     }
 
     private void showLogoutConfirmation() {
-        new AlertDialog.Builder(requireContext())
-                .setTitle("Logout")
-                .setMessage("Are you sure you want to logout?")
-                .setPositiveButton("Yes", (dialog, which) -> logout())
-                .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
-                .show();
+        if (isAdded()) {
+            new AlertDialog.Builder(requireContext())
+                    .setTitle("Logout")
+                    .setMessage("Are you sure you want to logout?")
+                    .setPositiveButton("Yes", (dialog, which) -> logout())
+                    .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
+                    .show();
+        }
     }
 
     private void logout() {
@@ -195,10 +201,13 @@ public class CRProfile extends Fragment {
 
                         String profileImageUrl = documentSnapshot.getString("profileImageUrl");
                         if (profileImageUrl != null && !profileImageUrl.isEmpty()) {
-                            Glide.with(requireContext())
-                                    .load(profileImageUrl)
-                                    .placeholder(R.drawable.cust_profile)
-                                    .into(profilePicture);
+                            if (isAdded()) {
+                                Glide.with(requireContext())
+                                        .load(profileImageUrl)
+                                        .placeholder(R.drawable.cust_profile)
+                                        .into(profilePicture);
+                            }
+
                         }
                     } else {
                         Toast.makeText(requireContext(), "User not found.", Toast.LENGTH_SHORT).show();
