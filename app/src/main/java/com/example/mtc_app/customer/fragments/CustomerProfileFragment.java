@@ -54,14 +54,11 @@ public class CustomerProfileFragment extends Fragment {
         auth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
 
+        // Load cached data instantly while Firebase loads in the background
         loadCachedUserDetails();
-        loadUserDetails(false); // Load without showing loading progress initially
+        fetchUserDetails(false);
 
-        editProfileButton.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), EditProfileActivity.class);
-            startActivity(intent);
-        });
-
+        editProfileButton.setOnClickListener(v -> startActivity(new Intent(getActivity(), EditProfileActivity.class)));
         logOutButton.setOnClickListener(v -> showLogoutConfirmation());
 
         return view;
@@ -70,7 +67,7 @@ public class CustomerProfileFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        loadUserDetails(true); // Reload on resume without showing progress bar
+        fetchUserDetails(true); // Reload on resume without progress bar
     }
 
     private void showLogoutConfirmation() {
@@ -84,8 +81,7 @@ public class CustomerProfileFragment extends Fragment {
 
     private void logoutUser() {
         auth.signOut();
-        SharedPreferences preferences = requireActivity().getSharedPreferences(PREFS_NAME, 0);
-        preferences.edit().clear().apply();
+        requireActivity().getSharedPreferences(PREFS_NAME, 0).edit().clear().apply();
 
         Intent intent = new Intent(getActivity(), CustomerLoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -94,57 +90,70 @@ public class CustomerProfileFragment extends Fragment {
 
     private void loadCachedUserDetails() {
         SharedPreferences preferences = requireActivity().getSharedPreferences(PREFS_NAME, 0);
-        usernameText.setText(preferences.getString("name", ""));
-        userHandleText.setText(preferences.getString("role", ""));
+        usernameText.setText(preferences.getString("name", "Loading..."));
+        userHandleText.setText(preferences.getString("role", "Loading..."));
         emailValueText.setText(preferences.getString("email", ""));
         addressValueText.setText(preferences.getString("address", ""));
         phoneValueText.setText(preferences.getString("phone", ""));
     }
 
-    private void loadUserDetails(boolean isResumed) {
+    private void fetchUserDetails(boolean isResumed) {
         FirebaseUser currentUser = auth.getCurrentUser();
-        if (currentUser != null) {
-            if (isFirstLoad) {
-                loadingProgress.setVisibility(View.VISIBLE);
-                isFirstLoad = false;
-            }
+        if (currentUser == null) return;
 
-            String userId = currentUser.getUid();
-            firestore.collection("users").document(userId)
-                    .get()
-                    .addOnSuccessListener(this::populateUserDetails)
-                    .addOnFailureListener(e -> {
-                        loadingProgress.setVisibility(View.GONE);
-                        Toast.makeText(getActivity(), "Failed to load user details: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    });
+        String userId = currentUser.getUid();
+        if (isFirstLoad) {
+            loadingProgress.setVisibility(View.VISIBLE);
+            isFirstLoad = false;
         }
+
+        firestore.collection("users").document(userId)
+                .get()
+                .addOnSuccessListener(this::updateUserDetails)
+                .addOnFailureListener(e -> {
+                    loadingProgress.setVisibility(View.GONE);
+                    Toast.makeText(getActivity(), "Failed to load user details", Toast.LENGTH_SHORT).show();
+                });
     }
 
-    private void populateUserDetails(DocumentSnapshot document) {
-        if (document.exists()) {
-            String name = document.getString("name");
-            String role = document.getString("role");
-            String email = document.getString("email");
-            String address = document.getString("address");
-            String phone = document.getString("phone");
-
-            usernameText.setText(name);
-            userHandleText.setText(role);
-            emailValueText.setText(email);
-            addressValueText.setText(address);
-            phoneValueText.setText(phone);
-
-            SharedPreferences preferences = requireActivity().getSharedPreferences(PREFS_NAME, 0);
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putString("name", name);
-            editor.putString("role", role);
-            editor.putString("email", email);
-            editor.putString("address", address);
-            editor.putString("phone", phone);
-            editor.apply();
-        } else {
+    private void updateUserDetails(DocumentSnapshot document) {
+        if (!document.exists()) {
             Toast.makeText(getActivity(), "User data not found", Toast.LENGTH_SHORT).show();
+            return;
         }
+
+        // Fetch data
+        String name = document.getString("name");
+        String role = document.getString("role");
+        String email = document.getString("email");
+        String address = document.getString("address");
+        String phone = document.getString("phone");
+
+        // Map role values
+        String displayRole;
+        switch (role) {
+            case "customer": displayRole = "Customer"; break;
+            case "cr": displayRole = "Customer Representative"; break;
+            case "staff": displayRole = "Segment Head"; break;
+            case "admin": displayRole = "Administration"; break;
+            default: displayRole = "Customer"; // Default role
+        }
+
+        // Update UI only if values have changed
+        if (!name.equals(usernameText.getText().toString())) usernameText.setText(name);
+        if (!displayRole.equals(userHandleText.getText().toString())) userHandleText.setText(displayRole);
+        if (!email.equals(emailValueText.getText().toString())) emailValueText.setText(email);
+        if (!address.equals(addressValueText.getText().toString())) addressValueText.setText(address);
+        if (!phone.equals(phoneValueText.getText().toString())) phoneValueText.setText(phone);
+
+        // Save updated data to cache
+        SharedPreferences.Editor editor = requireActivity().getSharedPreferences(PREFS_NAME, 0).edit();
+        editor.putString("name", name);
+        editor.putString("role", displayRole);
+        editor.putString("email", email);
+        editor.putString("address", address);
+        editor.putString("phone", phone);
+        editor.apply();
 
         loadingProgress.setVisibility(View.GONE);
     }
