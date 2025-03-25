@@ -32,15 +32,16 @@ public class CustomerProfileFragment extends Fragment {
     private FirebaseAuth auth;
     private FirebaseFirestore firestore;
 
+    private static final String PREFS_NAME = "UserProfilePrefs";
+    private boolean isFirstLoad = true;
+
     public CustomerProfileFragment() {
-        // Required empty public constructor
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_customer_profile_fragment, container, false);
 
-        // Initialize UI components
         usernameText = view.findViewById(R.id.username);
         userHandleText = view.findViewById(R.id.user_handle);
         emailValueText = view.findViewById(R.id.email_value);
@@ -50,24 +51,26 @@ public class CustomerProfileFragment extends Fragment {
         logOutButton = view.findViewById(R.id.logOut);
         loadingProgress = view.findViewById(R.id.loading_progress);
 
-        // Initialize Firebase
         auth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
 
-        // Load user details immediately
-        loadUserDetails();
+        loadCachedUserDetails();
+        loadUserDetails(false); // Load without showing loading progress initially
 
-        // Edit Profile button click listener
         editProfileButton.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), EditProfileActivity.class);
             startActivity(intent);
         });
 
-        // Log Out button click listener
-        // Log Out button click listener
         logOutButton.setOnClickListener(v -> showLogoutConfirmation());
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadUserDetails(true); // Reload on resume without showing progress bar
     }
 
     private void showLogoutConfirmation() {
@@ -80,27 +83,31 @@ public class CustomerProfileFragment extends Fragment {
     }
 
     private void logoutUser() {
-        // Sign out from Firebase
         auth.signOut();
+        SharedPreferences preferences = requireActivity().getSharedPreferences(PREFS_NAME, 0);
+        preferences.edit().clear().apply();
 
-        // Clear SharedPreferences if user data is stored
-        SharedPreferences preferences = requireActivity().getSharedPreferences("MyAppPrefs", 0);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.clear();
-        editor.apply();
-
-        // Redirect to LoginActivity and clear the activity stack
         Intent intent = new Intent(getActivity(), CustomerLoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
 
+    private void loadCachedUserDetails() {
+        SharedPreferences preferences = requireActivity().getSharedPreferences(PREFS_NAME, 0);
+        usernameText.setText(preferences.getString("name", ""));
+        userHandleText.setText(preferences.getString("role", ""));
+        emailValueText.setText(preferences.getString("email", ""));
+        addressValueText.setText(preferences.getString("address", ""));
+        phoneValueText.setText(preferences.getString("phone", ""));
+    }
 
-    private void loadUserDetails() {
+    private void loadUserDetails(boolean isResumed) {
         FirebaseUser currentUser = auth.getCurrentUser();
         if (currentUser != null) {
-            // Show the loading progress
-            loadingProgress.setVisibility(View.VISIBLE);
+            if (isFirstLoad) {
+                loadingProgress.setVisibility(View.VISIBLE);
+                isFirstLoad = false;
+            }
 
             String userId = currentUser.getUid();
             firestore.collection("users").document(userId)
@@ -110,24 +117,35 @@ public class CustomerProfileFragment extends Fragment {
                         loadingProgress.setVisibility(View.GONE);
                         Toast.makeText(getActivity(), "Failed to load user details: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     });
-        } else {
-            loadingProgress.setVisibility(View.GONE);
-            Toast.makeText(getActivity(), "No user logged in", Toast.LENGTH_SHORT).show();
         }
     }
 
     private void populateUserDetails(DocumentSnapshot document) {
         if (document.exists()) {
-            usernameText.setText(document.getString("name"));
-            userHandleText.setText(document.getString("role"));
-            emailValueText.setText(document.getString("email"));
-            addressValueText.setText(document.getString("address"));
-            phoneValueText.setText(document.getString("phone"));
+            String name = document.getString("name");
+            String role = document.getString("role");
+            String email = document.getString("email");
+            String address = document.getString("address");
+            String phone = document.getString("phone");
+
+            usernameText.setText(name);
+            userHandleText.setText(role);
+            emailValueText.setText(email);
+            addressValueText.setText(address);
+            phoneValueText.setText(phone);
+
+            SharedPreferences preferences = requireActivity().getSharedPreferences(PREFS_NAME, 0);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString("name", name);
+            editor.putString("role", role);
+            editor.putString("email", email);
+            editor.putString("address", address);
+            editor.putString("phone", phone);
+            editor.apply();
         } else {
             Toast.makeText(getActivity(), "User data not found", Toast.LENGTH_SHORT).show();
         }
 
-        // Hide the loading progress once the data is populated
         loadingProgress.setVisibility(View.GONE);
     }
 }
