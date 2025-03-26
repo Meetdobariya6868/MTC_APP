@@ -1892,7 +1892,7 @@
             android:layout_width="match_parent"
             android:id="@+id/submit_button"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/teal_700"
+            android:backgroundTint="@color/Lavender"
             android:text="Submit"
             android:textColor="@color/white"
             android:textSize="16sp"

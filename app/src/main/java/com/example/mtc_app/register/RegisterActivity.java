@@ -23,6 +23,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -62,17 +63,45 @@ public class RegisterActivity extends AppCompatActivity {
         registerButton.setOnClickListener(view -> registerUser());
     }
 
+    private boolean validateInputs(String name, String email, String password, String phone) {
+        // Name validation: Only letters, minimum 2 characters
+        if (!Pattern.matches("^[a-zA-Z ]{2,}$", name)) {
+            nameField.setError("Name must contain only letters and be at least 2 characters long");
+            return false;
+        }
+
+        // Email validation using a more comprehensive regex
+        if (!Pattern.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}$", email)) {
+            emailField.setError("Invalid email address");
+            return false;
+        }
+
+        // Password validation: Minimum 6 characters
+        if (password.length() < 6) {
+            passwordField.setError("Password must be at least 6 characters long");
+            return false;
+        }
+
+        // Phone number validation: Exactly 10 digits
+        if (!Pattern.matches("^[0-9]{10}$", phone)) {
+            phoneField.setError("Phone number must be 10 digits");
+            return false;
+        }
+
+        return true;
+    }
+
     private void registerUser() {
-        String name = nameField.getText().toString();
-        String email = emailField.getText().toString();
-        String password = passwordField.getText().toString();
-        String phone = phoneField.getText().toString();
+        String name = nameField.getText().toString().trim();
+        String email = emailField.getText().toString().trim();
+        String password = passwordField.getText().toString().trim();
+        String phone = phoneField.getText().toString().trim();
 
         // Set role as "customer" for all registrations
         String role = "customer";
 
-        if (TextUtils.isEmpty(name) || TextUtils.isEmpty(email) || TextUtils.isEmpty(password) || TextUtils.isEmpty(phone)) {
-            Toast.makeText(this, "All fields are required", Toast.LENGTH_SHORT).show();
+        // Validate inputs before proceeding
+        if (!validateInputs(name, email, password, phone)) {
             return;
         }
 
