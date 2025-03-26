@@ -41,7 +41,7 @@ import java.util.Map;
 public class CRProfile extends Fragment {
 
     private ImageView profilePicture, editProfileIcon;
-    private TextView profileName, profileEmail, profilePhone, addressValue;
+    private TextView profileName, profileEmail, profilePhone, addressValue,username;
     private Button btnLogout, btnEditProfile;
     private FirebaseFirestore db;
     private Uri imageUri;
@@ -68,6 +68,7 @@ public class CRProfile extends Fragment {
         FirebaseUser currentUser = auth.getCurrentUser();
 
         // Initialize UI components
+        username = view.findViewById(R.id.username);
         profilePicture = view.findViewById(R.id.profile_image);
         profileName = view.findViewById(R.id.username);
         profileEmail = view.findViewById(R.id.emailValue);
@@ -195,6 +196,7 @@ public class CRProfile extends Fragment {
                 .get()
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
+                        username.setText(documentSnapshot.getString("name"));
                         profileEmail.setText(documentSnapshot.getString("email"));
                         addressValue.setText(documentSnapshot.getString("address"));
                         profilePhone.setText(documentSnapshot.getString("phone"));
