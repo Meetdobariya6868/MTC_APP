@@ -2,15 +2,16 @@ package com.example.mtc_app.staff.adapter;
 
 public class ItemData {
     private String title;
-    private String subtitle;
+    private String subtitle, testSummary;
     private int iconResId;
     private String category; // New field for filtering
 
-    public ItemData(String title, String subtitle, int iconResId, String category) {
+    public ItemData(String title, String subtitle, int iconResId, String category, String testSummary) {
         this.title = title;
         this.subtitle = subtitle;
         this.iconResId = iconResId;
         this.category = category;
+        this.testSummary = testSummary;
     }
 
     public String getTitle() {
@@ -27,5 +28,9 @@ public class ItemData {
 
     public String getCategory() {
         return category;
+    }
+
+    public String getTestSummary() {
+        return testSummary;
     }
 }

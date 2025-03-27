@@ -1593,9 +1593,10 @@
 
                     <!-- Terms and Conditions Section -->
                     <TextView
+                        android:id="@+id/labNo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Terms and Conditions of Testing"
+                        android:text="Lab no"
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:layout_marginTop="16dp"
@@ -1608,13 +1609,14 @@
                         app:boxStrokeColor="@color/teal_700">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/terms_and_conditions"
+                            android:id="@+id/labNo"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Details"
                             android:inputType="text"
                             android:textColorHint="@color/gray" />
                     </com.google.android.material.textfield.TextInputLayout>
+
 
                     <!-- Points Section -->
                     <TextView

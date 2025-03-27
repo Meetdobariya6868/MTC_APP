@@ -1049,6 +1049,131 @@ public class MakeOrderFragment extends Fragment {
             ));
         }
 
+        // CementCube
+        if (cbCementCube.isChecked()) {
+            testSelections.put("CementCube", getSelectedTests(
+                    cbCompressiveStrengthOfCube, "COMPRESSIVE STRENGTH OF CUBE",
+                    cbCastingPreparingCubesOfGivenMixCube, "CASTING AND PREPARING CUBES OF GIVEN MIX",
+                    cbFlexurerStrengthOfBeamCube, "FLEXURAL STRENGTH OF BEAM",
+                    cbCastingPreparingBeamCube, "CASTING AND PREPARING BEAM"
+            ));
+        }
+
+        // AAC Block
+        if (cbAacBlock.isChecked()) {
+            testSelections.put("AacBlock", getSelectedTests(
+                    cbMeasurementOfDimensionsAac, "MEASUREMENT OF DIMENSIONS",
+                    cbCompressiveStrengthAac, "COMPRESSIVE STRENGTH",
+                    cbBlocksDensityAac, "BLOCKS DENSITY",
+                    cbWaterAbsorptionAac, "WATER ABSORPTION",
+                    cbDryingShrinkageAac, "DRYING SHRINKAGE",
+                    cbMoistureMovementAac, "MOISTURE MOVEMENT"
+            ));
+        }
+
+        // Power Block
+        if (cbPowerBlock.isChecked()) {
+            testSelections.put("PowerBlock", getSelectedTests(
+                    cbWaterAbsorptionPaver, "WATER ABSORPTION",
+                    cbCompressiveStrengthPaver, "COMPRESSIVE STRENGTH"
+            ));
+        }
+
+        // Brick
+        if (cbBrick.isChecked()) {
+            testSelections.put("Brick", getSelectedTests(
+                    cbCompressiveStrengthBrick, "COMPRESSIVE STRENGTH",
+                    cbDimensionTestBrick, "DIMENSION TEST",
+                    cbWaterAbsorptionBrick, "WATER ABSORPTION",
+                    cbEfflorescenceBrick, "EFFLORESCENCE"
+            ));
+        }
+
+        // Soil
+        if (cbSoil.isChecked()) {
+            testSelections.put("Soil", getSelectedTests(
+                    cbCBRTestUnsoakedSoil, "CBR TEST UNSOAKED",
+                    cbGrainSizeAnalysisSoil, "GRAIN SIZE ANALYSIS",
+                    cbTestSoakedSoil, "TEST SOAKED",
+                    cbPlasticLimitSoil, "PLASTIC LIMIT",
+                    cbLightCompactionTestSoil, "LIGHT COMPACTION TEST",
+                    cbHeavyCompactionTestSoil, "HEAVY COMPACTION TEST",
+                    cbFreeSwellIndexSoil, "FREE SWELL INDEX",
+                    cbShrinkageLimitSoil, "SHRINKAGE LIMIT",
+                    cbDirectShearSoil, "DIRECT SHEAR TEST",
+                    cbPermeabilityTestSoil, "PERMEABILITY TEST",
+                    cbRelativeDensitySoil, "RELATIVE DENSITY",
+                    cbFieldDensityAndMoistureContentSoil, "FIELD DENSITY AND MOISTURE CONTENT",
+                    cbConsolidationSoil, "CONSOLIDATION TEST",
+                    cbUnconfinedCompressionSoil, "UNCONFINED COMPRESSION TEST",
+                    cbTriaxialTestUUSoil, "TRIAXIAL TEST UU",
+                    cbTriaxialTestCUSoil, "TRIAXIAL TEST CU",
+                    cbSpecificGravitySoil, "SPECIFIC GRAVITY",
+                    cbSwellingPressureSoil, "SWELLING PRESSURE"
+            ));
+        }
+
+        // NDT
+        if (cbNDT.isChecked()) {
+            testSelections.put("NDT", getSelectedTests(
+                    cbUltrasonicPulseVelocityNDT, "ULTRASONIC PULSE VELOCITY",
+                    cbReboundHammerTestNDT, "REBOUND HAMMER TEST"
+            ));
+        }
+
+        // Construction Water
+        if (cbConstWater.isChecked()) {
+            testSelections.put("ConstWater", getSelectedTests(
+                    cbSulphatesSO4CWater, "SULPHATES (SO4)",
+                    cbAlkalinityCWater, "ALKALINITY",
+                    cbPHValueCWater, "PH VALUE",
+                    cbOrganicImpuritiesCWater, "ORGANIC IMPURITIES",
+                    cbInorganicImpuritiesCWater, "INORGANIC IMPURITIES",
+                    cbChlorideAsClCWater, "CHLORIDE AS CL",
+                    cbSuspendedMatterCWater, "SUSPENDED MATTER",
+                    cbTDSTotalDissolvedSolidsCWater, "TOTAL DISSOLVED SOLIDS (TDS)"
+            ));
+        }
+
+        // Waste Water
+        if (cbWasteWater.isChecked()) {
+            testSelections.put("WasteWater", getSelectedTests(
+                    cbChlorideAsClWasteWater, "CHLORIDE AS CL",
+                    cbPhValueWasteWater, "PH VALUE",
+                    cbSulphatesSo4WasteWater, "SULPHATES (SO4)",
+                    cbTdsTotalDissolvedSolidsWasteWater, "TOTAL DISSOLVED SOLIDS (TDS)",
+                    cbTssTotalSuspendedSolidsWasteWater, "TOTAL SUSPENDED SOLIDS (TSS)"
+            ));
+        }
+
+        // Concrete Mix Design
+        if (cbMixDesign.isChecked()) {
+            testSelections.put("MixDesign", getSelectedTests(
+                    cbWithCubeMixDesign, "WITH CUBE MIX DESIGN",
+                    cbWithFlexurerStrengthMixDesign, "WITH FLEXURAL STRENGTH MIX DESIGN",
+                    cbWithAdmixtureMixDesign, "WITH ADMIXTURE MIX DESIGN"
+            ));
+        }
+
+        // Fly Ash
+        if (cbFlyAsh.isChecked()) {
+            testSelections.put("FlyAsh", getSelectedTests(
+                    cbSpecificGravityFlyAsh, "SPECIFIC GRAVITY",
+                    cbSoundnessFlyAsh, "SOUNDNESS",
+                    cbCompressiveStrengthFlyAsh, "COMPRESSIVE STRENGTH"
+            ));
+        }
+
+        // Bitumen
+        if (cbBitumen.isChecked()) {
+            testSelections.put("Bitumen", getSelectedTests(
+                    cbPenetrationValueBitumen, "PENETRATION VALUE",
+                    cbSofteningPointBitumen, "SOFTENING POINT",
+                    cbDuctilityBitumen, "DUCTILITY",
+                    cbSpecificGravityBitumen, "SPECIFIC GRAVITY"
+            ));
+        }
+
         // Prepare final data object
         Map<String, Object> data = new HashMap<>();
         data.put("Customer Name", customerName);
@@ -1089,19 +1214,19 @@ public class MakeOrderFragment extends Fragment {
     }
 
 
-    private void addTestSelection(Map<String, List<String>> testSelections, String category, CheckBox mainCheckbox, CheckBox... subCheckboxes) {
-        if (mainCheckbox.isChecked()) {
-            List<String> selectedTests = new ArrayList<>();
-            for (CheckBox subCheckbox : subCheckboxes) {
-                if (subCheckbox.isChecked()) {
-                    selectedTests.add(subCheckbox.getText().toString()); // Get text directly from checkbox
-                }
-            }
-            if (!selectedTests.isEmpty()) {
-                testSelections.put(category, selectedTests);
-            }
-        }
-    }
+//    private void addTestSelection(Map<String, List<String>> testSelections, String category, CheckBox mainCheckbox, CheckBox... subCheckboxes) {
+//        if (mainCheckbox.isChecked()) {
+//            List<String> selectedTests = new ArrayList<>();
+//            for (CheckBox subCheckbox : subCheckboxes) {
+//                if (subCheckbox.isChecked()) {
+//                    selectedTests.add(subCheckbox.getText().toString()); // Get text directly from checkbox
+//                }
+//            }
+//            if (!selectedTests.isEmpty()) {
+//                testSelections.put(category, selectedTests);
+//            }
+//        }
+//    }
 
 
     /**
@@ -1298,9 +1423,9 @@ public class MakeOrderFragment extends Fragment {
     }
 
 
-    private CheckBox getSpecificGravityAndWaterAbsorptionFine() {
-        return specificGravityAndWaterAbsorptionFine;
-    }
+//    private CheckBox getSpecificGravityAndWaterAbsorptionFine() {
+//        return specificGravityAndWaterAbsorptionFine;
+//    }
 
     private void setupPriceChangeListener(CheckBox checkBox, int price) {
         checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
