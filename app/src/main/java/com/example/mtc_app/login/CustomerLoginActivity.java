@@ -1,4 +1,3 @@
-// LoginActivity.java
 package com.example.mtc_app.login;
 
 import android.content.Intent;
@@ -9,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,7 +28,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class CustomerLoginActivity extends AppCompatActivity {
 
     private EditText emailField, passwordField;
-    private Button loginButton, registerButton;
+    private Button loginButton;
+    private TextView registerTextView;
     private ProgressBar progressBar;
     private FirebaseAuth auth;
     private FirebaseFirestore firestore;
@@ -38,12 +39,14 @@ public class CustomerLoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        // Initialize views
         emailField = findViewById(R.id.emailField);
         passwordField = findViewById(R.id.passwordField);
         loginButton = findViewById(R.id.loginButton);
-        registerButton = findViewById(R.id.registerButton);
+        registerTextView = findViewById(R.id.registerButton);
         progressBar = findViewById(R.id.progressBar);
 
+        // Initialize Firebase
         auth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
 
@@ -58,10 +61,17 @@ public class CustomerLoginActivity extends AppCompatActivity {
             return;
         }
 
+        // Set up login button click listener
         loginButton.setOnClickListener(view -> loginUser());
-        registerButton.setOnClickListener(view -> {
-            Intent intent = new Intent(CustomerLoginActivity.this, RegisterActivity.class);
-            startActivity(intent);
+
+        // Set up register text view click listener
+        registerTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Navigate to registration activity
+                Intent intent = new Intent(CustomerLoginActivity.this, RegisterActivity.class);
+                startActivity(intent);
+            }
         });
     }
 
@@ -103,7 +113,6 @@ public class CustomerLoginActivity extends AppCompatActivity {
                             } else {
                                 Toast.makeText(this, "Role is missing for this user.", Toast.LENGTH_SHORT).show();
                             }
-//                            redirectToRoleBasedPage(role);
                         } else {
                             Toast.makeText(this, "User role not found.", Toast.LENGTH_SHORT).show();
                         }
@@ -121,6 +130,7 @@ public class CustomerLoginActivity extends AppCompatActivity {
                 .putString("userRole", role)
                 .apply();
     }
+
     private void redirectToRoleBasedPage(String role) {
         if (role == null) {
             Toast.makeText(this, "Invalid role.", Toast.LENGTH_SHORT).show();

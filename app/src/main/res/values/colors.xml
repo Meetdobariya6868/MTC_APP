@@ -50,6 +50,22 @@
     <color name="blue">#4A90E2</color>
     <color name="nav_item_color">#000000</color>
 
+    <color name="background_lavender">#F5F0FF</color>
+    <color name="drawer_background">#FFFFFF</color>
+    <color name="card_background">#FFFFFF</color>
+
+    <!-- Lavender Color Variations -->
+    <color name="lavender_dark">#6A5ACD</color>
+    <color name="lavender_light">#E6E6FA</color>
+
+    <!-- Text Colors -->
+    <color name="text_primary">#333333</color>
+    <color name="text_secondary">#666666</color>
+    <color name="text_logout">#D32F2F</color>
+    <color name="hint_color">#9E9E9E</color>
+
+    <!-- Other Colors -->
+    <color name="divider_color">#E0E0E0</color>
 
     <color name="rippleColor">#FFBB86FC</color>
 

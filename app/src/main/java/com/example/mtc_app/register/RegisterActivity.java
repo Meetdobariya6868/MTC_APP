@@ -23,10 +23,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private EditText nameField, emailField, passwordField, phoneField, registerField;
+    private EditText nameField, emailField, passwordField, phoneField;
     private Button registerButton;
     private ProgressBar progressBar;
     private FirebaseAuth auth;
@@ -37,42 +38,92 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        // Initialize all views
+        initializeViews();
+
+        // Set up Firebase
+        auth = FirebaseAuth.getInstance();
+        firestore = FirebaseFirestore.getInstance();
+
+        // Set click listeners
+        setupClickListeners();
+    }
+
+    private void initializeViews() {
         nameField = findViewById(R.id.nameField);
         emailField = findViewById(R.id.emailField);
         passwordField = findViewById(R.id.passwordField);
         phoneField = findViewById(R.id.phoneField);
         registerButton = findViewById(R.id.registerButton);
+
+        // Add a null check for progressBar
         progressBar = findViewById(R.id.progressBar);
+        if (progressBar == null) {
+            // Log an error or show a toast if progressBar is not found
+            Toast.makeText(this, "Progress bar not found in layout", Toast.LENGTH_SHORT).show();
+        }
+    }
 
-
+    private void setupClickListeners() {
+        // Redirect to Login/Admin Home click listener
         TextView redirectToLogin = findViewById(R.id.tv_redirect_to_login);
-        redirectToLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Redirect to LoginActivity
-                Intent intent = new Intent(RegisterActivity.this, AdminHomePageActivity.class);
-                startActivity(intent);
-                finish(); // Optionally finish RegisterActivity to prevent back navigation to it
-            }
+        redirectToLogin.setOnClickListener(v -> {
+            Intent intent = new Intent(RegisterActivity.this, CustomerLoginActivity.class);
+            startActivity(intent);
+            finish();
         });
 
-        auth = FirebaseAuth.getInstance();
-        firestore = FirebaseFirestore.getInstance();
-
+        // Register button click listener
         registerButton.setOnClickListener(view -> registerUser());
     }
 
+    private boolean validateInputs(String name, String email, String password, String phone) {
+        boolean isValid = true;
+
+        // Name validation: Only letters, minimum 2 characters
+        if (!Pattern.matches("^[a-zA-Z ]{2,}$", name)) {
+            nameField.setError("Name must contain only letters and be at least 2 characters long");
+            isValid = false;
+        }
+
+        // Email validation using a more comprehensive regex
+        if (!Pattern.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}$", email)) {
+            emailField.setError("Invalid email address");
+            isValid = false;
+        }
+
+        // Password validation: Minimum 6 characters
+        if (password.length() < 6) {
+            passwordField.setError("Password must be at least 6 characters long");
+            isValid = false;
+        }
+
+        // Phone number validation: Exactly 10 digits
+        if (!Pattern.matches("^[0-9]{10}$", phone)) {
+            phoneField.setError("Phone number must be 10 digits");
+            isValid = false;
+        }
+
+        return isValid;
+    }
+
     private void registerUser() {
-        String name = nameField.getText().toString();
-        String email = emailField.getText().toString();
-        String password = passwordField.getText().toString();
-        String phone = phoneField.getText().toString();
+        // Add null check for progressBar before using it
+        if (progressBar == null) {
+            Toast.makeText(this, "Progress bar is not initialized", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String name = nameField.getText().toString().trim();
+        String email = emailField.getText().toString().trim();
+        String password = passwordField.getText().toString().trim();
+        String phone = phoneField.getText().toString().trim();
 
         // Set role as "customer" for all registrations
         String role = "customer";
 
-        if (TextUtils.isEmpty(name) || TextUtils.isEmpty(email) || TextUtils.isEmpty(password) || TextUtils.isEmpty(phone)) {
-            Toast.makeText(this, "All fields are required", Toast.LENGTH_SHORT).show();
+        // Validate inputs before proceeding
+        if (!validateInputs(name, email, password, phone)) {
             return;
         }
 
@@ -80,7 +131,11 @@ public class RegisterActivity extends AppCompatActivity {
 
         auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
-                    progressBar.setVisibility(View.GONE);
+                    // Ensure progressBar is not null before hiding
+                    if (progressBar != null) {
+                        progressBar.setVisibility(View.GONE);
+                    }
+
                     if (task.isSuccessful()) {
                         String userId = auth.getCurrentUser().getUid();
                         saveUserDetailsToFirestore(userId, name, email, phone, role);
