@@ -2,9 +2,7 @@ package com.example.mtc_app.admin;
 
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,7 +21,6 @@ import com.example.mtc_app.admin.fragments.AdminCRFragment;
 import com.example.mtc_app.admin.fragments.AdminHomeFragment;
 import com.example.mtc_app.admin.fragments.AdminStaffFragment;
 import com.example.mtc_app.auth.AuthUtils;
-import com.example.mtc_app.splashScreen.SplashScreenActivity;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -41,23 +38,23 @@ public class AdminHomePageActivity extends AppCompatActivity {
 
         auth = FirebaseAuth.getInstance();
 
-        // ✅ Setup Toolbar
+        // Setup Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // ✅ Initialize Drawer Layout
+        // Initialize Drawer Layout
         drawerLayout = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
 
-        // ✅ Initialize Cards for Order Details
+        // Initialize Cards for Order Details
         customer1 = findViewById(R.id.Customer1);
         customer2 = findViewById(R.id.Customer2);
 
-        // ✅ Card Click Listeners (Opens Order Detail)
+        // Card Click Listeners (Opens Order Detail)
         customer1.setOnClickListener(view -> openOrderDetail("Order 1", "John Doe", "123 Main St", "9876543210", "john@example.com"));
         customer2.setOnClickListener(view -> openOrderDetail("Order 2", "Jane Smith", "456 Market St", "9876543211", "jane@example.com"));
 
-        // ✅ Setup Navigation Drawer Items
+        // Setup Navigation Drawer Items
         menuItem1 = navigationView.findViewById(R.id.menuItem1);
         menuItem2 = navigationView.findViewById(R.id.menuItem2);
         menuItem3 = navigationView.findViewById(R.id.menuItem3);
@@ -68,7 +65,7 @@ public class AdminHomePageActivity extends AppCompatActivity {
         menuItem3.setOnClickListener(v -> navigateToFragment(new AdminStaffFragment(), "Staff Section"));
         menuItem4.setOnClickListener(v -> showLogoutConfirmation());
 
-        // ✅ Setup Navigation Drawer Toggle
+        // Setup Navigation Drawer Toggle
         androidx.appcompat.app.ActionBarDrawerToggle toggle = new androidx.appcompat.app.ActionBarDrawerToggle(
                 this, drawerLayout, toolbar,
                 R.string.navigation_drawer_open,
@@ -76,13 +73,13 @@ public class AdminHomePageActivity extends AppCompatActivity {
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        // ✅ Default Fragment (Home)
+        // Default Fragment (Home)
         if (savedInstanceState == null) {
             loadFragment(new AdminHomeFragment(), false);
         }
     }
 
-    // ✅ Handles Navigation Drawer Fragment Switching
+    // Handles Navigation Drawer Fragment Switching
     private void navigateToFragment(Fragment fragment, String tag) {
         drawerLayout.closeDrawer(GravityCompat.START);
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -93,7 +90,7 @@ public class AdminHomePageActivity extends AppCompatActivity {
         }
     }
 
-    // ✅ Load Fragment into FrameLayout
+    // Load Fragment into FrameLayout
     private void loadFragment(Fragment fragment, boolean addToBackStack) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, fragment);
@@ -103,7 +100,7 @@ public class AdminHomePageActivity extends AppCompatActivity {
         transaction.commit();
     }
 
-    // ✅ Open Order Detail Activity
+    // Open Order Detail Activity
     private void openOrderDetail(String order, String name, String address, String phone, String email) {
         Intent intent = new Intent(this, AdminOrderDetail.class);
         intent.putExtra("order", order);
@@ -114,7 +111,7 @@ public class AdminHomePageActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    // ✅ Show Logout Confirmation Dialog
+    // Show Logout Confirmation Dialog
     private void showLogoutConfirmation() {
         new AlertDialog.Builder(this)
                 .setTitle("Logout")
@@ -124,13 +121,12 @@ public class AdminHomePageActivity extends AppCompatActivity {
                 .show();
     }
 
-    // ✅ Logout Method
+    // Logout Method
     private void logout() {
         AuthUtils.logout(this);
     }
 
-
-    // ✅ Handle Back Press (Closes Drawer Instead of Exiting)
+    // Handle Back Press (Closes Drawer Instead of Exiting)
     @Override
     public void onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
