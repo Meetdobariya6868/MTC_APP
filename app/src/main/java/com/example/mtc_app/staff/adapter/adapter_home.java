@@ -29,7 +29,6 @@ public class adapter_home extends RecyclerView.Adapter<adapter_home.HomeViewHold
         notifyDataSetChanged();
     }
 
-
     @Override
     public HomeViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_home_list, parent, false);
@@ -42,15 +41,17 @@ public class adapter_home extends RecyclerView.Adapter<adapter_home.HomeViewHold
         holder.itemTitle.setText(item.getTitle());
         holder.itemSubtitle.setText(item.getSubtitle());
         holder.itemIcon.setImageResource(item.getIconResId());
+        holder.testSummary.setText(item.getTestSummary()); // Ensure testSummary is displayed
         holder.itemActionIcon.setImageResource(R.drawable.ic_chevron_right);
 
-        holder.cardView.setOnClickListener(v -> {
-            Intent intent = new Intent(context, staff_detailed_page.class);
-            intent.putExtra("customerName", item.getTitle());
-            intent.putExtra("dispatchAddress", item.getSubtitle());
-            intent.putExtra("email", item.getCategory());
-            context.startActivity(intent);
-        });
+//        holder.cardView.setOnClickListener(v -> {
+//            Intent intent = new Intent(context, staff_detailed_page.class);
+//            intent.putExtra("customerName", item.getTitle());
+//            intent.putExtra("dispatchAddress", item.getSubtitle());
+//            intent.putExtra("email", item.getCategory());
+//            intent.putExtra("testSummary", item.getTestSummary()); // Pass testSummary to details page
+//            context.startActivity(intent);
+//        });
     }
 
     @Override
@@ -58,11 +59,8 @@ public class adapter_home extends RecyclerView.Adapter<adapter_home.HomeViewHold
         return dataItems.size();
     }
 
-
-
-
     public static class HomeViewHolder extends RecyclerView.ViewHolder {
-        TextView itemTitle, itemSubtitle;
+        TextView itemTitle, itemSubtitle, testSummary; // Added testSummary
         ImageView itemIcon, itemActionIcon;
         CardView cardView;
 
@@ -70,6 +68,7 @@ public class adapter_home extends RecyclerView.Adapter<adapter_home.HomeViewHold
             super(itemView);
             itemTitle = itemView.findViewById(R.id.itemTitle);
             itemSubtitle = itemView.findViewById(R.id.itemSubtitle);
+            testSummary = itemView.findViewById(R.id.itemSample); // Ensure this exists in XML
             itemIcon = itemView.findViewById(R.id.itemIcon);
             itemActionIcon = itemView.findViewById(R.id.itemActionIcon);
             cardView = itemView.findViewById(R.id.cardView);

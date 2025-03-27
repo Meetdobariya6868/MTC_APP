@@ -39,7 +39,7 @@
                 android:id="@+id/itemTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Item Title"
+                android:text="Lab Job no"
                 android:textColor="@color/darkGrey"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -48,15 +48,15 @@
                 android:id="@+id/itemSubtitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Subtitle or description"
+                android:text="Date"
                 android:textSize="14sp"
                 android:layout_marginTop="4dp" />
 
             <TextView
-                android:id="@+id/itemSampleName"
+                android:id="@+id/itemSample"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Subtitle or description"
+                android:text="items"
                 android:textSize="14sp"
                 android:layout_marginTop="4dp" />
         </LinearLayout>
