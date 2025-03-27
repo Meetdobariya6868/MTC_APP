@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,19 +76,39 @@ public class CustomerProfileFragment extends Fragment {
         new AlertDialog.Builder(requireContext())
                 .setTitle("Logout")
                 .setMessage("Are you sure you want to logout?")
-                .setPositiveButton("Yes", (dialog, which) -> logoutUser())
+                .setPositiveButton("Yes", (dialog, which) -> performLogout())
                 .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
                 .show();
     }
 
-    private void logoutUser() {
-        auth.signOut();
-        requireActivity().getSharedPreferences(PREFS_NAME, 0).edit().clear().apply();
+    private void performLogout() {
+        // Show loading indicator
+        loadingProgress.setVisibility(View.VISIBLE);
 
-        Intent intent = new Intent(getActivity(), CustomerLoginActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
+        // Sign out from Firebase Authentication
+        auth.signOut();
+
+        // Clear all shared preferences
+        clearAllPreferences();
+
+        // Delay to show loading and ensure sign out process completes
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            // Redirect to login screen
+            Intent intent = new Intent(requireActivity(), CustomerLoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+
+            // Ensure fragment and activity are properly finished
+            requireActivity().finish();
+        }, 500); // Short delay to ensure smooth transition
     }
+
+    private void clearAllPreferences() {
+        // Clear user-related shared preferences
+        SharedPreferences profilePrefs = requireActivity().getSharedPreferences(PREFS_NAME, 0);
+        profilePrefs.edit().clear().apply();
+    }
+
 
     private void loadCachedUserDetails() {
         SharedPreferences preferences = requireActivity().getSharedPreferences(PREFS_NAME, 0);

@@ -50,6 +50,8 @@
     <color name="blue">#4A90E2</color>
     <color name="nav_item_color">#000000</color>
 
+
+
     <color name="background_lavender">#F5F0FF</color>
     <color name="drawer_background">#FFFFFF</color>
     <color name="card_background">#FFFFFF</color>
@@ -68,5 +70,26 @@
     <color name="divider_color">#E0E0E0</color>
 
     <color name="rippleColor">#FFBB86FC</color>
+
+    <color name="lavender_soft_background">#F0F0FF</color>
+
+
+    <color name="soft_background">#F5F5F5</color>
+
+    <!-- Text Colors -->
+<color name="primary_text">#212121</color>
+<color name="secondary_text">#757575</color>
+
+    <color name="lavender_primary">#8A4FFF</color>
+
+    <!-- Accent Colors -->
+<color name="button_primary">#2196F3</color>
+<color name="button_secondary">#F44336</color>
+<color name="checkbox_tint">#2196F3</color>
+<color name="icon_color">#757575</color>
+
+    <!-- Utility Colors -->
+<color name="divider">#E0E0E0</color>
+<color name="chip_text">#2196F3</color>
 
 </resources>

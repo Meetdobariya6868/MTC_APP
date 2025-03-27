@@ -1,6 +1,7 @@
 package com.example.mtc_app.customer.fragments;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -102,7 +103,7 @@ public class MakeOrderFragment extends Fragment {
     private int totalPrice = 0;
 
     // Customer & Dispatch Details
-    private EditText etCustomerName, etDispatchAddress, etMobile, etEmail, etQuantity, etAdditionalTesting, etDiscussion;
+    private EditText etCustomerName, etDispatchAddress, etMobile, etEmail, etLab, etLabJob;
     private EditText termsAndConditionsField;
 
     // Dispatch Mode
@@ -155,6 +156,8 @@ public class MakeOrderFragment extends Fragment {
         sampleConditionGroup = view.findViewById(R.id.sample_condition_group);
         complianceStatementGroup = view.findViewById(R.id.compliance_statement_group);
         standardDeviationGroup = view.findViewById(R.id.standard_deviation_group);
+        etLab = view.findViewById(R.id.lab_no);
+        etLabJob = view.findViewById(R.id.lab_job_no);
 
         cbOnemethedOfTEsting = view.findViewById(R.id.OnemethedOfTEsting);
         cbTwoTestingService = view.findViewById(R.id.TwoTestingService);
@@ -951,6 +954,12 @@ public class MakeOrderFragment extends Fragment {
 
 
     private void submitData(View view) {
+
+        if (etCustomerName == null || etDispatchAddress == null) {
+            Log.e("SubmitData", "EditText fields are null");
+            return;
+        }
+
         isSubmitting = true;
         submitButton.setEnabled(false);
 
@@ -963,9 +972,11 @@ public class MakeOrderFragment extends Fragment {
         String mobileNumber = etMobile.getText().toString().trim();
         String email = etEmail.getText().toString().trim();
         String termsAndConditions = termsAndConditionsField.getText().toString().trim();
+        String Lab = etLab.getText().toString().trim();
+        String LabJob = etLabJob.getText().toString().trim();
 
         // Validate inputs
-        if (!validateInputs(customerName, dispatchAddress, mobileNumber, email, termsAndConditions)) return;
+        if (!validateInputs(customerName, dispatchAddress, mobileNumber, email, termsAndConditions, Lab, LabJob)) return;
 
         // Collect radio button selections
         Map<String, String> radioSelections = new HashMap<>();
@@ -1185,6 +1196,8 @@ public class MakeOrderFragment extends Fragment {
         data.put("Total Price", totalPrice);
         data.put("Radio Selections", radioSelections);
         data.put("Selected Points", selectedPoints);
+        data.put("LabNumber", Lab);
+        data.put("LabJobNumber",LabJob);
 
         if (!reviewRemarks.isEmpty()) {
             data.put("Review Remarks", reviewRemarks);
@@ -1232,7 +1245,7 @@ public class MakeOrderFragment extends Fragment {
     /**
      * Validates required input fields.
      */
-    private boolean validateInputs(String customerName, String dispatchAddress, String mobileNumber, String email, String termsAndConditions) {
+    private boolean validateInputs(String customerName, String dispatchAddress, String mobileNumber, String email, String termsAndConditions, String lab, String labJob) {
         if (customerName.isEmpty() || dispatchAddress.isEmpty() || mobileNumber.isEmpty() || email.isEmpty() || termsAndConditions.isEmpty()) {
             showError("All fields are required");
             return false;
@@ -1297,6 +1310,8 @@ public class MakeOrderFragment extends Fragment {
         sampleConditionGroup.clearCheck();
         complianceStatementGroup.clearCheck();
         standardDeviationGroup.clearCheck();
+        etLab.setText("");
+        etLabJob.setText("");
 
         //Aggregate Fine
         finenessModulusBygradationFine.setChecked(false);
