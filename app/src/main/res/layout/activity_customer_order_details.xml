@@ -5,9 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="#F8F7FF"
     tools:context=".customer.orders.CustomerOrderDetails">
-
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -21,15 +20,16 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- Move the MaterialCardView inside this LinearLayout -->
             <!-- Card Container for Order Details -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/orderCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="6dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="#D8D0F0"
                 app:cardBackgroundColor="@color/white"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -38,159 +38,307 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="20dp">
+                    android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Order Details"
-                        android:textSize="22sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/black"
-                        android:gravity="center"
-                        android:layout_gravity="center"
-                        android:layout_marginBottom="10dp"/>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/gray"
-                        android:layout_marginBottom="10dp"/>
-
-                    <!-- Dynamic Order Fields -->
-                    <TextView
-                        android:id="@+id/orderStatus"
-                        style="@style/OrderDetailText"
+                    <!-- Header Section with Lavender Background -->
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Status: "/>
+                        android:orientation="vertical"
+                        android:background="@color/Lavender"
+                        android:padding="20dp">
 
-                    <TextView
-                        android:id="@+id/orderDate"
-                        style="@style/OrderDetailText"
+                        <TextView
+                            android:id="@+id/title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Order Details"
+                            android:textSize="24sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/white"
+                            android:gravity="center"
+                            android:layout_gravity="center"/>
+                    </LinearLayout>
+
+                    <!-- Content Section -->
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Order Date: "/>
+                        android:orientation="vertical"
+                        android:padding="24dp">
 
-                    <TextView
-                        android:id="@+id/customerName"
-                        style="@style/OrderDetailText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Customer Name: "/>
+                        <!-- Dynamic Order Fields with Improved Styling -->
+                        <TextView
+                            android:id="@+id/orderStatus"
+                            style="@style/OrderDetailText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="#4A4A4A"
+                            android:textSize="16sp"
+                            android:layout_marginBottom="12dp"
+                            android:text="Status: "/>
 
-                    <TextView
-                        android:id="@+id/mobileNumber"
-                        style="@style/OrderDetailText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Mobile Number: "/>
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#E6E1F9"
+                            android:layout_marginBottom="12dp"/>
 
-                    <TextView
-                        android:id="@+id/email"
-                        style="@style/OrderDetailText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Email: "/>
+                        <TextView
+                            android:id="@+id/orderDate"
+                            style="@style/OrderDetailText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="#4A4A4A"
+                            android:textSize="16sp"
+                            android:layout_marginBottom="12dp"
+                            android:text="Order Date: "/>
 
-                    <TextView
-                        android:id="@+id/dispatchAddress"
-                        style="@style/OrderDetailText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Dispatch Address: "/>
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#E6E1F9"
+                            android:layout_marginBottom="12dp"/>
 
-                    <TextView
-                        android:id="@+id/modeOfDispatch"
-                        style="@style/OrderDetailText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Mode of Dispatch: "/>
+                        <TextView
+                            android:id="@+id/customerName"
+                            style="@style/OrderDetailText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="#4A4A4A"
+                            android:textSize="16sp"
+                            android:layout_marginBottom="12dp"
+                            android:text="Customer Name: "/>
 
-                    <TextView
-                        android:id="@+id/totalPrice"
-                        style="@style/OrderDetailText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Total Price: "/>
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#E6E1F9"
+                            android:layout_marginBottom="12dp"/>
 
-                    <TextView
-                        android:id="@+id/complianceStatement"
-                        style="@style/OrderDetailText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Compliance Statement: "/>
+                        <TextView
+                            android:id="@+id/mobileNumber"
+                            style="@style/OrderDetailText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="#4A4A4A"
+                            android:textSize="16sp"
+                            android:layout_marginBottom="12dp"
+                            android:text="Mobile Number: "/>
 
-                    <TextView
-                        android:id="@+id/deviationDetails"
-                        style="@style/OrderDetailText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Deviation Details: "/>
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#E6E1F9"
+                            android:layout_marginBottom="12dp"/>
 
-                    <TextView
-                        android:id="@+id/discussionDetails"
-                        style="@style/OrderDetailText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Discussion Details: "/>
+                        <TextView
+                            android:id="@+id/email"
+                            style="@style/OrderDetailText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="#4A4A4A"
+                            android:textSize="16sp"
+                            android:layout_marginBottom="12dp"
+                            android:text="Email: "/>
 
-                    <TextView
-                        android:id="@+id/standardDeviation"
-                        style="@style/OrderDetailText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Standard Deviation: "/>
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#E6E1F9"
+                            android:layout_marginBottom="12dp"/>
 
-                    <TextView
-                        android:id="@+id/reviewRemarks"
-                        style="@style/OrderDetailText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Review Remarks: "/>
+                        <TextView
+                            android:id="@+id/dispatchAddress"
+                            style="@style/OrderDetailText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="#4A4A4A"
+                            android:textSize="16sp"
+                            android:layout_marginBottom="12dp"
+                            android:text="Dispatch Address: "/>
 
-                    <TextView
-                        android:id="@+id/sampleCondition"
-                        style="@style/OrderDetailText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Sample Condition: "/>
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#E6E1F9"
+                            android:layout_marginBottom="12dp"/>
 
-                    <TextView
-                        android:id="@+id/termsAndConditions"
-                        style="@style/OrderDetailText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Terms and Conditions: "/>
+                        <TextView
+                            android:id="@+id/modeOfDispatch"
+                            style="@style/OrderDetailText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="#4A4A4A"
+                            android:textSize="16sp"
+                            android:layout_marginBottom="12dp"
+                            android:text="Mode of Dispatch: "/>
 
-                    <TextView
-                        android:id="@+id/testingRequirements"
-                        style="@style/OrderDetailText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text=""/>
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#E6E1F9"
+                            android:layout_marginBottom="12dp"/>
 
+                        <TextView
+                            android:id="@+id/totalPrice"
+                            style="@style/OrderDetailText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="#4A4A4A"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:layout_marginBottom="12dp"
+                            android:text="Total Price: "/>
 
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#E6E1F9"
+                            android:layout_marginBottom="12dp"/>
+
+                        <TextView
+                            android:id="@+id/complianceStatement"
+                            style="@style/OrderDetailText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="#4A4A4A"
+                            android:textSize="16sp"
+                            android:layout_marginBottom="12dp"
+                            android:text="Compliance Statement: "/>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#E6E1F9"
+                            android:layout_marginBottom="12dp"/>
+
+                        <TextView
+                            android:id="@+id/deviationDetails"
+                            style="@style/OrderDetailText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="#4A4A4A"
+                            android:textSize="16sp"
+                            android:layout_marginBottom="12dp"
+                            android:text="Deviation Details: "/>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#E6E1F9"
+                            android:layout_marginBottom="12dp"/>
+
+                        <TextView
+                            android:id="@+id/discussionDetails"
+                            style="@style/OrderDetailText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="#4A4A4A"
+                            android:textSize="16sp"
+                            android:layout_marginBottom="12dp"
+                            android:text="Discussion Details: "/>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#E6E1F9"
+                            android:layout_marginBottom="12dp"/>
+
+                        <TextView
+                            android:id="@+id/standardDeviation"
+                            style="@style/OrderDetailText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="#4A4A4A"
+                            android:textSize="16sp"
+                            android:layout_marginBottom="12dp"
+                            android:text="Standard Deviation: "/>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#E6E1F9"
+                            android:layout_marginBottom="12dp"/>
+
+                        <TextView
+                            android:id="@+id/reviewRemarks"
+                            style="@style/OrderDetailText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="#4A4A4A"
+                            android:textSize="16sp"
+                            android:layout_marginBottom="12dp"
+                            android:text="Review Remarks: "/>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#E6E1F9"
+                            android:layout_marginBottom="12dp"/>
+
+                        <TextView
+                            android:id="@+id/sampleCondition"
+                            style="@style/OrderDetailText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="#4A4A4A"
+                            android:textSize="16sp"
+                            android:layout_marginBottom="12dp"
+                            android:text="Sample Condition: "/>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#E6E1F9"
+                            android:layout_marginBottom="12dp"/>
+
+                        <TextView
+                            android:id="@+id/termsAndConditions"
+                            style="@style/OrderDetailText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="#4A4A4A"
+                            android:textSize="16sp"
+                            android:layout_marginBottom="12dp"
+                            android:text="Terms and Conditions: "/>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#E6E1F9"
+                            android:layout_marginBottom="12dp"/>
+
+                        <TextView
+                            android:id="@+id/testingRequirements"
+                            style="@style/OrderDetailText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="#4A4A4A"
+                            android:textSize="16sp"
+                            android:text=""/>
+                    </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Back Button -->
+            <!-- Back Button with Lavender Style -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/backButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Back"
+                android:textColor="@color/white"
+                android:paddingStart="24dp"
+                android:paddingEnd="24dp"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
                 android:layout_marginTop="20dp"
+                android:layout_gravity="center"
+                app:cornerRadius="12dp"
+                app:backgroundTint="@color/Lavender"
                 app:layout_constraintTop_toBottomOf="@id/orderCard"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
-
-
-
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
