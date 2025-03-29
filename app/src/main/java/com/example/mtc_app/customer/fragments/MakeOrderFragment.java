@@ -955,7 +955,7 @@ public class MakeOrderFragment extends Fragment {
 
     private void submitData(View view) {
 
-        if (etCustomerName == null || etDispatchAddress == null) {
+        if (etCustomerName == null || etDispatchAddress == null || etLab == null || etLabJob == null) {
             Log.e("SubmitData", "EditText fields are null");
             return;
         }

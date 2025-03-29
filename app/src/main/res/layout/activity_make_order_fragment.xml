@@ -865,12 +865,12 @@
                             android:textColor="@color/purple"
                             android:visibility="gone" />
 
-                        <!-- DRYING SHRINKAGE Checkbox -->
+                        <!--  DRYING SHRINKAGE Checkbox -->
                         <CheckBox
                             android:id="@+id/AAC_drying_shrinkage"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="40dp"
+                            android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="DRYING SHRINKAGE"
                             android:textColor="@color/purple"
@@ -1030,7 +1030,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="GRAIN SIZE ANALYSIS"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!-- PLASTICITY INDEX Checkbox -->
@@ -1041,7 +1041,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="PLASTICITY INDEX"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!-- LIGHT COMPACTION Checkbox -->
@@ -1052,7 +1052,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="LIGHT COMPACTION"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!-- HEAVY COMPACTION Checkbox -->
@@ -1063,7 +1063,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="HEAVY COMPACTION"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!-- CBR TEST (UNSOAKED) Checkbox -->
@@ -1074,7 +1074,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="CBR TEST (UNSOAKED)"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!-- CBR TEST (SOAKED-96 HRS) Checkbox -->
@@ -1085,7 +1085,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="CBR TEST (SOAKED-96 HRS)"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!-- DIRECT SHEAR TEST Checkbox -->
@@ -1096,7 +1096,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="DIRECT SHEAR TEST"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!-- UNCONFINED COMPRESSION Checkbox -->
@@ -1107,7 +1107,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="UNCONFINED COMPRESSION"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!-- TRIAXIAL TEST (UU) Checkbox -->
@@ -1118,7 +1118,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="TRIAXIAL TEST (UU)"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!-- TRIAXIAL TEST (CU) Checkbox -->
@@ -1129,7 +1129,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="TRIAXIAL TEST (CU)"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!-- FREE SWELL INDEX Checkbox -->
@@ -1140,7 +1140,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="FREE SWELL INDEX"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!-- CONSOLIDATION TEST (3-Jar) Checkbox -->
@@ -1151,7 +1151,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="CONSOLIDATION TEST (3-Jar)"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!-- SWELING PRESSURE Checkbox -->
@@ -1162,7 +1162,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="SWELING PRESSURE"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!--  SPECIFIC GRAVITY Checkbox -->
@@ -1173,7 +1173,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="SPECIFIC GRAVITY"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!-- SHRINKAGE LIMIT Checkbox -->
@@ -1184,7 +1184,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="SHRINKAGE LIMIT"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!-- PERMEABILITY TEST Checkbox -->
@@ -1195,7 +1195,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="PERMEABILITY TEST"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!-- RELATIVE DENSITY Checkbox -->
@@ -1206,7 +1206,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="RELATIVE DENSITY"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!--  FIELD DENSITY AND MOISTURE CONTENT Checkbox -->
@@ -1217,7 +1217,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="FIELD DENSITY &amp; MOISTURE CONTENT"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!-- NDT -->
@@ -1251,7 +1251,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="REBOUND HAMMER TEST IS 516"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!-- Ultrasonic Pulse velocity Checkbox -->
@@ -1262,7 +1262,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="ULTRASONIC PULSE VELOCITY IS 516"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
 
@@ -1296,7 +1296,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="SULPHATES SO4"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!-- Alkalinity Checkbox -->
@@ -1307,7 +1307,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="ALKALINITY"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!-- PH VALUE Checkbox -->
@@ -1318,7 +1318,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="PH VALUE"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!-- ORGANIC IMPURITIES Checkbox -->
@@ -1329,7 +1329,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="ORGANIC IMPURITIES"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!-- INORGANIC IMPURITIES Checkbox -->
@@ -1340,7 +1340,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="INORGANIC IMPURITIES"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!-- CHLORIDE AS CL Checkbox -->
@@ -1351,7 +1351,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="CHLORIDE AS CL"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!-- SUSPENDED MATTER Checkbox -->
@@ -1362,7 +1362,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="SUSPENDED MATTER"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!-- TDS (TOTAL DISSOLVED SOLIDS) Checkbox -->
@@ -1373,7 +1373,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="TDS (TOTAL DISSOLVED SOLIDS)"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
 
@@ -1407,7 +1407,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="CHLORIDE AS CL"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!-- PH VALUE Checkbox -->
@@ -1418,7 +1418,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="PH VALUE"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!-- SULPHATES SO4 Checkbox -->
@@ -1429,7 +1429,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="SULPHATES SO4"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!-- TDS (TOTAL DISSOLVED SOLIDS) Checkbox -->
@@ -1440,7 +1440,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="TDS (TOTAL DISSOLVED SOLIDS)"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!-- TSS (TOTAL SUSPENDED SOLIDS) Checkbox -->
@@ -1451,7 +1451,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="TSS (TOTAL SUSPENDED SOLIDS)"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
 
@@ -1485,7 +1485,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="WITH CUBE"
-                            android:textColor="@color/teal_700"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!-- WITH FLEXURER STRENGTH Checkbox -->
@@ -1496,7 +1496,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="WITH FLEXURER STRENGTH"
-                            android:textColor="@color/teal_700"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!-- WITH ADMIXTURE Checkbox -->
@@ -1507,7 +1507,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="WITH ADMIXTURE"
-                            android:textColor="@color/teal_700"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
 
@@ -1541,7 +1541,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="SPECIFIC GRAVITY"
-                            android:textColor="@color/teal_700"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!-- SOUNDNESS Checkbox -->
@@ -1552,7 +1552,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="SOUNDNESS"
-                            android:textColor="@color/teal_700"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!-- COMPRESSIVE STRENGTH Checkbox -->
@@ -1563,7 +1563,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="COMPRESSIVE STRENGTH"
-                            android:textColor="@color/teal_700"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
 
@@ -1598,7 +1598,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="PENETRATION VALUE"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!-- DUCTILITY Checkbox -->
@@ -1609,7 +1609,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="DUCTILITY"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!-- SOFTNING POINT Checkbox -->
@@ -1620,7 +1620,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="SOFTNING POINT"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!-- SPECIFIC GRAVITY Checkbox -->
@@ -1631,7 +1631,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="SPECIFIC GRAVITY"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
 
