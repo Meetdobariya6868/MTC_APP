@@ -29,6 +29,7 @@
             app:tint="@color/Lavender" />
 
         <EditText
+            android:id="@+id/searchView"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -44,6 +45,7 @@
             android:src="@drawable/filter"
             app:tint="@color/Lavender" />
     </LinearLayout>
+
 
     <ScrollView
         android:id="@+id/cardScrollView"
