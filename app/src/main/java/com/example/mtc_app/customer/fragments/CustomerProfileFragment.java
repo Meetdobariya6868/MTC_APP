@@ -89,19 +89,21 @@ public class CustomerProfileFragment extends Fragment {
         auth.signOut();
 
         // Clear all shared preferences
-        clearAllPreferences();
+        SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("MyAppPrefs", 0);
+        sharedPreferences.edit().clear().apply();
 
-        // Delay to show loading and ensure sign out process completes
+        SharedPreferences profilePrefs = requireActivity().getSharedPreferences(PREFS_NAME, 0);
+        profilePrefs.edit().clear().apply();
+
+        // Redirect to login screen after a short delay
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
-            // Redirect to login screen
             Intent intent = new Intent(requireActivity(), CustomerLoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
-
-            // Ensure fragment and activity are properly finished
-            requireActivity().finish();
-        }, 500); // Short delay to ensure smooth transition
+            requireActivity().finish(); // Ensures activity is fully closed
+        }, 500); // Smooth transition
     }
+
 
     private void clearAllPreferences() {
         // Clear user-related shared preferences

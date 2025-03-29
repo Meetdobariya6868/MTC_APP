@@ -1,41 +1,80 @@
 package com.example.mtc_app.admin;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.mtc_app.R;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.List;
 
 public class AdminOrderDetail extends AppCompatActivity {
 
-    private TextView nameText, addressText, phoneText, emailText;
+    private FirebaseFirestore db;
 
+
+    private TextView nameText, addressText, phoneText, emailText, discussionDetailsText,testSelectionText, complianceText, conditionText, priceText;
+
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_order_detail);
 
-        // Initialize views
-        initializeViews();
+        db = FirebaseFirestore.getInstance();
 
-        // Populate views with intent data
-        populateViewsFromIntent();
-    }
-
-    private void initializeViews() {
+        // Initialize Views
         nameText = findViewById(R.id.nameText);
         addressText = findViewById(R.id.addressText);
         phoneText = findViewById(R.id.phoneText);
         emailText = findViewById(R.id.emailText);
+        discussionDetailsText = findViewById(R.id.sampleText);
+        testSelectionText = findViewById(R.id.segmentsText);
+//        conditionText = findViewById(R.id.termsCheckbox);
+//        priceText = findViewById(R.id.priceText);
+
+        // Get order ID from Intent
+        String orderId = getIntent().getStringExtra("orderId");
+        if (orderId != null) {
+            fetchOrderDetails(orderId);
+        }
     }
 
-    private void populateViewsFromIntent() {
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            nameText.setText(extras.getString("name", "N/A"));
-            addressText.setText(extras.getString("address", "N/A"));
-            phoneText.setText(extras.getString("phone", "N/A"));
-            emailText.setText(extras.getString("email", "N/A"));
-        }
+    private void fetchOrderDetails(String orderId) {
+        db.collection("Total Orders").document(orderId)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        nameText.setText(documentSnapshot.getString("Email"));
+                        addressText.setText(documentSnapshot.getString("Dispatch Address"));
+                        phoneText.setText(documentSnapshot.getString("Mobile Number"));
+                        emailText.setText(documentSnapshot.getString("Email"));
+                        discussionDetailsText.setText(documentSnapshot.getString("Discussion Details"));
+//                        complianceText.setText(documentSnapshot.getString("Compliance Statement"));
+
+                        // Fetch "Test Selection" (Assuming it's stored as a List<String>)
+                        List<String> testSelectionList = (List<String>) documentSnapshot.get("Test Selection");
+
+                        if (testSelectionList != null && !testSelectionList.isEmpty()) {
+                            StringBuilder testSelectionTextBuilder = new StringBuilder();
+                            for (String test : testSelectionList) {
+                                testSelectionTextBuilder.append("• ").append(test).append("\n");
+                            }
+                            testSelectionText.setText(testSelectionTextBuilder.toString().trim());
+                        } else {
+                            testSelectionText.setText("No Test Selection available");
+                        }
+//                        conditionText.setText(documentSnapshot.getString("Condition of Sample"));
+//                        priceText.setText("Total Price: " + documentSnapshot.getLong("Total Price"));
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    // Handle Error
+                });
     }
 }

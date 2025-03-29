@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="685dp"
     android:background="#FFFFFF"
+    android:layout_margin="15dp"
     tools:ignore="MissingConstraints"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -52,6 +53,7 @@
         android:fillViewport="true">
 
         <LinearLayout
+            android:id="@+id/orderContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -70,6 +72,7 @@
                 app:cardElevation="4dp">
 
                 <LinearLayout
+
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
