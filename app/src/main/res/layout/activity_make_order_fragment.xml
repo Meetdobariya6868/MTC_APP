@@ -334,7 +334,7 @@
                         android:layout_height="wrap_content"
                         android:paddingTop="16dp"
                         android:paddingBottom="8dp"
-                        android:text="3. TESTING REQUIREMENTS"
+                        android:text="TESTING REQUIREMENTS"
                         android:textColor="@color/black"
                         android:textSize="18sp"
                         android:textStyle="bold" />
@@ -1656,7 +1656,7 @@
                         android:layout_height="wrap_content"
                         android:paddingTop="16dp"
                         android:paddingBottom="8dp"
-                        android:text="3. ADDITIONAL TESTING REQUIREMENTS"
+                        android:text="ADDITIONAL TESTING REQUIREMENTS"
                         android:textColor="@color/black"
                         android:textSize="18sp"
                         android:textStyle="bold" />
@@ -1683,15 +1683,7 @@
                         app:boxBackgroundMode="outline"
                         app:boxStrokeColor="@color/teal_700">
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/labNo"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="Details"
-                            android:inputType="text"
-                            android:textColorHint="@color/gray" />
                     </com.google.android.material.textfield.TextInputLayout>
-
 
                     <!-- Points Section -->
                     <TextView

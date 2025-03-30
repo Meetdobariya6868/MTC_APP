@@ -58,6 +58,7 @@ dependencies {
     // Glide for image loading
     implementation("com.github.bumptech.glide:glide:4.14.2")
     implementation(libs.core)
+    implementation(libs.recyclerview)
     annotationProcessor("com.github.bumptech.glide:compiler:4.14.2")
 
     implementation ("com.android.volley:volley:1.2.1")

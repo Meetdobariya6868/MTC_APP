@@ -1,66 +1,111 @@
 package com.example.mtc_app.admin.fragments;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.fragment.app.Fragment;
 import com.example.mtc_app.R;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link AdminCRFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.ArrayList;
+import java.util.List;
+
 public class AdminCRFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private FirebaseFirestore db;
+    private LinearLayout crContainer;
+    private List<DocumentSnapshot> allCRUsers = new ArrayList<>(); // Store all fetched CR users
+    private EditText searchView;
 
     public AdminCRFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment admin_home_page.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static AdminCRFragment newInstance(String param1, String param2) {
-        AdminCRFragment fragment = new AdminCRFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
-
+    @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_admin_cr_page, container, false);
+        View view = inflater.inflate(R.layout.fragment_admin_cr_page, container, false);
+        crContainer = view.findViewById(R.id.crContainer);
+        db = FirebaseFirestore.getInstance();
+        searchView = view.findViewById(R.id.searchView);
+
+        // Add search listener
+        searchView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                filterCRUsers(s.toString()); // Filter as user types
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+        fetchCRUsers();
+        return view;
+    }
+
+    private void fetchCRUsers() {
+        db.collection("users")
+                .whereEqualTo("role", "cr")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null) {
+                        allCRUsers.clear();
+                        allCRUsers.addAll(task.getResult().getDocuments()); // Store all CR users
+                        displayCRUsers(allCRUsers); // Display all initially
+                    }
+                });
+    }
+
+    private void filterCRUsers(String query) {
+        List<DocumentSnapshot> filteredCRs = new ArrayList<>();
+
+        for (DocumentSnapshot cr : allCRUsers) {
+            String name = cr.getString("name");  // Fetching from Firestore
+            String phone = cr.getString("phone");
+
+            if ((name != null && name.toLowerCase().contains(query.toLowerCase())) ||
+                    (phone != null && phone.contains(query))) {
+                filteredCRs.add(cr);
+            }
+        }
+
+        displayCRUsers(filteredCRs); // Refresh UI with filtered results
+    }
+
+    private void displayCRUsers(List<DocumentSnapshot> crUsers) {
+        crContainer.removeAllViews();
+
+        for (DocumentSnapshot cr : crUsers) {
+            String name = cr.getString("name");
+            String phone = cr.getString("phone");
+            addCRCard(name, phone);
+        }
+    }
+
+    private void addCRCard(String name, String phone) {
+        View cardView = getLayoutInflater().inflate(R.layout.order_card, crContainer, false);
+
+        TextView nameTextView = cardView.findViewById(R.id.orderTitle);
+        TextView phoneTextView = cardView.findViewById(R.id.customerName);
+
+        nameTextView.setText(name);
+        phoneTextView.setText(phone);
+
+        crContainer.addView(cardView);
     }
 }

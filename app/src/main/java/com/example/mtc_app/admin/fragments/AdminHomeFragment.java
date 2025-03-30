@@ -98,8 +98,8 @@ public class AdminHomeFragment extends Fragment {
             String phone = order.getString("Mobile Number");
 
             // Set data to UI
-            orderTitle.setText("Order ID: " + orderId);
-            customerName.setText("Customer: " + name);
+            orderTitle.setText("Order ID: " + name);
+            customerName.setText("Customer: " + phone);
 
             // Set click listener to open order details
             orderView.setOnClickListener(v -> openOrderDetail(order));

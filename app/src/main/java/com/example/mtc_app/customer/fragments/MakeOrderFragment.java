@@ -104,7 +104,7 @@ public class MakeOrderFragment extends Fragment {
 
     // Customer & Dispatch Details
     private EditText etCustomerName, etDispatchAddress, etMobile, etEmail, etLab, etLabJob;
-    private EditText termsAndConditionsField;
+//    private EditText termsAndConditionsField;
 
     // Dispatch Mode
     private RadioGroup modeOfDispatchGroup;
@@ -151,7 +151,7 @@ public class MakeOrderFragment extends Fragment {
         etDispatchAddress = view.findViewById(R.id.dispatch_address); // Ensure this exists in XML
         etMobile = view.findViewById(R.id.mobile_number);
         etEmail = view.findViewById(R.id.email);
-        termsAndConditionsField = view.findViewById(R.id.terms_and_conditions);
+//        termsAndConditionsField = view.findViewById(R.id.terms_and_conditions);
         modeOfDispatchGroup = view.findViewById(R.id.mode_of_dispatch_group);
         sampleConditionGroup = view.findViewById(R.id.sample_condition_group);
         complianceStatementGroup = view.findViewById(R.id.compliance_statement_group);
@@ -971,12 +971,12 @@ public class MakeOrderFragment extends Fragment {
         String dispatchAddress = etDispatchAddress.getText().toString().trim();
         String mobileNumber = etMobile.getText().toString().trim();
         String email = etEmail.getText().toString().trim();
-        String termsAndConditions = termsAndConditionsField.getText().toString().trim();
+//        String termsAndConditions = termsAndConditionsField.getText().toString().trim();
         String Lab = etLab.getText().toString().trim();
         String LabJob = etLabJob.getText().toString().trim();
 
         // Validate inputs
-        if (!validateInputs(customerName, dispatchAddress, mobileNumber, email, termsAndConditions, Lab, LabJob)) return;
+        if (!validateInputs(customerName, dispatchAddress, mobileNumber, email, Lab, LabJob)) return;
 
         // Collect radio button selections
         Map<String, String> radioSelections = new HashMap<>();
@@ -1191,13 +1191,14 @@ public class MakeOrderFragment extends Fragment {
         data.put("Dispatch Address", dispatchAddress);
         data.put("Mobile Number", mobileNumber);
         data.put("Email", email);
-        data.put("Terms And Conditions", termsAndConditions);
+//        data.put("Terms And Conditions", termsAndConditions);
         data.put("Created At", createdAt);
         data.put("Total Price", totalPrice);
         data.put("Radio Selections", radioSelections);
         data.put("Selected Points", selectedPoints);
         data.put("LabNumber", Lab);
         data.put("LabJobNumber",LabJob);
+        data.put("Status", "Pending"); // Automatically set status to "Pending"
 
         if (!reviewRemarks.isEmpty()) {
             data.put("Review Remarks", reviewRemarks);
@@ -1245,8 +1246,8 @@ public class MakeOrderFragment extends Fragment {
     /**
      * Validates required input fields.
      */
-    private boolean validateInputs(String customerName, String dispatchAddress, String mobileNumber, String email, String termsAndConditions, String lab, String labJob) {
-        if (customerName.isEmpty() || dispatchAddress.isEmpty() || mobileNumber.isEmpty() || email.isEmpty() || termsAndConditions.isEmpty()) {
+    private boolean validateInputs(String customerName, String dispatchAddress, String mobileNumber, String email,  String lab, String labJob) {
+        if (customerName.isEmpty() || dispatchAddress.isEmpty() || mobileNumber.isEmpty() || email.isEmpty()) {
             showError("All fields are required");
             return false;
         }
@@ -1300,7 +1301,7 @@ public class MakeOrderFragment extends Fragment {
         etDispatchAddress.setText("");
         etMobile.setText("");
         etEmail.setText("");
-        termsAndConditionsField.setText("");
+//        termsAndConditionsField.setText("");
         for (int i = 0; i < pointsGroup.getChildCount(); i++) {
             View child = pointsGroup.getChildAt(i);
             if (child instanceof CheckBox) {

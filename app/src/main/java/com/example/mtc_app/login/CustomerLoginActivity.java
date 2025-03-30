@@ -15,7 +15,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mtc_app.R;
 import com.example.mtc_app.admin.AdminHomePageActivity;
-import com.example.mtc_app.cr.RepresentativeHomePageActivity;
 import com.example.mtc_app.customer.CustomerHomePageActivity;
 import com.example.mtc_app.customerRepresentative.CrMain;
 import com.example.mtc_app.register.RegisterActivity;

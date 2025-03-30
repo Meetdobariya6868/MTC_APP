@@ -1600,20 +1600,20 @@
                         android:layout_marginTop="16dp"
                         android:layout_marginBottom="8dp" />
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:boxBackgroundMode="outline"
-                        app:boxStrokeColor="@color/Lavender">
+<!--                    <com.google.android.material.textfield.TextInputLayout-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        app:boxBackgroundMode="outline"-->
+<!--                        app:boxStrokeColor="@color/Lavender">-->
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/terms_and_conditions"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="Details"
-                            android:inputType="text"
-                            android:textColorHint="@color/gray" />
-                    </com.google.android.material.textfield.TextInputLayout>
+<!--                        <com.google.android.material.textfield.TextInputEditText-->
+<!--                            android:id="@+id/terms_and_conditions"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:hint="Details"-->
+<!--                            android:inputType="text"-->
+<!--                            android:textColorHint="@color/gray" />-->
+<!--                    </com.google.android.material.textfield.TextInputLayout>-->
 
                     <!-- Points Section -->
                     <TextView
