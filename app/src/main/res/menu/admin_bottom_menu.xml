@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menu_home"
+        android:icon="@drawable/home"
+        android:title="Home" />
+    <item
+        android:id="@+id/menu_cr"
+        android:icon="@drawable/cr_icon"
+        android:title="CR" />
+    <item
+        android:id="@+id/menu_staff"
+        android:icon="@drawable/staff_icon"
+        android:title="Staff" />
+    <item
+        android:id="@+id/menu_logout"
+        android:icon="@drawable/logout_icon"
+        android:title="Log Out" />
+
+</menu>

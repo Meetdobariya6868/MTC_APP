@@ -5,9 +5,12 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -38,7 +41,7 @@ public class CRHomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_cr_home, container, false);
-
+        setHasOptionsMenu(true);
         db = FirebaseFirestore.getInstance();
         recyclerView = view.findViewById(R.id.recyclerViewCustomers);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -50,12 +53,21 @@ public class CRHomeFragment extends Fragment {
         adapter = new CustomerAdapter(filteredList, this::openCustomerDetailsFragment);
         recyclerView.setAdapter(adapter);
 
+
         loadCustomerData();
         setupSearchFunctionality();
 
         return view;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            requireActivity().onBackPressed(); // Go back when the back arrow is clicked
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
     private void loadCustomerData() {
         CollectionReference usersRef = db.collection("users");
 

@@ -8,6 +8,7 @@
     android:background="#FFFFFF"
     android:fitsSystemWindows="true">
 
+
     <LinearLayout
         android:id="@+id/searchBarLayout"
         android:layout_width="match_parent"
@@ -20,8 +21,8 @@
         android:paddingEnd="12dp">
 
         <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
             android:src="@android:drawable/ic_menu_search"
             app:tint="@color/Lavender" />
 
@@ -37,13 +38,13 @@
             android:textColor="@android:color/black"
             android:textColorHint="@android:color/darker_gray"/>
 
-        <ImageView
-            android:id="@+id/filterIcon"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:contentDescription="Filter Icon"
-            android:src="@drawable/filter"
-            app:tint="@color/Lavender" />
+        <!--        <ImageView-->
+        <!--            android:id="@+id/filterIcon"-->
+        <!--            android:layout_width="24dp"-->
+        <!--            android:layout_height="24dp"-->
+        <!--            android:contentDescription="Filter Icon"-->
+        <!--            android:src="@drawable/filter"-->
+        <!--            app:tint="@color/Lavender" />-->
     </LinearLayout>
 
     <!-- 🔄 Progress Bar -->
