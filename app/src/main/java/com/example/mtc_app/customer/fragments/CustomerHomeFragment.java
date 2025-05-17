@@ -7,6 +7,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 import androidx.appcompat.widget.SearchView;
@@ -35,7 +36,7 @@ public class CustomerHomeFragment extends Fragment {
     private FirebaseAuth auth;
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
-    private SearchView searchView;
+    private EditText searchInput;
     private CustomerOrderAdapter customerOrderAdapter;
     private List<CustomerHomePageOrder> orderList = new ArrayList<>();
     private List<CustomerHomePageOrder> filteredOrderList = new ArrayList<>();
@@ -53,7 +54,8 @@ public class CustomerHomeFragment extends Fragment {
         auth = FirebaseAuth.getInstance();
         recyclerView = view.findViewById(R.id.recyclerView);
         progressBar = view.findViewById(R.id.progressBar);
-        searchView = view.findViewById(R.id.searchView);
+        searchInput = view.findViewById(R.id.searchInput);
+
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -107,20 +109,20 @@ public class CustomerHomeFragment extends Fragment {
     }
 
     private void setupSearchFunctionality() {
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        searchInput.addTextChangedListener(new TextWatcher() {
             @Override
-            public boolean onQueryTextSubmit(String query) {
-                filterOrders(query);
-                return true;
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                filterOrders(s.toString());
             }
 
             @Override
-            public boolean onQueryTextChange(String newText) {
-                filterOrders(newText);
-                return true;
-            }
+            public void afterTextChanged(Editable s) {}
         });
     }
+
 
     private void filterOrders(String query) {
         filteredOrderList.clear();
