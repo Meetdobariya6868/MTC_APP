@@ -100,17 +100,10 @@
                             android:id="@+id/customerName"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Staff 1"
+                            android:text="Soil"
                             android:textStyle="bold"
                             android:textSize="20sp" />
 
-                        <TextView
-                            android:id="@+id/customerPhone"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="9876543210"
-                            android:textColor="#666666"
-                            android:textSize="14sp" />
                     </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -152,16 +145,10 @@
 
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Staff 2"
+                            android:text="Cement"
                             android:textStyle="bold"
                             android:textSize="20sp" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="9876543210"
-                            android:textColor="#666666"
-                            android:textSize="14sp" />
                     </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -204,16 +191,10 @@
 
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Staff 3"
+                            android:text="Steel"
                             android:textStyle="bold"
                             android:textSize="20sp" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="9876543210"
-                            android:textColor="#666666"
-                            android:textSize="14sp" />
                     </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>

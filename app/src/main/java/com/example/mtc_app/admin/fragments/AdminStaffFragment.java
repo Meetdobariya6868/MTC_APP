@@ -1,8 +1,10 @@
 package com.example.mtc_app.admin.fragments;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import android.text.Editable;
@@ -15,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.mtc_app.R;
+import com.example.mtc_app.staff.staff_home;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -24,6 +27,7 @@ import java.util.List;
 public class AdminStaffFragment extends Fragment {
 
     private FirebaseFirestore db;
+    CardView soil, cement, steel;
     private LinearLayout crContainer;
     private List<DocumentSnapshot> allStaffUsers = new ArrayList<>(); // Store all fetched CR users
     private EditText searchView;
@@ -41,6 +45,15 @@ public class AdminStaffFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
         searchView = view.findViewById(R.id.searchView);
 
+        soil = view.findViewById(R.id.Customer1);
+        cement = view.findViewById(R.id.Customer2);
+        steel = view.findViewById(R.id.Customer3);
+
+        soil.setOnClickListener(v -> openStaffModule("soil"));
+        cement.setOnClickListener(v -> openStaffModule("cement"));
+        steel.setOnClickListener(v -> openStaffModule("steel"));
+
+
         // Add search listener
         searchView.addTextChangedListener(new TextWatcher() {
             @Override
@@ -55,32 +68,24 @@ public class AdminStaffFragment extends Fragment {
             public void afterTextChanged(Editable s) {}
         });
 
-        fetchCRUsers();
+//        fetchCRUsers();
         return view;
     }
 
-    private void fetchCRUsers() {
-        db.collection("users")
-                .whereEqualTo("role", "staff")
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful() && task.getResult() != null) {
-                        allStaffUsers.clear();
-                        allStaffUsers.addAll(task.getResult().getDocuments()); // Store all CR users
-                        displayCRUsers(allStaffUsers); // Display all initially
-                    }
-                });
+    private void openStaffModule(String category) {
+        Intent intent = new Intent(requireContext(), staff_home.class); // Replace StaffActivity with your actual activity
+        intent.putExtra("category", category);
+        startActivity(intent);
     }
+
 
     private void filterCRUsers(String query) {
         List<DocumentSnapshot> filteredCRs = new ArrayList<>();
 
         for (DocumentSnapshot cr : allStaffUsers) {
             String name = cr.getString("name");  // Fetching from Firestore
-            String phone = cr.getString("phone");
 
-            if ((name != null && name.toLowerCase().contains(query.toLowerCase())) ||
-                    (phone != null && phone.contains(query))) {
+            if ((name != null && name.toLowerCase().contains(query.toLowerCase()))) {
                 filteredCRs.add(cr);
             }
         }

@@ -180,6 +180,7 @@
 package com.example.mtc_app.admin;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -196,6 +197,9 @@ import com.example.mtc_app.admin.fragments.AdminCRFragment;
 import com.example.mtc_app.admin.fragments.AdminHomeFragment;
 import com.example.mtc_app.admin.fragments.AdminStaffFragment;
 import com.example.mtc_app.auth.AuthUtils;
+import com.example.mtc_app.customerRepresentative.CRHomeFragment;
+import com.example.mtc_app.customerRepresentative.CrMain;
+import com.example.mtc_app.staff.staff_home;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -234,11 +238,23 @@ public class AdminHomePageActivity extends AppCompatActivity {
 
             int itemId = item.getItemId();
             if (itemId == R.id.menu_home) {
-                selectedFragment = new AdminHomeFragment();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, new AdminHomeFragment())
+                        .commit();
+                return true;
+//                selectedFragment = new AdminHomeFragment();
             } else if (itemId == R.id.menu_cr) {
-                selectedFragment = new AdminCRFragment();
+                // Launch CR module
+                Intent crIntent = new Intent(this, CrMain.class);
+                startActivity(crIntent);
+                return true;
+//                selectedFragment = new CRHomeFragment();
             } else if (itemId == R.id.menu_staff) {
-                selectedFragment = new AdminStaffFragment();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, new AdminStaffFragment())
+                        .commit();
+                return true;
+//                selectedFragment = new AdminStaffFragment();
             } else if (itemId == R.id.menu_logout) {
                 showLogoutConfirmation();
                 return true;

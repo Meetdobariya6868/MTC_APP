@@ -32,7 +32,7 @@ public class staff_home extends AppCompatActivity {
     private String staffCategory;
     private ImageView profileIcon, filterButton;
     private EditText searchBar;
-
+    private String passedCategory = null; // for Intent override
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +56,19 @@ public class staff_home extends AppCompatActivity {
             startActivity(intent);
         });
 
-        loadUserCategory();
+        // Get the optional category passed from AdminStaffFragment
+        passedCategory = getIntent().getStringExtra("category");
+
+//        loadUserCategory();
+
+        if (passedCategory != null && !passedCategory.isEmpty()) {
+            // If category passed from intent, use it directly
+            Toast.makeText(this, "Category: " + passedCategory, Toast.LENGTH_SHORT).show();
+            loadProducts(passedCategory);
+        } else {
+            // Otherwise, use Firestore to get logged-in user's category
+            loadUserCategory();
+        }
         setupSearchListener();
     }
 

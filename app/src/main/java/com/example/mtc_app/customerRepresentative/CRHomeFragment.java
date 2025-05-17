@@ -128,7 +128,7 @@ public class CRHomeFragment extends Fragment {
         bundle.putString("customer_phone", customer.getPhone());  // Pass customer phone instead of ID
         customerDetailsFragment.setArguments(bundle);
 
-        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+        FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, customerDetailsFragment);
         transaction.addToBackStack(null);
         transaction.commit();

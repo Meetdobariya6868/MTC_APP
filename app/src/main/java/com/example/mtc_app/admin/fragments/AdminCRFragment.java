@@ -1,6 +1,7 @@
 package com.example.mtc_app.admin.fragments;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -14,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import com.example.mtc_app.R;
+import com.example.mtc_app.customerRepresentative.CrMain;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -106,6 +108,24 @@ public class AdminCRFragment extends Fragment {
         nameTextView.setText(name);
         phoneTextView.setText(phone);
 
+        cardView.setOnClickListener(v -> {
+            for (DocumentSnapshot cr : allCRUsers) {
+                if (name.equals(cr.getString("name")) && phone.equals(cr.getString("phone"))) {
+                    String crUid = cr.getId(); // assuming doc ID is UID
+                    openCRHome(crUid, name);
+                    break;
+                }
+            }
+        });
+
         crContainer.addView(cardView);
     }
+
+    private void openCRHome(String crUid, String crName) {
+        Intent intent = new Intent(getContext(), CrMain.class);
+        intent.putExtra("cr_uid", crUid);
+        intent.putExtra("cr_name", crName);
+        startActivity(intent);
+    }
+
 }
