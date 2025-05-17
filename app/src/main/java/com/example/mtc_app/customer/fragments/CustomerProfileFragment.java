@@ -3,27 +3,38 @@ package com.example.mtc_app.customer.fragments;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
 import com.example.mtc_app.R;
 import com.example.mtc_app.customer.profile.EditProfileActivity;
 import com.example.mtc_app.login.CustomerLoginActivity;
+import com.example.mtc_app.utils.CloudinaryManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.io.File;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CustomerProfileFragment extends Fragment {
 
@@ -31,6 +42,12 @@ public class CustomerProfileFragment extends Fragment {
     private Button editProfileButton, logOutButton;
     private ProgressBar loadingProgress;
 
+    private ImageView profilePicture, editProfileIcon;
+    private FirebaseFirestore db;
+    private Uri imageUri;
+    private static final int GALLERY_REQUEST_CODE = 100;
+    private static final int CAMERA_REQUEST_CODE = 101;
+    private static final String CLOUDINARY_FOLDER_NAME = "profile_images";
     private FirebaseAuth auth;
     private FirebaseFirestore firestore;
 
@@ -45,6 +62,7 @@ public class CustomerProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.activity_customer_profile_fragment, container, false);
 
         usernameText = view.findViewById(R.id.username);
+        profilePicture = view.findViewById(R.id.profile_image);
         userHandleText = view.findViewById(R.id.user_handle);
         emailValueText = view.findViewById(R.id.email_value);
         addressValueText = view.findViewById(R.id.address_value);
@@ -52,13 +70,21 @@ public class CustomerProfileFragment extends Fragment {
         editProfileButton = view.findViewById(R.id.edit_profile_button);
         logOutButton = view.findViewById(R.id.logOut);
         loadingProgress = view.findViewById(R.id.loading_progress);
+        editProfileIcon = view.findViewById(R.id.edit_icon);
+
 
         auth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
 
+        db = FirebaseFirestore.getInstance();
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = auth.getCurrentUser();
+
         // Load cached data instantly while Firebase loads in the background
         loadCachedUserDetails();
         fetchUserDetails(false);
+
+        editProfileIcon.setOnClickListener(v -> showImagePickerDialog());
 
         editProfileButton.setOnClickListener(v -> startActivity(new Intent(getActivity(), EditProfileActivity.class)));
         logOutButton.setOnClickListener(v -> showLogoutConfirmation());
@@ -81,6 +107,86 @@ public class CustomerProfileFragment extends Fragment {
                 .show();
     }
 
+    private void showImagePickerDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setTitle("Choose an option")
+                .setItems(new String[]{"Gallery", "Camera"}, (dialog, which) -> {
+                    if (which == 0) {
+                        pickImageFromGallery();
+                    } else {
+                        captureImageFromCamera();
+                    }
+                })
+                .show();
+    }
+
+    private void pickImageFromGallery() {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        startActivityForResult(intent, GALLERY_REQUEST_CODE);
+    }
+
+    private void captureImageFromCamera() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        File imageFile = new File(requireContext().getExternalFilesDir(null), "profile_pic.jpg");
+        imageUri = FileProvider.getUriForFile(requireContext(), "com.example.mtc_app.fileprovider", imageFile);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+        startActivityForResult(intent, CAMERA_REQUEST_CODE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (isAdded() && resultCode == requireActivity().RESULT_OK) {
+            if (requestCode == GALLERY_REQUEST_CODE && data != null) {
+                imageUri = data.getData();
+                uploadImageToCloudinary();
+            } else if (requestCode == CAMERA_REQUEST_CODE) {
+                uploadImageToCloudinary();
+            }
+        }
+    }
+
+    private void uploadImageToCloudinary() {
+        if (imageUri == null) return;
+
+        new Thread(() -> {
+            try {
+                InputStream inputStream = requireContext().getContentResolver().openInputStream(imageUri);
+                Map<String, Object> uploadParams = new HashMap<>();
+                uploadParams.put("folder", CLOUDINARY_FOLDER_NAME);
+
+                Map uploadResult = CloudinaryManager.getInstance().uploader().upload(inputStream, uploadParams);
+                String imageUrl = (String) uploadResult.get("secure_url");
+
+//                requireActivity().runOnUiThread(() -> updateProfileImageUrl(imageUrl));
+
+                if (isAdded()) {
+                    requireActivity().runOnUiThread(() -> updateProfileImageUrl(imageUrl));
+                }
+
+            } catch (Exception e) {
+                requireActivity().runOnUiThread(() -> Toast.makeText(requireContext(), "Upload Failed", Toast.LENGTH_SHORT).show());
+                e.printStackTrace();
+            }
+        }).start();
+    }
+
+    private void updateProfileImageUrl(String imageUrl) {
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser == null) return;
+
+        String userId = currentUser.getUid();
+
+        db.collection("users").document(userId)
+                .update("profileImageUrl", imageUrl)
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(requireContext(), "Profile Updated", Toast.LENGTH_SHORT).show();
+                    Glide.with(requireContext()).load(imageUrl).into(profilePicture);
+                })
+                .addOnFailureListener(e -> Toast.makeText(requireContext(), "Failed to update profile", Toast.LENGTH_SHORT).show());
+    }
     private void performLogout() {
         // Show loading indicator
         loadingProgress.setVisibility(View.VISIBLE);

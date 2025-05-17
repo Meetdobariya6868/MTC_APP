@@ -29,6 +29,7 @@
 
         <activity
             android:name=".admin.AdminHomePageActivity"
+            android:windowSoftInputMode="adjustPan"
             android:exported="false" />
         <activity
             android:name=".admin.AdminOrderDetail"
@@ -47,6 +48,7 @@
             android:exported="false" />
         <activity
             android:name=".customer.CustomerHomePageActivity"
+            android:windowSoftInputMode="adjustPan"
             android:exported="false" />
         <activity
             android:name=".login.CustomerLoginActivity"
