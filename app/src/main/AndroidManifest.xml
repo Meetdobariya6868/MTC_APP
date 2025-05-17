@@ -10,73 +10,72 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_app_logo"
-        android:roundIcon="@mipmap/ic_app_logo_round"
-        android:label="MTC LAB"
-        android:supportsRtl="true"
-        android:theme="@style/Theme.MTC_APP"
-        tools:targetApi="31">
+        android:icon="@drawable/mtc_logo"
+    android:roundIcon="@drawable/mtc_logo"
+    android:label="MTC LAB"
+    android:supportsRtl="true"
+    android:theme="@style/Theme.MTC_APP"
+    tools:targetApi="31">
 
-        <!-- Google Play Services Meta-Data -->
-        <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
+    <!-- Google Play Services Meta-Data -->
+    <meta-data
+        android:name="com.google.android.gms.version"
+        android:value="@integer/google_play_services_version" />
 
-        <activity
-            android:name=".customer.profile.EditProfileActivity"
-            android:exported="false" />
-        <activity android:name=".profile.EditProfileActivity" />
+    <activity
+        android:name=".customer.profile.EditProfileActivity"
+        android:exported="false" />
+    <activity android:name=".profile.EditProfileActivity" />
+    <activity
+        android:name=".admin.AdminHomePageActivity"
+        android:windowSoftInputMode="adjustPan"
+        android:exported="false" />
+    <activity
+        android:name=".admin.AdminOrderDetail"
+        android:exported="false" />
+    <activity
+        android:name=".staff.staff_profile_page"
+        android:exported="false" />
+    <activity
+        android:name=".staff.staff_detailed_page"
+        android:exported="false" />
+    <activity
+        android:name=".staff.staff_home"
+        android:exported="false" />
+    <activity
+        android:name=".customer.CustomerHomePageActivity"
+        android:windowSoftInputMode="adjustPan"
+        android:exported="false" />
+    <activity
+        android:name=".login.CustomerLoginActivity"
+        android:exported="false" />
+    <activity
+        android:name=".register.RegisterActivity"
+        android:exported="true" />
+    <activity
+        android:name=".customer.orders.CustomerOrderDetails"
+        android:exported="false" />
+    <activity
+        android:name=".helpAndSupport.HelpAndSupportActivity"
+        android:exported="false" />
+    <activity
+        android:name=".MainActivity"
+        android:windowSoftInputMode="adjustPan"
+        android:exported="false" />
+    <activity
+        android:name=".customerRepresentative.CrMain"
+        android:windowSoftInputMode="adjustPan"
+        android:exported="true" />
+    <activity
+        android:name=".splashScreen.SplashScreenActivity"
+        android:exported="true"
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+    </activity>
 
-        <activity
-            android:name=".admin.AdminHomePageActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:exported="false" />
-        <activity
-            android:name=".admin.AdminOrderDetail"
-            android:exported="false" />
-        <activity
-            android:name=".staff.staff_profile_page"
-            android:exported="false" />
-        <activity
-            android:name=".staff.staff_detailed_page"
-            android:exported="false" />
-        <activity
-            android:name=".staff.staff_home"
-            android:exported="false" />
-        <activity
-            android:name=".customer.CustomerHomePageActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:exported="false" />
-        <activity
-            android:name=".login.CustomerLoginActivity"
-            android:exported="false" />
-        <activity
-            android:name=".register.RegisterActivity"
-            android:exported="true" />
-        <activity
-            android:name=".customer.orders.CustomerOrderDetails"
-            android:exported="false" />
-        <activity
-            android:name=".helpAndSupport.HelpAndSupportActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MainActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:exported="false" />
-        <activity
-            android:name=".customerRepresentative.CrMain"
-            android:windowSoftInputMode="adjustPan"
-            android:exported="true" />
-        <activity
-            android:name=".splashScreen.SplashScreenActivity"
-            android:exported="true"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+</application>
 
-    </application>
-
-</manifest>
+    </manifest>
