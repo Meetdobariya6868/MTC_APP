@@ -146,34 +146,6 @@ public class EditProfileActivity extends AppCompatActivity {
         }
     }
 
-//    private void uploadImageToStorage() {
-//        if (imageUri != null) {
-//            String userId = auth.getCurrentUser().getUid();
-//            StorageReference imageRef = storageReference.child("profile_images/" + userId + ".jpg");
-//
-//            imageRef.putFile(imageUri)
-//                    .addOnSuccessListener(taskSnapshot -> imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
-//                        storeImageUrlInFirestore(uri.toString());
-//                    }))
-//                    .addOnFailureListener(e -> Toast.makeText(this, "Image upload failed: " + e.getMessage(), Toast.LENGTH_SHORT).show());
-//        } else {
-//            Toast.makeText(this, "No image selected", Toast.LENGTH_SHORT).show();
-//        }
-//    }
-
-//    private void storeImageUrlInFirestore(String imageUrl) {
-//        String userId = auth.getCurrentUser().getUid();
-//        firestore.collection("users").document(userId)
-//                .update("image", imageUrl)
-//                .addOnSuccessListener(aVoid -> {
-//                    Toast.makeText(this, "Image updated successfully!", Toast.LENGTH_SHORT).show();
-//                    if (buttonsLayout != null) {
-//                        buttonsLayout.setVisibility(View.GONE);
-//                    }
-//                })
-//                .addOnFailureListener(e -> Toast.makeText(this, "Failed to update image URL: " + e.getMessage(), Toast.LENGTH_SHORT).show());
-//    }
-
     private void updateProfile(String userId, String newAddress, String newPhone) {
         firestore.collection("users").document(userId)
                 .update("address", newAddress, "phone", newPhone)

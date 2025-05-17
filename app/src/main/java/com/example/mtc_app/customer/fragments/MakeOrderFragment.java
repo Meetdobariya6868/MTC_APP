@@ -1,5 +1,7 @@
 package com.example.mtc_app.customer.fragments;
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -332,6 +334,17 @@ public class MakeOrderFragment extends Fragment {
         // Initialize NDT checkboxes
         cbUltrasonicPulseVelocityNDT = view.findViewById(R.id.NDT_ultrasonic_pulse_velocity);
         cbReboundHammerTestNDT = view.findViewById(R.id.NDT_rebound_hammer_test);
+
+        SharedPreferences prefs = getContext().getSharedPreferences("user_profile", Context.MODE_PRIVATE);
+        String savedName = prefs.getString("name", "");
+        String savedEmail = prefs.getString("email", "");
+        String savedAddress = prefs.getString("address", "");
+        String savedPhone = prefs.getString("phone", "");
+
+        etCustomerName.setText(savedName);
+        etEmail.setText(savedEmail);
+        etDispatchAddress.setText(savedAddress);
+        etMobile.setText(savedPhone);
 
         // Set up for All checkboxes
         setUpCheckboxListener(cbPowerBlock, tilPowerBlockQuantity);
@@ -952,6 +965,13 @@ public class MakeOrderFragment extends Fragment {
         }
     }
 
+    private void redirectToHome() {
+        if (getActivity() == null) return;
+        getActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, new CustomerHomeFragment())
+                .commit();
+    }
 
     private void submitData(View view) {
 
@@ -1211,12 +1231,27 @@ public class MakeOrderFragment extends Fragment {
             data.put("Test Selections", testSelections);
         }
 
+//        SharedPreferences.Editor editor = requireContext().getSharedPreferences("user_profile", Context.MODE_PRIVATE).edit();
+        Context context = getContext();
+        if (context != null) {
+            SharedPreferences.Editor editor = context.getSharedPreferences("user_profile", Context.MODE_PRIVATE).edit();
+            editor.putString("name", customerName);
+            editor.putString("email", email);
+            editor.putString("address", dispatchAddress);
+            editor.putString("phone", mobileNumber);
+            editor.apply();
+
+        }
+
+
+
         // Store data in Firestore
         db.collection("Total Orders")
                 .add(data)
                 .addOnSuccessListener(documentReference -> {
-                    Toast.makeText(requireContext(), "Data submitted successfully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(), "Order submitted successfully!", Toast.LENGTH_SHORT).show();
                     clearForm();
+                    redirectToHome();
                 })
                 .addOnFailureListener(e -> {
                     Toast.makeText(requireContext(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();

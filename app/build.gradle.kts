@@ -59,6 +59,7 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.14.2")
     implementation(libs.core)
     implementation(libs.recyclerview)
+    implementation(libs.androidx.appcompat)
     annotationProcessor("com.github.bumptech.glide:compiler:4.14.2")
 
     implementation ("com.android.volley:volley:1.2.1")

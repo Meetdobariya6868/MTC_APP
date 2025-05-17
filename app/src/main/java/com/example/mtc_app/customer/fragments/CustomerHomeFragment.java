@@ -1,6 +1,8 @@
 package com.example.mtc_app.customer.fragments;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -8,9 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.Toast;
-import androidx.appcompat.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,7 +23,6 @@ import com.example.mtc_app.customer.adapters.CustomerOrderAdapter;
 import com.example.mtc_app.customer.models.CustomerHomePageOrder;
 import com.example.mtc_app.customer.orders.CustomerOrderDetails;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -35,11 +34,11 @@ public class CustomerHomeFragment extends Fragment {
     private FirebaseFirestore db;
     private FirebaseAuth auth;
     private RecyclerView recyclerView;
-    private ProgressBar progressBar;
     private EditText searchInput;
+
     private CustomerOrderAdapter customerOrderAdapter;
-    private List<CustomerHomePageOrder> orderList = new ArrayList<>();
-    private List<CustomerHomePageOrder> filteredOrderList = new ArrayList<>();
+    private final List<CustomerHomePageOrder> orderList = new ArrayList<>();
+    private final List<CustomerHomePageOrder> filteredOrderList = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -52,89 +51,125 @@ public class CustomerHomeFragment extends Fragment {
 
         db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
+
         recyclerView = view.findViewById(R.id.recyclerView);
-        progressBar = view.findViewById(R.id.progressBar);
         searchInput = view.findViewById(R.id.searchInput);
 
-
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        // Initialize with filteredOrderList instead of orderList
         customerOrderAdapter = new CustomerOrderAdapter(getContext(), filteredOrderList, this::onOrderClick);
         recyclerView.setAdapter(customerOrderAdapter);
 
-        fetchOrders();
+        loadCachedOrders();
         setupSearchFunctionality();
+        recyclerView.post(this::fetchOrdersFromFirestore);
     }
 
-    private void fetchOrders() {
-        if (auth.getCurrentUser() == null) {
-            Toast.makeText(getContext(), "User not logged in", Toast.LENGTH_SHORT).show();
-            return;
+    private void loadCachedOrders() {
+        Context context = getContext();
+        if (context == null) return;
+
+        SharedPreferences prefs = context.getSharedPreferences("order_cache", Context.MODE_PRIVATE);
+        String cachedData = prefs.getString("orders", null);
+
+        if (cachedData != null) {
+            try {
+                orderList.clear();
+                filteredOrderList.clear();
+
+                for (String row : cachedData.split(";;")) {
+                    String[] parts = row.split("\\|\\|");
+                    if (parts.length == 5) {
+                        orderList.add(new CustomerHomePageOrder(
+                                parts[0], parts[1], parts[2], parts[3], Integer.parseInt(parts[4])
+                        ));
+                    }
+                }
+
+                filteredOrderList.addAll(orderList);
+                customerOrderAdapter.notifyDataSetChanged();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+    }
+
+    private void fetchOrdersFromFirestore() {
+        if (!isAdded() || auth.getCurrentUser() == null) return;
 
         String userEmail = auth.getCurrentUser().getEmail();
-        progressBar.setVisibility(View.VISIBLE);
 
         db.collection("Total Orders")
                 .whereEqualTo("Email", userEmail)
                 .get()
                 .addOnCompleteListener(task -> {
-                    progressBar.setVisibility(View.GONE);
-                    if (task.isSuccessful()) {
-                        orderList.clear();
-                        filteredOrderList.clear();
+                    if (!isAdded()) return;
 
-                        if (task.getResult().isEmpty()) {
-                            Toast.makeText(getContext(), "No orders found", Toast.LENGTH_SHORT).show();
-                        } else {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                CustomerHomePageOrder order = new CustomerHomePageOrder(
-                                        document.getId(), // Store order ID
-                                        document.getString("status"),
-                                        document.getString("Mode of Dispatch"),
-                                        document.getString("Created At"),
-                                        document.getLong("Total Price") != null ? document.getLong("Total Price").intValue() : 0
-                                );
-                                orderList.add(order);
-                            }
-                            // Add all orders to filteredOrderList initially
-                            filteredOrderList.addAll(orderList);
-                            customerOrderAdapter.notifyDataSetChanged();
+                    if (task.isSuccessful() && task.getResult() != null) {
+                        List<CustomerHomePageOrder> fetchedList = new ArrayList<>();
+
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            CustomerHomePageOrder order = new CustomerHomePageOrder(
+                                    document.getId(),
+                                    document.getString("Status"),
+                                    document.getString("Mode of Dispatch"),
+                                    document.getString("Created At"),
+                                    document.getLong("Total Price") != null ? document.getLong("Total Price").intValue() : 0
+                            );
+                            fetchedList.add(order);
+                        }
+
+                        orderList.clear();
+                        orderList.addAll(fetchedList);
+                        filteredOrderList.clear();
+                        filteredOrderList.addAll(orderList);
+                        customerOrderAdapter.notifyDataSetChanged();
+
+                        if (isAdded()) {
+                            cacheOrders(orderList);
                         }
                     } else {
-                        Toast.makeText(getContext(), "Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Error loading orders", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
 
-    private void setupSearchFunctionality() {
-        searchInput.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+    private void cacheOrders(List<CustomerHomePageOrder> orders) {
+        Context context = getContext();
+        if (context == null) return;
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                filterOrders(s.toString());
-            }
+        StringBuilder builder = new StringBuilder();
+        for (CustomerHomePageOrder order : orders) {
+            builder.append(order.getOrderId()).append("||")
+                    .append(order.getStatus() != null ? order.getStatus() : "").append("||")
+                    .append(order.getDispatchMode() != null ? order.getDispatchMode() : "").append("||")
+                    .append(order.getDate() != null ? order.getDate() : "").append("||")
+                    .append(order.getPrice()).append(";;");
+        }
 
-            @Override
-            public void afterTextChanged(Editable s) {}
-        });
+        SharedPreferences prefs = context.getSharedPreferences("order_cache", Context.MODE_PRIVATE);
+        prefs.edit().putString("orders", builder.toString()).apply();
     }
 
+    private void setupSearchFunctionality() {
+        searchInput.addTextChangedListener(new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
+                filterOrders(s.toString());
+            }
+            @Override public void afterTextChanged(Editable s) {}
+        });
+    }
 
     private void filterOrders(String query) {
         filteredOrderList.clear();
         if (query.isEmpty()) {
             filteredOrderList.addAll(orderList);
         } else {
-            String lowerCaseQuery = query.toLowerCase();
+            String lower = query.toLowerCase();
             for (CustomerHomePageOrder order : orderList) {
-                // Search by order ID, status, or dispatch mode
-                if (order.getOrderId().toLowerCase().contains(lowerCaseQuery) ||
-                        (order.getStatus() != null && order.getStatus().toLowerCase().contains(lowerCaseQuery)) ||
-                        (order.getDispatchMode() != null && order.getDispatchMode().toLowerCase().contains(lowerCaseQuery))) {
+                if ((order.getOrderId() != null && order.getOrderId().toLowerCase().contains(lower)) ||
+                        (order.getStatus() != null && order.getStatus().toLowerCase().contains(lower)) ||
+                        (order.getDispatchMode() != null && order.getDispatchMode().toLowerCase().contains(lower))) {
                     filteredOrderList.add(order);
                 }
             }

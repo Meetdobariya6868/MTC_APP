@@ -14,6 +14,7 @@ firebaseStorage = "21.0.1"
 firebaseCrashlyticsGradle = "3.0.2"
 core = "1.15.0"
 recyclerview = "1.4.0"
+appcompatVersion = "1.7.0"
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -29,6 +30,7 @@ firebase-storage = { group = "com.google.firebase", name = "firebase-storage", v
 firebase-crashlytics-gradle = { group = "com.google.firebase", name = "firebase-crashlytics-gradle", version.ref = "firebaseCrashlyticsGradle" }
 core = { group = "androidx.core", name = "core", version.ref = "core" }
 recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompatVersion" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
