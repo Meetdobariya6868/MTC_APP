@@ -129,6 +129,20 @@
                     app:icon="@android:drawable/ic_input_add"
                     app:iconGravity="textStart"
                     app:iconPadding="8dp" />
+
+                <!-- Login Button -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/loginButton"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Login"
+                    android:textColor="@android:color/holo_red_light"
+                    app:icon="@drawable/ic_login"
+                    app:iconTint="@color/errorColor"
+                    app:iconGravity="textStart"
+                    app:iconPadding="8dp" />
+
             </LinearLayout>
         </HorizontalScrollView>
     </LinearLayout>
