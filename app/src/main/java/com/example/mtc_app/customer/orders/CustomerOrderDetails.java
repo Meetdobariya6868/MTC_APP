@@ -1,10 +1,14 @@
+// ✅ Final Optimized: CustomerOrderDetails.java
 package com.example.mtc_app.customer.orders;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mtc_app.R;
@@ -20,8 +24,9 @@ public class CustomerOrderDetails extends AppCompatActivity {
     private TextView orderStatus, orderDate, customerName, mobileNumber, email,
             dispatchAddress, modeOfDispatch, totalPrice, complianceStatement,
             deviationDetails, discussionDetails, standardDeviation, reviewRemarks,
-            sampleCondition, termsAndConditions, testingRequirements, bitumenTests;
+            sampleCondition, termsAndConditions, testingRequirements;
     private MaterialButton backButton;
+    private ProgressBar progressBar;
     private FirebaseFirestore db;
     private String orderId;
 
@@ -31,10 +36,8 @@ public class CustomerOrderDetails extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_order_details);
 
-        // Initialize Firebase
         db = FirebaseFirestore.getInstance();
 
-        // Initialize UI elements
         orderStatus = findViewById(R.id.orderStatus);
         orderDate = findViewById(R.id.orderDate);
         customerName = findViewById(R.id.customerName);
@@ -51,43 +54,41 @@ public class CustomerOrderDetails extends AppCompatActivity {
         sampleCondition = findViewById(R.id.sampleCondition);
         termsAndConditions = findViewById(R.id.termsAndConditions);
         testingRequirements = findViewById(R.id.testingRequirements);
-//        bitumenTests = findViewById(R.id.bitumenTests);
         backButton = findViewById(R.id.backButton);
+        progressBar = findViewById(R.id.orderLoadingProgress);
 
-        // Get Order ID from Intent
         orderId = getIntent().getStringExtra("orderId");
 
         if (orderId != null && !orderId.isEmpty()) {
+            progressBar.setVisibility(View.VISIBLE);
             fetchOrderDetails(orderId);
         } else {
             Toast.makeText(this, "Order ID is missing!", Toast.LENGTH_SHORT).show();
             finish();
         }
 
-        // Back Button Action
         backButton.setOnClickListener(v -> finish());
     }
 
     private void fetchOrderDetails(String orderId) {
         db.collection("Total Orders").document(orderId).get()
                 .addOnSuccessListener(documentSnapshot -> {
+                    progressBar.setVisibility(View.GONE);
                     if (documentSnapshot.exists()) {
-                        // Set simple string values
                         setTextView(orderStatus, "Status: ", documentSnapshot.getString("Status"));
                         setTextView(orderDate, "Order Date: ", documentSnapshot.getString("Created At"));
                         setTextView(customerName, "Customer Name: ", documentSnapshot.getString("Customer Name"));
                         setTextView(mobileNumber, "Mobile Number: ", documentSnapshot.getString("Mobile Number"));
                         setTextView(email, "Email: ", documentSnapshot.getString("Email"));
                         setTextView(dispatchAddress, "Dispatch Address: ", documentSnapshot.getString("Dispatch Address"));
-                        setTextView(modeOfDispatch, "Mode of Dispatch: ", documentSnapshot.getString("Radio Selections.Mode of Dispatch"));
-                        setTextView(complianceStatement, "Compliance Statement: ", documentSnapshot.getString("Radio Selections.Compliance Statement"));
+                        setTextView(modeOfDispatch, "Mode of Dispatch: ", getNestedValue(documentSnapshot, "Radio Selections.Mode of Dispatch"));
+                        setTextView(complianceStatement, "Compliance Statement: ", getNestedValue(documentSnapshot, "Radio Selections.Compliance Statement"));
                         setTextView(deviationDetails, "Deviation Details: ", documentSnapshot.getString("Deviation Details"));
                         setTextView(discussionDetails, "Discussion Details: ", documentSnapshot.getString("Discussion Details"));
-                        setTextView(standardDeviation, "Standard Deviation: ", documentSnapshot.getString("Radio Selections.Standard Deviation"));
-                        setTextView(sampleCondition, "Sample Condition: ", documentSnapshot.getString("Radio Selections.Sample Condition"));
+                        setTextView(standardDeviation, "Standard Deviation: ", getNestedValue(documentSnapshot, "Radio Selections.Standard Deviation"));
+                        setTextView(sampleCondition, "Sample Condition: ", getNestedValue(documentSnapshot, "Radio Selections.Sample Condition"));
                         setTextView(termsAndConditions, "Terms & Conditions: ", documentSnapshot.getString("Terms And Conditions"));
 
-                        // Handle Total Price safely (it could be stored as a Number)
                         if (documentSnapshot.contains("Total Price")) {
                             Object priceObj = documentSnapshot.get("Total Price");
                             String priceStr = priceObj != null ? String.valueOf(priceObj) : "N/A";
@@ -96,7 +97,6 @@ public class CustomerOrderDetails extends AppCompatActivity {
                             setTextView(totalPrice, "Total Price: ₹", "N/A");
                         }
 
-                        // Fetch Review Remarks (Map<String, String>)
                         if (documentSnapshot.contains("Review Remarks")) {
                             Map<String, String> reviewMap = (Map<String, String>) documentSnapshot.get("Review Remarks");
                             if (reviewMap != null) {
@@ -108,7 +108,6 @@ public class CustomerOrderDetails extends AppCompatActivity {
                             }
                         }
 
-                        // Fetch Test Selections (Nested Map)
                         if (documentSnapshot.contains("Test Selections")) {
                             Map<String, Object> testSelections = (Map<String, Object>) documentSnapshot.get("Test Selections");
                             if (testSelections != null) {
@@ -127,11 +126,28 @@ public class CustomerOrderDetails extends AppCompatActivity {
                     }
                 })
                 .addOnFailureListener(e -> {
+                    progressBar.setVisibility(View.GONE);
                     Toast.makeText(this, "Error fetching order: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     Log.e("CustomerOrderDetails", "Firestore fetch error", e);
                 });
     }
 
+    private String getNestedValue(DocumentSnapshot doc, String key) {
+        try {
+            String[] path = key.split("\\.");
+            Object value = doc.get(path[0]);
+            for (int i = 1; i < path.length; i++) {
+                if (value instanceof Map) {
+                    value = ((Map<?, ?>) value).get(path[i]);
+                } else {
+                    return "N/A";
+                }
+            }
+            return value != null ? value.toString() : "N/A";
+        } catch (Exception e) {
+            return "N/A";
+        }
+    }
 
     private void setTextView(TextView textView, String label, String value) {
         if (textView != null) {
