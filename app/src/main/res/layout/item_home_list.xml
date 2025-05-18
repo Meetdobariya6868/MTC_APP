@@ -2,71 +2,163 @@
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/cardView"
-    android:layout_margin="8dp"
-    app:cardCornerRadius="8dp"
-    app:cardElevation="4dp"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="6dp"
+    android:layout_margin="12dp"
     android:background="@color/white">
 
+    <!-- Status indicator strip on top -->
+    <View
+        android:id="@+id/statusIndicator"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:background="#2E1A47" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="16dp"
-        android:gravity="center_vertical">
+        android:orientation="vertical"
+        android:padding="20dp"
+        android:layout_marginTop="5dp">
 
-        <!-- Icon -->
-        <ImageView
-            android:id="@+id/itemIcon"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/ic_placeholder"
-            android:contentDescription="Item Icon"
-            android:layout_marginEnd="16dp"
-            android:scaleType="centerCrop" />
-
-        <!-- Title and Subtitle -->
+        <!-- Header with status and price -->
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
-            <TextView
-                android:id="@+id/itemTitle"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Lab Job no"
-                android:textColor="@color/darkGrey"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
 
-            <TextView
-                android:id="@+id/itemSubtitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Date"
-                android:textSize="14sp"
-                android:layout_marginTop="4dp" />
+                <ImageView
+                    android:id="@+id/itemIcon"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@android:drawable/ic_menu_report_image"
+                    android:contentDescription="Item Icon"
+                    android:layout_marginEnd="16dp" />
 
-            <TextView
-                android:id="@+id/itemSample"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="items"
-                android:textSize="14sp"
-                android:layout_marginTop="4dp" />
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/itemTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Lab Job no"
+                        android:textColor="#2E1A47"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/itemSubtitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Date"
+                        android:textColor="@android:color/darker_gray"
+                        android:textSize="14sp"
+                        android:layout_marginTop="4dp" />
+
+                    <TextView
+                        android:id="@+id/itemSample"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="items"
+                        android:textColor="@android:color/darker_gray"
+                        android:textSize="14sp"
+                        android:layout_marginTop="4dp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/itemActionIcon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@android:drawable/ic_media_play"
+                android:contentDescription="Action Icon" />
         </LinearLayout>
 
-        <!-- Action Icon -->
-        <ImageView
-            android:id="@+id/itemActionIcon"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_chevron_right"
-            android:contentDescription="Action Icon" />
+        <!-- Divider -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#E0E0E0"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp" />
+
+        <!-- Order details -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginStart="4dp">
+
+            <TextView
+                android:id="@+id/segment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Segment: null"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginTop="4dp"
+                android:drawablePadding="8dp"
+                app:drawableStartCompat="@android:drawable/ic_menu_sort_by_size" />
+
+            <TextView
+                android:id="@+id/dispatchMode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Dispatch Mode: null"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="14sp"
+                android:layout_marginTop="8dp"
+                android:drawablePadding="8dp"
+                app:drawableStartCompat="@android:drawable/ic_menu_send" />
+
+            <TextView
+                android:id="@+id/orderDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Date: 2025-03-18"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="14sp"
+                android:layout_marginTop="8dp"
+                android:drawablePadding="8dp"
+                app:drawableStartCompat="@android:drawable/ic_menu_my_calendar" />
+        </LinearLayout>
+
+        <!-- Bottom button -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/orderDetailsButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="View Order Details"
+                android:textColor="@android:color/white"
+                app:icon="@android:drawable/ic_menu_view"
+                app:iconGravity="textStart"
+                app:iconTint="@android:color/white"
+                app:iconPadding="8dp"
+                app:cornerRadius="16dp"
+                android:paddingVertical="10dp"
+                android:backgroundTint="#2E1A47"
+                android:elevation="2dp" />
+        </FrameLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>
