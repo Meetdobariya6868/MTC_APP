@@ -20,5 +20,122 @@
     <string name="login_signup_hint">Don\'t have an account? Sign Up</string>
     <string name="login_name_hint">Name</string>
     <string name="login_mobile_number_hint">Mobile Number</string>
+
+    <!-- AGGREGATE (FINE) -->
+    <string name="item_1">FINENESS MODULUS BY GRADATION - <font color="#FF0000">250/-</font></string>
+    <string name="item_2">SILT CONTENT - <font color="#FF0000">200/-</font></string>
+    <string name="item_3">SPECIFIC GRAVITY &amp; WATER ABSORPTION - <font color="#FF0000">350/-</font></string>
+    <string name="item_4">SOUNDNESS - <font color="#FF0000">1200/-</font></string>
+    <string name="item_5">ALKALI REACTIVITY - <font color="#FF0000">1500/-</font></string>
+
+    <!-- AGGREGATE (COARSE) -->
+    <string name="item_6">GRADING OF AGGREGATE - <font color="#FF0000">250/-</font></string>
+    <string name="item_7">FLAKINESS INDEX AND ELONGATION INDEX - <font color="#FF0000">350/-</font></string>
+    <string name="item_8">SPECIFIC GRAVITY &amp; WATER ABSORPTION - <font color="#FF0000">350/-</font></string>
+    <string name="item_9">IMPACT VALUE - <font color="#FF0000">250/-</font></string>
+    <string name="item_10">ABRASION VALUE - <font color="#FF0000">350/-</font></string>
+    <string name="item_11">CRUSHING VALUE - <font color="#FF0000">350/-</font></string>
+    <string name="item_12">SOUNDNESS (5 Cycles) - <font color="#FF0000">1200/-</font></string>
+    <string name="item_13">ALKALI REACTIVITY - <font color="#FF0000">1500/-</font></string>
+
+    <!-- CEMENT -->
+    <string name="item_14">CONSISTENCY - <font color="#FF0000">300/-</font></string>
+    <string name="item_15">INITIAL AND FINAL SETTING - <font color="#FF0000">400/-</font></string>
+    <string name="item_16">FINENESS BY BLAIN AIR - <font color="#FF0000">600/-</font></string>
+    <string name="item_17">SOUNDNESS (Le-Chatelier) - <font color="#FF0000">250/-</font></string>
+    <string name="item_18">COMPRESSIVE STRENGTH - <font color="#FF0000">550/-</font></string>
+    <string name="item_19">COMPRESSIVE STRENGTH OF CEMENT MORTAR CUBE - <font color="#FF0000">250/-</font></string>
+    <string name="item_20">FINENESS BY SIEVING - <font color="#FF0000">200/-</font></string>
+    <string name="item_21">CHEMICAL ANALYSIS - <font color="#FF0000">2250/-</font></string>
+
+    <!-- STEEL -->
+    <string name="item_22">UNIT WAIT - <font color="#FF0000">50/-</font></string>
+    <string name="item_23">TENSILE TEST, YIELD AND ELOGATION TEST - <font color="#FF0000">400/-</font></string>
+    <string name="item_24">BEND TEST - <font color="#FF0000">150/-</font></string>
+    <string name="item_25">REBEND TEST - <font color="#FF0000">150/-</font></string>
+    <string name="item_26">CHEMICAL ANALYSIS - <font color="#FF0000">900/-</font></string>
+
+    <!-- CEMENT CONC.CUBE BLOCK -->
+    <string name="item_27">COMPRESSIVE STRENGTH OF CUBE - <font color="#FF0000">400/-</font></string>
+    <string name="item_28">CASTING &amp; PREPARING CUBES OF GIVEN MIX - <font color="#FF0000">1000/-</font></string>
+    <string name="item_29">FLEXURER STRENGTH OF BEAM - <font color="#FF0000">450/-</font></string>
+    <string name="item_30">CASTING &amp; PREPARING BEAM - <font color="#FF0000">900/-</font></string>
+
+    <!-- AAC BLOCK -->
+    <string name="item_31">MEASUREMENT OF DIMENSIONS - <font color="#FF0000">1200/- (FOR 4 TESTS)</font></string>
+    <string name="item_311">COMPRESSIVE STRENGTH - <font color="#FF0000">1200/- (FOR 4 TESTS)</font></string>
+    <string name="item_312">BLOCKS DENSITY - <font color="#FF0000">1200/- (FOR 4 TESTS)</font></string>
+    <string name="item_313">WATER ABSORPTION - <font color="#FF0000">1200/- (FOR 4 TESTS)</font></string>
+    <string name="item_32">DRYING SHRINKAGE - <font color="#FF0000">350/-</font></string>
+    <string name="item_33">MOISTURE MOVEMENT - <font color="#FF0000">200/-</font></string>
+
+    <!-- CONCRETE POWER BLOCK -->
+    <string name="item_34">COMPRESSIVE STRENGTH - <font color="#FF0000">700/-</font></string>
+    <string name="item_35">WATER ABSORPTION - <font color="#FF0000">200/-</font></string>
+
+    <!-- BRICK -->
+    <string name="item_36">DIMENSION AND TOLERANCE - <font color="#FF0000">150/-</font></string>
+    <string name="item_37">COMPRESSIVE STRENGTH - <font color="#FF0000">400/-</font></string>
+    <string name="item_38">WATER ABSORPTION - <font color="#FF0000">250/-</font></string>
+    <string name="item_39">EFFLORESCENCE - <font color="#FF0000">200/-</font></string>
+
+    <!-- SOIL -->
+    <string name="item_40">GRAIN SIZE ANALYSIS - <font color="#FF0000">300/-</font></string>
+    <string name="item_41">PLASTICITY INDEX - <font color="#FF0000">350/-</font></string>
+    <string name="item_42">LIGHT COMPACTION - <font color="#FF0000">600/-</font></string>
+    <string name="item_43">HEAVY COMPACTION - <font color="#FF0000">900/-</font></string>
+    <string name="item_44">CBR TEST (UNSOAKED) - <font color="#FF0000">600/-</font></string>
+    <string name="item_45">CBR TEST (SOAKED-96 HRS) - <font color="#FF0000">900/-</font></string>
+    <string name="item_46">DIRECT SHEAR TEST - <font color="#FF0000">700/-</font></string>
+    <string name="item_47">UNCONFINED COMPRESSION - <font color="#FF0000">300/-</font></string>
+    <string name="item_48">TRIAXIAL TEST (UU) - <font color="#FF0000">900/-</font></string>
+    <string name="item_49">TRIAXIAL TEST (CU) - <font color="#FF0000">1500/-</font></string>
+    <string name="item_50">FREE SWELL INDEX - <font color="#FF0000">150/-</font></string>
+    <string name="item_51">CONSOLIDATION TEST (3-Jar) - <font color="#FF0000">1200/-</font></string>
+    <string name="item_52">SWELING PRESSURE - <font color="#FF0000">900/-</font></string>
+    <string name="item_53">SPECIFIC GRAVITY - <font color="#FF0000">200/-</font></string>
+    <string name="item_54">SHRINKAGE LIMIT - <font color="#FF0000">300/-</font></string>
+    <string name="item_55">PERMEABILITY TEST - <font color="#FF0000">900/-</font></string>
+    <string name="item_56">RELATIVE DENSITY - <font color="#FF0000">200/-</font></string>
+    <string name="item_57">FIELD DENSITY AND MOISTURE CONTENT - <font color="#FF0000">600/-</font></string>
+
+    <!-- NDT -->
+    <string name="item_58">REBOUND HAMMER TEST - <font color="#FF0000">300/-</font></string>
+    <string name="item_59">UPV TEST - <font color="#FF0000">300/-</font></string>
+
+    <!-- CONST. WATER -->
+    <string name="item_60">Sulphates SO4 - <font color="#FF0000">All Price 900/-</font></string>
+    <string name="item_601">Alkalinity - <font color="#FF0000">900/-</font></string>
+    <string name="item_602">pH value - <font color="#FF0000">900/-</font></string>
+    <string name="item_603">Organic Impurities - <font color="#FF0000">900/-</font></string>
+    <string name="item_604">Inorganic Impurities - <font color="#FF0000">900/-</font></string>
+    <string name="item_605">Chloride as Cl - <font color="#FF0000">900/-</font></string>
+    <string name="item_606">Suspended Matter - <font color="#FF0000">900/-</font></string>
+    <string name="item_607">TDS (Total Dissolved Solids) - <font color="#FF0000">900/-</font></string>
+
+    <!-- WASTE WATER -->
+    <string name="item_61">Chloride as Cl - <font color="#FF0000">700/-</font></string>
+    <string name="item_611">pH value - <font color="#FF0000">700/-</font></string>
+    <string name="item_612">Sulphates SO4 - <font color="#FF0000">700/-</font></string>
+    <string name="item_613">TDS (Total Dissolved Solids) - <font color="#FF0000">700/-</font></string>
+    <string name="item_614">TSS (Total Suspended Solids) - <font color="#FF0000">700/-</font></string>
+
+    <!-- CONCRETE MIX DESIGN -->
+    <string name="item_62">WITH CUBE - <font color="#FF0000">6000/-</font></string>
+    <string name="item_63">WITH FLEXURER STRENGTH - <font color="#FF0000">7500/-</font></string>
+    <string name="item_64">ADMIXTURE - <font color="#FF0000">9000/-</font></string>
+
+    <!-- FLY ASH DESIGN -->
+    <string name="item_65">SPECIFIC GRAVITY - <font color="#FF0000">200/-</font></string>
+    <string name="item_66">SOUNDNESS (Le-Chatelier) - <font color="#FF0000">250/-</font></string>
+    <string name="item_67">COMPRESSIVE STRENGTH - <font color="#FF0000">550/-</font></string>
+
+    <!-- Bitumen -->
+    <string name="item_68">PENETRATION - <font color="#FF0000">1100/-</font></string>
+    <string name="item_69">DUCTILITY - <font color="#FF0000">1050/-</font></string>
+    <string name="item_70">SOFTNING POINT - <font color="#FF0000">1500/-</font></string>
+    <string name="item_71">SPECIFIC GRAVITY - <font color="#FF0000">350/-</font></string>
+
+
 </resources>
 
