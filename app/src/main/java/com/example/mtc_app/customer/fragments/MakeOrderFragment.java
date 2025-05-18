@@ -64,6 +64,7 @@ public class MakeOrderFragment extends Fragment {
     // Brick
     private CheckBox cbWaterAbsorptionBrick, cbDimensionTestBrick, cbCompressiveStrengthBrick, cbEfflorescenceBrick;
 
+    TextInputEditText etDiscount;
     // Soil
     private CheckBox cbCBRTestUnsoakedSoil, cbGrainSizeAnalysisSoil, cbTestSoakedSoil, cbPlasticLimitSoil;
     private CheckBox cbLightCompactionTestSoil, cbHeavyCompactionTestSoil, cbFreeSwellIndexSoil, cbUnconfinedCompressionSoil;
@@ -216,6 +217,7 @@ public class MakeOrderFragment extends Fragment {
         cbAbrasionValueCoarse = view.findViewById(R.id.AGGREGATE_abrasion_value_coarse);
         cbCrushingValueCoarse = view.findViewById(R.id.AGGREGATE_crushing_value_coarse);
         cbSoundnessCyclesCoarse = view.findViewById(R.id.AGGREGATE_soundness_cycles_coarse);
+        etDiscount = view.findViewById(R.id.et_discount);
         tvTotalPrice = view.findViewById(R.id.tv_total_price);
         cbAlkaliReactivityCoarse = view.findViewById(R.id.AGGREGATE_alkali_reactivity_coarse);
 
@@ -995,6 +997,17 @@ public class MakeOrderFragment extends Fragment {
         String Lab = etLab.getText().toString().trim();
         String LabJob = etLabJob.getText().toString().trim();
 
+        TextInputEditText etDiscount = view.findViewById(R.id.et_discount);
+        String discountStr = etDiscount.getText().toString().trim();
+        int discount = 0;
+        if (!discountStr.isEmpty()) {
+            try {
+                discount = Integer.parseInt(discountStr);
+            } catch (NumberFormatException e) {
+                discount = 0;
+            }
+        }
+
         // Validate inputs
         if (!validateInputs(customerName, dispatchAddress, mobileNumber, email, Lab, LabJob)) return;
 
@@ -1213,7 +1226,11 @@ public class MakeOrderFragment extends Fragment {
         data.put("Email", email);
 //        data.put("Terms And Conditions", termsAndConditions);
         data.put("Created At", createdAt);
-        data.put("Total Price", totalPrice);
+
+        int finalPrice = Math.max(totalPrice - discount, 0);
+        data.put("Total Price", finalPrice);
+        data.put("Discount", discount);
+
         data.put("Radio Selections", radioSelections);
         data.put("Selected Points", selectedPoints);
         data.put("LabNumber", Lab);
@@ -1261,26 +1278,6 @@ public class MakeOrderFragment extends Fragment {
                     submitButton.setEnabled(true);
                 });
     }
-
-
-//    private void addTestSelection(Map<String, List<String>> testSelections, String category, CheckBox mainCheckbox, CheckBox... subCheckboxes) {
-//        if (mainCheckbox.isChecked()) {
-//            List<String> selectedTests = new ArrayList<>();
-//            for (CheckBox subCheckbox : subCheckboxes) {
-//                if (subCheckbox.isChecked()) {
-//                    selectedTests.add(subCheckbox.getText().toString()); // Get text directly from checkbox
-//                }
-//            }
-//            if (!selectedTests.isEmpty()) {
-//                testSelections.put(category, selectedTests);
-//            }
-//        }
-//    }
-
-
-    /**
-     * Validates required input fields.
-     */
     private boolean validateInputs(String customerName, String dispatchAddress, String mobileNumber, String email,  String lab, String labJob) {
         if (customerName.isEmpty() || dispatchAddress.isEmpty() || mobileNumber.isEmpty() || email.isEmpty()) {
             showError("All fields are required");
@@ -1487,7 +1484,18 @@ public class MakeOrderFragment extends Fragment {
 
 
     private void calculateTotalPrice() {
-        tvTotalPrice.setText("Total Price: " + totalPrice + " /- Rs");
+        String discountStr = etDiscount.getText().toString().trim();
+        int discount = 0;
+        if (!discountStr.isEmpty()) {
+            try {
+                discount = Integer.parseInt(discountStr);
+            } catch (NumberFormatException e) {
+                discount = 0;
+            }
+        }
+
+        int finalPrice = Math.max(totalPrice - discount, 0);
+        tvTotalPrice.setText("Total Price: " + finalPrice + " /- Rs");
     }
 
 
