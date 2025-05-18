@@ -48,7 +48,6 @@ public class staff_home extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         profileIcon = findViewById(R.id.profileIcon);
-        filterButton = findViewById(R.id.filterButton);
         searchBar = findViewById(R.id.searchBar);
 
         profileIcon.setOnClickListener(v -> {
