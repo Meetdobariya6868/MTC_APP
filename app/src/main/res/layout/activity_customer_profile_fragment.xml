@@ -28,18 +28,15 @@
             android:paddingTop="16dp"
             android:paddingBottom="30dp">
 
-            <!-- Enhanced Profile Image with Edit Icon -->
             <FrameLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center">
-
                 <androidx.cardview.widget.CardView
                     android:layout_width="160dp"
                     android:layout_height="160dp"
                     app:cardCornerRadius="80dp"
                     app:cardElevation="8dp">
-
                     <ImageView
                         android:id="@+id/profile_image"
                         android:layout_width="match_parent"
@@ -48,22 +45,21 @@
                         android:background="@drawable/rounded_image_background"
                         android:contentDescription="Profile Image" />
                 </androidx.cardview.widget.CardView>
-
                 <androidx.cardview.widget.CardView
-                    android:layout_width="44dp"
-                    android:layout_height="44dp"
+                    android:id="@+id/edit_button_container"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
                     android:layout_gravity="bottom|end"
-                    android:layout_marginEnd="6dp"
-                    android:layout_marginBottom="6dp"
-                    app:cardCornerRadius="22dp"
-                    app:cardElevation="6dp"
-                    app:cardBackgroundColor="@color/Lavender">
-
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
+                    app:cardCornerRadius="24dp"
+                    app:cardElevation="8dp"
+                    app:cardBackgroundColor="#6A5ACD">
                     <ImageView
                         android:id="@+id/edit_icon"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:padding="10dp"
+                        android:padding="12dp"
                         android:src="@drawable/ic_edit"
                         android:contentDescription="Edit Profile"
                         app:tint="#FFFFFF" />
