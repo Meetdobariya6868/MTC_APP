@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -50,11 +50,20 @@
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:layout_gravity="bottom|end"
+<<<<<<< HEAD
                     android:layout_marginEnd="10dp"
                     android:layout_marginBottom="10dp"
                     app:cardCornerRadius="24dp"
                     app:cardElevation="8dp"
                     app:cardBackgroundColor="#6A5ACD">
+=======
+                    android:layout_marginEnd="6dp"
+                    android:layout_marginBottom="6dp"
+                    app:cardCornerRadius="22dp"
+                    app:cardElevation="6dp"
+                    app:cardBackgroundColor="@color/white">
+
+>>>>>>> 6c88fbb (Tried to set pencil icon in customer profile but not succeed)
                     <ImageView
                         android:id="@+id/edit_icon"
                         android:layout_width="match_parent"
@@ -62,7 +71,7 @@
                         android:padding="12dp"
                         android:src="@drawable/ic_edit"
                         android:contentDescription="Edit Profile"
-                        app:tint="#FFFFFF" />
+                        app:tint="#000000" />
                 </androidx.cardview.widget.CardView>
             </FrameLayout>
 
@@ -321,4 +330,4 @@
             </androidx.cardview.widget.CardView>
         </FrameLayout>
     </RelativeLayout>
-</ScrollView>
+</RelativeLayout>
