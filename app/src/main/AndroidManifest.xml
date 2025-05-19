@@ -35,6 +35,9 @@
             android:name=".admin.AdminOrderDetail"
             android:exported="false" />
         <activity
+            android:name=".admin.AdminEditOrderActivity"
+            android:exported="false" />
+        <activity
             android:name=".staff.staff_profile_page"
             android:exported="false" />
         <activity
