@@ -103,7 +103,58 @@
                     </LinearLayout>
                 </RelativeLayout>
 
-                <!-- Information Content -->
+                    <TextView
+                        android:id="@+id/radioSelectionsText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="Radio Selections" />
+
+                <TextView
+                    android:id="@+id/reviewRemarksText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="Review Remarks" />
+
+                <TextView
+                    android:id="@+id/selectedPointsText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Selected Points" />
+
+                <TextView
+                    android:id="@+id/totalPriceText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Ttoal price" />
+
+                <TextView
+                    android:id="@+id/deviationDetailText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Deviation Detail" />
+
+                <TextView
+                    android:id="@+id/discussionDetailText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Discussion Detail" />
+
+                <TextView
+                    android:id="@+id/dateText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Date" />
+
+                <TextView
+                    android:id="@+id/testSelectionsText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Test Selections"
+                    android:padding="8dp"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
