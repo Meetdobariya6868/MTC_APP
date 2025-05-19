@@ -24,7 +24,7 @@
 
         <activity
             android:name=".customer.profile.EditProfileActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity android:name=".profile.EditProfileActivity" />
 
         <activity
@@ -65,7 +65,12 @@
         <activity
             android:name=".MainActivity"
             android:windowSoftInputMode="adjustPan"
-            android:exported="false" />
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".customerRepresentative.CrMain"
             android:windowSoftInputMode="adjustPan"
