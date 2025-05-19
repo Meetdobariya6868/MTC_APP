@@ -136,6 +136,9 @@
     <string name="item_70">SOFTNING POINT - <font color="#FF0000">1500/-</font></string>
     <string name="item_71">SPECIFIC GRAVITY - <font color="#FF0000">350/-</font></string>
 
-
+    <string-array name="status_options">
+        <item>Open</item>
+        <item>Reported</item>
+    </string-array>
 </resources>
 

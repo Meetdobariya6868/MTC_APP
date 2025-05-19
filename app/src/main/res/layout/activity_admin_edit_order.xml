@@ -19,7 +19,7 @@
             android:text="Customer Order"
             android:textSize="24sp"
             android:textStyle="bold"
-            android:textColor="#2F3C5F"
+            android:textColor="@color/Lavender"
             android:textAlignment="center"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -49,7 +49,7 @@
                     android:text="Customer Information"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    android:textColor="#2F3C5F"
+                    android:textColor="@color/Lavender"
                     android:layout_marginBottom="16dp"/>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -57,8 +57,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="12dp"
-                    app:boxStrokeColor="#2F3C5F"
-                    app:hintTextColor="#2F3C5F"
+                    app:boxStrokeColor="@color/Lavender"
+                    app:hintTextColor="@color/Lavender"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -76,8 +76,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="12dp"
-                    app:boxStrokeColor="#2F3C5F"
-                    app:hintTextColor="#2F3C5F"
+                    app:boxStrokeColor="@color/Lavender"
+                    app:hintTextColor="@color/Lavender"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -101,8 +101,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:layout_marginEnd="8dp"
-                        app:boxStrokeColor="#2F3C5F"
-                        app:hintTextColor="#2F3C5F"
+                        app:boxStrokeColor="@color/Lavender"
+                        app:hintTextColor="@color/Lavender"
                         app:prefixText="+1 "
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
@@ -122,8 +122,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:layout_marginStart="8dp"
-                        app:boxStrokeColor="#2F3C5F"
-                        app:hintTextColor="#2F3C5F"
+                        app:boxStrokeColor="@color/Lavender"
+                        app:hintTextColor="@color/Lavender"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -163,7 +163,7 @@
                     android:text="Order Details"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    android:textColor="#2F3C5F"
+                    android:textColor="@color/Lavender"
                     android:layout_marginBottom="16dp"/>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -171,8 +171,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="12dp"
-                    app:boxStrokeColor="#2F3C5F"
-                    app:hintTextColor="#2F3C5F"
+                    app:boxStrokeColor="@color/Lavender"
+                    app:hintTextColor="@color/Lavender"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -190,9 +190,9 @@
                     android:id="@+id/tilTotalPrice"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:boxStrokeColor="#2F3C5F"
-                    app:hintTextColor="#2F3C5F"
-                    app:prefixText="$"
+                    app:boxStrokeColor="@color/Lavender"
+                    app:hintTextColor="@color/Lavender"
+                    app:prefixText="₹"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -217,7 +217,7 @@
             android:letterSpacing="0.05"
             android:layout_marginTop="32dp"
             app:cornerRadius="28dp"
-            android:backgroundTint="#2F3C5F"
+            android:backgroundTint="@color/Lavender"
             app:layout_constraintTop_toBottomOf="@id/cardOrderDetails"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />

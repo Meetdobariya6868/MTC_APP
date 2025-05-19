@@ -3,6 +3,7 @@ package com.example.mtc_app.splashScreen;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,23 +23,23 @@ public class SplashScreenActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_splash_screen); // logo layout shown for 500ms
 
         auth = FirebaseAuth.getInstance();
 
-        // Get SharedPreferences
-        SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
-        boolean isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false);
-        String userRole = sharedPreferences.getString("userRole", "");
+        new Handler().postDelayed(() -> {
+            SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+            boolean isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false);
+            String userRole = sharedPreferences.getString("userRole", "");
 
-        // If the user is logged in, redirect to the correct home page
-        if (isLoggedIn && auth.getCurrentUser() != null) {
-            navigateToHome(userRole);
-        } else {
-            // Redirect to Login Screen
-            startActivity(new Intent(this, CustomerLoginActivity.class));
-        }
+            if (isLoggedIn && auth.getCurrentUser() != null) {
+                navigateToHome(userRole);
+            } else {
+                startActivity(new Intent(this, CustomerLoginActivity.class));
+            }
 
-        finish(); // Close splash screen after redirection
+            finish();
+        }, 500); // Delay splash for 500ms
     }
 
     private void navigateToHome(String userRole) {

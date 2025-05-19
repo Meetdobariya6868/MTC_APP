@@ -6,10 +6,19 @@
     android:background="@color/white">
 
     <LinearLayout
+        android:id="@+id/pointsGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="16dp">
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:visibility="gone" />
 
         <!-- Name and Address -->
         <LinearLayout
@@ -38,7 +47,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:boxBackgroundMode="outline"
-                app:boxStrokeColor="@color/Lavender"
+                app:boxStrokeColor="@color/teal_700"
                 app:boxCornerRadiusTopStart="16dp"
                 app:boxCornerRadiusTopEnd="16dp"
                 app:boxCornerRadiusBottomStart="16dp"
@@ -81,7 +90,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:boxBackgroundMode="outline"
-                app:boxStrokeColor="@color/Lavender"
+                app:boxStrokeColor="@color/teal_700"
                 app:boxCornerRadiusTopStart="16dp"
                 app:boxCornerRadiusTopEnd="16dp"
                 app:boxCornerRadiusBottomStart="16dp"
@@ -124,7 +133,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:boxBackgroundMode="outline"
-                app:boxStrokeColor="@color/Lavender"
+                app:boxStrokeColor="@color/teal_700"
                 app:boxCornerRadiusTopStart="16dp"
                 app:boxCornerRadiusTopEnd="16dp"
                 app:boxCornerRadiusBottomStart="16dp"
@@ -167,7 +176,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:boxBackgroundMode="outline"
-                app:boxStrokeColor="@color/Lavender"
+                app:boxStrokeColor="@color/teal_700"
                 app:boxCornerRadiusTopStart="16dp"
                 app:boxCornerRadiusTopEnd="16dp"
                 app:boxCornerRadiusBottomStart="16dp"
@@ -183,6 +192,91 @@
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
+        <!-- Lab Number Section -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/card_background"
+            android:padding="14dp"
+            android:elevation="4dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginBottom="20dp">
+
+            <!-- Title TextView -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="5. Laboratry Number"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:paddingBottom="8dp" />
+
+            <!-- Input Field -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:boxBackgroundMode="outline"
+                app:boxStrokeColor="@color/teal_700"
+                app:boxCornerRadiusTopStart="16dp"
+                app:boxCornerRadiusTopEnd="16dp"
+                app:boxCornerRadiusBottomStart="16dp"
+                app:boxCornerRadiusBottomEnd="16dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/lab_no"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Lab Number"
+                    android:inputType="textMultiLine"
+                    android:textColorHint="@color/gray" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+        <!-- Job Number Section -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/card_background"
+            android:padding="14dp"
+            android:elevation="4dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginBottom="20dp">
+
+            <!-- Title TextView -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="6. Lab Job Number"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:paddingBottom="8dp" />
+
+            <!-- Input Field -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:boxBackgroundMode="outline"
+                app:boxStrokeColor="@color/teal_700"
+                app:boxCornerRadiusTopStart="16dp"
+                app:boxCornerRadiusTopEnd="16dp"
+                app:boxCornerRadiusBottomStart="16dp"
+                app:boxCornerRadiusBottomEnd="16dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/lab_job_no"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Lab Job Number"
+                    android:inputType="textMultiLine"
+                    android:textColorHint="@color/gray" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
 
 
         <LinearLayout
@@ -248,7 +342,7 @@
                         android:layout_height="wrap_content"
                         android:paddingTop="16dp"
                         android:paddingBottom="8dp"
-                        android:text="3. TESTING REQUIREMENTS"
+                        android:text="TESTING REQUIREMENTS"
                         android:textColor="@color/black"
                         android:textSize="18sp"
                         android:textStyle="bold" />
@@ -779,12 +873,12 @@
                             android:textColor="@color/purple"
                             android:visibility="gone" />
 
-                        <!-- DRYING SHRINKAGE Checkbox -->
+                        <!--  DRYING SHRINKAGE Checkbox -->
                         <CheckBox
                             android:id="@+id/AAC_drying_shrinkage"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="40dp"
+                            android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="DRYING SHRINKAGE"
                             android:textColor="@color/purple"
@@ -944,7 +1038,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="GRAIN SIZE ANALYSIS"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!-- PLASTICITY INDEX Checkbox -->
@@ -955,7 +1049,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="PLASTICITY INDEX"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!-- LIGHT COMPACTION Checkbox -->
@@ -966,7 +1060,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="LIGHT COMPACTION"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!-- HEAVY COMPACTION Checkbox -->
@@ -977,7 +1071,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="HEAVY COMPACTION"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!-- CBR TEST (UNSOAKED) Checkbox -->
@@ -988,7 +1082,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="CBR TEST (UNSOAKED)"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!-- CBR TEST (SOAKED-96 HRS) Checkbox -->
@@ -999,7 +1093,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="CBR TEST (SOAKED-96 HRS)"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!-- DIRECT SHEAR TEST Checkbox -->
@@ -1010,7 +1104,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="DIRECT SHEAR TEST"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!-- UNCONFINED COMPRESSION Checkbox -->
@@ -1021,7 +1115,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="UNCONFINED COMPRESSION"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!-- TRIAXIAL TEST (UU) Checkbox -->
@@ -1032,7 +1126,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="TRIAXIAL TEST (UU)"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!-- TRIAXIAL TEST (CU) Checkbox -->
@@ -1043,7 +1137,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="TRIAXIAL TEST (CU)"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!-- FREE SWELL INDEX Checkbox -->
@@ -1054,7 +1148,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="FREE SWELL INDEX"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!-- CONSOLIDATION TEST (3-Jar) Checkbox -->
@@ -1065,7 +1159,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="CONSOLIDATION TEST (3-Jar)"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!-- SWELING PRESSURE Checkbox -->
@@ -1076,7 +1170,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="SWELING PRESSURE"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!--  SPECIFIC GRAVITY Checkbox -->
@@ -1087,7 +1181,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="SPECIFIC GRAVITY"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!-- SHRINKAGE LIMIT Checkbox -->
@@ -1098,7 +1192,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="SHRINKAGE LIMIT"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!-- PERMEABILITY TEST Checkbox -->
@@ -1109,7 +1203,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="PERMEABILITY TEST"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!-- RELATIVE DENSITY Checkbox -->
@@ -1120,7 +1214,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="RELATIVE DENSITY"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!--  FIELD DENSITY AND MOISTURE CONTENT Checkbox -->
@@ -1131,7 +1225,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="FIELD DENSITY &amp; MOISTURE CONTENT"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!-- NDT -->
@@ -1165,7 +1259,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="REBOUND HAMMER TEST IS 516"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!-- Ultrasonic Pulse velocity Checkbox -->
@@ -1176,7 +1270,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="ULTRASONIC PULSE VELOCITY IS 516"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
 
@@ -1210,7 +1304,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="SULPHATES SO4"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!-- Alkalinity Checkbox -->
@@ -1221,7 +1315,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="ALKALINITY"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!-- PH VALUE Checkbox -->
@@ -1232,7 +1326,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="PH VALUE"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!-- ORGANIC IMPURITIES Checkbox -->
@@ -1243,7 +1337,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="ORGANIC IMPURITIES"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!-- INORGANIC IMPURITIES Checkbox -->
@@ -1254,7 +1348,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="INORGANIC IMPURITIES"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!-- CHLORIDE AS CL Checkbox -->
@@ -1265,7 +1359,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="CHLORIDE AS CL"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!-- SUSPENDED MATTER Checkbox -->
@@ -1276,7 +1370,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="SUSPENDED MATTER"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!-- TDS (TOTAL DISSOLVED SOLIDS) Checkbox -->
@@ -1287,7 +1381,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="TDS (TOTAL DISSOLVED SOLIDS)"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
 
@@ -1321,7 +1415,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="CHLORIDE AS CL"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!-- PH VALUE Checkbox -->
@@ -1332,7 +1426,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="PH VALUE"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!-- SULPHATES SO4 Checkbox -->
@@ -1343,7 +1437,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="SULPHATES SO4"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!-- TDS (TOTAL DISSOLVED SOLIDS) Checkbox -->
@@ -1354,7 +1448,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="TDS (TOTAL DISSOLVED SOLIDS)"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!-- TSS (TOTAL SUSPENDED SOLIDS) Checkbox -->
@@ -1365,7 +1459,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="TSS (TOTAL SUSPENDED SOLIDS)"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
 
@@ -1512,7 +1606,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="PENETRATION VALUE"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!-- DUCTILITY Checkbox -->
@@ -1523,7 +1617,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="DUCTILITY"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!-- SOFTNING POINT Checkbox -->
@@ -1534,7 +1628,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="SOFTNING POINT"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
                         <!-- SPECIFIC GRAVITY Checkbox -->
@@ -1545,7 +1639,7 @@
                             android:layout_marginStart="15dp"
                             android:layout_marginTop="8dp"
                             android:text="SPECIFIC GRAVITY"
-                            android:textColor="@color/errorColor"
+                            android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
 
@@ -1570,7 +1664,7 @@
                         android:layout_height="wrap_content"
                         android:paddingTop="16dp"
                         android:paddingBottom="8dp"
-                        android:text="3. ADDITIONAL TESTING REQUIREMENTS"
+                        android:text="ADDITIONAL TESTING REQUIREMENTS"
                         android:textColor="@color/black"
                         android:textSize="18sp"
                         android:textStyle="bold" />
@@ -1590,30 +1684,14 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <!-- Terms and Conditions Section -->
-                    <TextView
-                        android:layout_width="wrap_content"
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Terms and Conditions of Testing"
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginBottom="8dp" />
+                        app:boxBackgroundMode="outline"
+                        app:boxStrokeColor="@color/teal_700">
 
-<!--                    <com.google.android.material.textfield.TextInputLayout-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        app:boxBackgroundMode="outline"-->
-<!--                        app:boxStrokeColor="@color/Lavender">-->
-
-<!--                        <com.google.android.material.textfield.TextInputEditText-->
-<!--                            android:id="@+id/terms_and_conditions"-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:hint="Details"-->
-<!--                            android:inputType="text"-->
-<!--                            android:textColorHint="@color/gray" />-->
-<!--                    </com.google.android.material.textfield.TextInputLayout>-->
+                    </com.google.android.material.textfield.TextInputLayout>
 
                     <!-- Points Section -->
                     <TextView
@@ -1745,7 +1823,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:boxBackgroundMode="outline"
-                        app:boxStrokeColor="@color/Lavender">
+                        app:boxStrokeColor="@color/teal_700">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/deviation_input"
@@ -1870,7 +1948,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:boxBackgroundMode="outline"
-                        app:boxStrokeColor="@color/Lavender">
+                        app:boxStrokeColor="@color/teal_700">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/discussion_input"
@@ -1902,3 +1980,4 @@
     </LinearLayout>
 
 </ScrollView>
+

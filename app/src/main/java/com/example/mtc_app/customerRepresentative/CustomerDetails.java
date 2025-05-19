@@ -14,13 +14,17 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.mtc_app.R;
+import com.example.mtc_app.customerRepresentative.CustomerOrderAdapter;
 import com.example.mtc_app.customer.CustomerHomePageActivity;
+import com.example.mtc_app.customerRepresentative.CustomerOrder;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -29,11 +33,20 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class CustomerDetails extends Fragment {
 
     private FirebaseFirestore db;
     private TextView userName, userPhone, userEmail;
     private String customerPhone;
+    private List<String> orderIds = new ArrayList<>();
+
+    private RecyclerView recyclerView;
+    private CustomerOrderAdapter adapter;
+    private List<CustomerOrder> orderList;
 
     public CustomerDetails() {}
 
@@ -51,27 +64,71 @@ public class CustomerDetails extends Fragment {
         userPhone = view.findViewById(R.id.userPhone);
         userEmail = view.findViewById(R.id.userEmail);
 
+        recyclerView = view.findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+        orderList = new ArrayList<>();
+        adapter = new CustomerOrderAdapter(requireContext(), orderList, orderIds);
+        recyclerView.setAdapter(adapter);
+
+
         Bundle args = getArguments();
         if (args != null) {
             customerPhone = args.getString("customer_phone");
             userPhone.setText(customerPhone != null ? customerPhone : "N/A");
             if (customerPhone != null && !customerPhone.equals("N/A")) {
                 fetchCustomerDetails(customerPhone);
+                fetchCustomerOrders(customerPhone);
             }
         }
 
         setButtonHandlers(view);
     }
 
+
+    private void fetchCustomerOrders(String phone) {
+        db.collection("Total Orders")
+                .whereEqualTo("Mobile Number", phone)
+                .get()
+                .addOnSuccessListener(querySnapshots -> {
+                    orderList.clear();
+                    orderIds.clear(); // 🔹 Clear previously stored IDs
+                    for (DocumentSnapshot doc : querySnapshots.getDocuments()) {
+                        String segment = doc.getString("segment");
+                        String dispatchMode = doc.getString("Mode of Dispatch");
+                        String orderDate = doc.getString("Created At");
+                        String price = String.valueOf(doc.get("Total Price"));
+                        String status = doc.getString("Status");
+
+                        CustomerOrder order = new CustomerOrder(
+                                segment,
+                                dispatchMode,
+                                orderDate,
+                                price,
+                                status
+                        );
+                        orderList.add(order);
+                        orderIds.add(doc.getId()); // 🔹 Save document ID
+                    }
+                    adapter = new CustomerOrderAdapter(requireContext(), orderList, orderIds); // 🔹 Updated adapter call
+                    recyclerView.setAdapter(adapter);
+                    Collections.reverse(orderList);
+                    Collections.reverse(orderIds);
+                    adapter.notifyDataSetChanged();
+
+                    adapter.notifyDataSetChanged();
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("OrderFetch", "Error fetching orders", e);
+                    Toast.makeText(requireContext(), "Failed to load orders", Toast.LENGTH_SHORT).show();
+                });
+    }
+
+
     private void setButtonHandlers(View view) {
-        MaterialButton orderDetailsButton = view.findViewById(R.id.orderDetailsButton3);
         MaterialButton editButton = view.findViewById(R.id.editButton);
+        MaterialButton deleteButton = view.findViewById(R.id.deleteButton);
         MaterialButton addOrderButton = view.findViewById(R.id.addOrderButton);
         MaterialButton loginButton = view.findViewById(R.id.loginButton);
-
-        if (orderDetailsButton != null) {
-            orderDetailsButton.setOnClickListener(v -> openFragment(new OrderDetails()));
-        }
 
         if (editButton != null) {
             editButton.setOnClickListener(v -> openFragment(new EditCustomer()));
@@ -84,7 +141,59 @@ public class CustomerDetails extends Fragment {
         if (loginButton != null) {
             loginButton.setOnClickListener(v -> loginAsThisUser());
         }
+
+        if (deleteButton != null) {
+            deleteButton.setOnClickListener(v -> {
+                new androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                        .setTitle("Delete Customer")
+                        .setMessage("Are you sure you want to delete this customer and all associated orders?")
+                        .setPositiveButton("Yes", (dialog, which) -> deleteCustomerAndOrders())
+                        .setNegativeButton("No", null)
+                        .show();
+            });
+        }
     }
+
+    private void deleteCustomerAndOrders() {
+        if (customerPhone == null || customerPhone.isEmpty()) {
+            Toast.makeText(requireContext(), "Customer phone number not available", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Step 1: Delete from 'users'
+        db.collection("users")
+                .whereEqualTo("phone", customerPhone)
+                .get()
+                .addOnSuccessListener(userSnapshots -> {
+                    for (DocumentSnapshot userDoc : userSnapshots.getDocuments()) {
+                        db.collection("users").document(userDoc.getId()).delete();
+                    }
+
+                    // Step 2: Delete matching orders
+                    db.collection("Total Orders")
+                            .whereEqualTo("Mobile Number", customerPhone)
+                            .get()
+                            .addOnSuccessListener(orderSnapshots -> {
+                                for (DocumentSnapshot orderDoc : orderSnapshots.getDocuments()) {
+                                    db.collection("Total Orders").document(orderDoc.getId()).delete();
+                                }
+
+                                Toast.makeText(requireContext(), "Customer and all orders deleted", Toast.LENGTH_SHORT).show();
+                                requireActivity().getSupportFragmentManager().popBackStack(); // Optional: navigate back
+                            })
+                            .addOnFailureListener(e -> {
+                                Toast.makeText(requireContext(), "Failed to delete orders", Toast.LENGTH_SHORT).show();
+                                Log.e("DeleteOrders", "Error deleting orders", e);
+                            });
+
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(requireContext(), "Failed to delete customer", Toast.LENGTH_SHORT).show();
+                    Log.e("DeleteCustomer", "Error deleting customer", e);
+                });
+    }
+
+
 
     private void loginAsThisUser() {
         if (customerPhone == null || customerPhone.equals("N/A")) {
@@ -130,24 +239,6 @@ public class CustomerDetails extends Fragment {
                 .putBoolean("isLoggedIn", true)
                 .putString("userRole", role != null ? role : "customer")
                 .apply();
-    }
-
-    private Bundle getCustomerBundle() {
-        Bundle bundle = new Bundle();
-        bundle.putString("customer_name", userName != null ? userName.getText().toString() : "");
-        bundle.putString("customer_phone", userPhone != null ? userPhone.getText().toString() : "");
-        bundle.putString("customer_email", userEmail != null ? userEmail.getText().toString() : "");
-        return bundle;
-    }
-
-
-    private void openFragment(Fragment fragment) {
-        fragment.setArguments(getCustomerBundle());
-        requireActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_container, fragment)
-                .addToBackStack(null)
-                .commit();
     }
 
     private void fetchCustomerDetails(String customerPhone) {
@@ -211,9 +302,24 @@ public class CustomerDetails extends Fragment {
         Volley.newRequestQueue(requireContext()).add(request);
     }
 
-
-
     interface OnTokenReceivedListener {
         void onTokenReceived(String token);
+    }
+
+    private Bundle getCustomerBundle() {
+        Bundle bundle = new Bundle();
+        bundle.putString("customer_name", userName != null ? userName.getText().toString() : "");
+        bundle.putString("customer_phone", userPhone != null ? userPhone.getText().toString() : "");
+        bundle.putString("customer_email", userEmail != null ? userEmail.getText().toString() : "");
+        return bundle;
+    }
+
+    private void openFragment(Fragment fragment) {
+        fragment.setArguments(getCustomerBundle());
+        requireActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .addToBackStack(null)
+                .commit();
     }
 }

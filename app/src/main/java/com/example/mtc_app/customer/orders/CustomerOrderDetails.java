@@ -75,19 +75,19 @@ public class CustomerOrderDetails extends AppCompatActivity {
                 .addOnSuccessListener(documentSnapshot -> {
                     progressBar.setVisibility(View.GONE);
                     if (documentSnapshot.exists()) {
-                        setTextView(orderStatus, "Status: ", documentSnapshot.getString("Status"));
-                        setTextView(orderDate, "Order Date: ", documentSnapshot.getString("Created At"));
-                        setTextView(customerName, "Customer Name: ", documentSnapshot.getString("Customer Name"));
-                        setTextView(mobileNumber, "Mobile Number: ", documentSnapshot.getString("Mobile Number"));
-                        setTextView(email, "Email: ", documentSnapshot.getString("Email"));
-                        setTextView(dispatchAddress, "Dispatch Address: ", documentSnapshot.getString("Dispatch Address"));
-                        setTextView(modeOfDispatch, "Mode of Dispatch: ", getNestedValue(documentSnapshot, "Radio Selections.Mode of Dispatch"));
-                        setTextView(complianceStatement, "Compliance Statement: ", getNestedValue(documentSnapshot, "Radio Selections.Compliance Statement"));
-                        setTextView(deviationDetails, "Deviation Details: ", documentSnapshot.getString("Deviation Details"));
-                        setTextView(discussionDetails, "Discussion Details: ", documentSnapshot.getString("Discussion Details"));
-                        setTextView(standardDeviation, "Standard Deviation: ", getNestedValue(documentSnapshot, "Radio Selections.Standard Deviation"));
-                        setTextView(sampleCondition, "Sample Condition: ", getNestedValue(documentSnapshot, "Radio Selections.Sample Condition"));
-                        setTextView(termsAndConditions, "Terms & Conditions: ", documentSnapshot.getString("Terms And Conditions"));
+                        setTextView(orderStatus, "", documentSnapshot.getString("Status"));
+                        setTextView(orderDate, "", documentSnapshot.getString("Created At"));
+                        setTextView(customerName, "", documentSnapshot.getString("Customer Name"));
+                        setTextView(mobileNumber, "", documentSnapshot.getString("Mobile Number"));
+                        setTextView(email, "", documentSnapshot.getString("Email"));
+                        setTextView(dispatchAddress, "", documentSnapshot.getString("Dispatch Address"));
+                        setTextView(modeOfDispatch, "", getNestedValue(documentSnapshot, "Radio Selections.Mode of Dispatch"));
+                        setTextView(complianceStatement, "", getNestedValue(documentSnapshot, "Radio Selections.Compliance Statement"));
+                        setTextView(deviationDetails, "", documentSnapshot.getString("Deviation Details"));
+                        setTextView(discussionDetails, "", documentSnapshot.getString("Discussion Details"));
+                        setTextView(standardDeviation, "", getNestedValue(documentSnapshot, "Radio Selections.Standard Deviation"));
+                        setTextView(sampleCondition, "", getNestedValue(documentSnapshot, "Radio Selections.Sample Condition"));
+                        setTextView(termsAndConditions, "", documentSnapshot.getString("Terms And Conditions"));
 
                         if (documentSnapshot.contains("Total Price")) {
                             Object priceObj = documentSnapshot.get("Total Price");

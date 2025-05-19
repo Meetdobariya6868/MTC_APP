@@ -94,6 +94,9 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import android.view.View;
+import android.widget.ProgressBar;
+
 
 public class CrMain extends AppCompatActivity {
 
@@ -146,6 +149,13 @@ public class CrMain extends AppCompatActivity {
 
         // FAB click listener
         fab.setOnClickListener(view -> replaceFragment(new AddCustomer())); // Open AddCustomer fragment
+    }
+
+    public void hideProgressBar() {
+        ProgressBar progressBar = findViewById(R.id.loading_progress); // Make sure the ID matches
+        if (progressBar != null) {
+            progressBar.setVisibility(View.GONE);
+        }
     }
 
     // Replace the current fragment
