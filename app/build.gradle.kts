@@ -54,7 +54,6 @@ dependencies {
     implementation ("com.google.android.gms:play-services-base:latest_version")
     implementation ("com.google.android.gms:play-services-maps:latest_version") // Example for maps
 
-
     // Glide for image loading
     implementation("com.github.bumptech.glide:glide:4.14.2")
     implementation(libs.core)
@@ -66,6 +65,11 @@ dependencies {
 
     implementation ("com.cloudinary:cloudinary-android:2.3.1")
     implementation ("com.squareup.okhttp3:okhttp:4.9.3")
+
+    // Animation Libraries for Enhanced Splash Screen
+    implementation("com.airbnb.android:lottie:5.2.0")  // Lottie animations
+    implementation("com.mikhaellopez:circularprogressbar:3.1.0")  // Circular progress bar
+    implementation("com.skyfishjy.ripplebackground:library:1.0.1")  // Ripple background effect
 
     // Testing
     testImplementation(libs.junit)

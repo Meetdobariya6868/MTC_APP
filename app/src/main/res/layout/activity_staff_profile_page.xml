@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF">
+    android:background="#FFFFFF"
+    android:fillViewport="true">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <!-- Oval Background (at the back) -->
+        <!-- Improved oval background with gradient -->
         <View
             android:layout_width="match_parent"
-            android:layout_height="400dp"
+            android:layout_height="380dp"
             android:background="@drawable/oval_background" />
 
         <!-- Profile Content (on top) -->
@@ -20,7 +23,8 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:layout_marginTop="90dp"
-            android:paddingTop="16dp">
+            android:paddingTop="16dp"
+            android:paddingBottom="30dp">
 
             <!-- Profile Image with Edit Icon -->
             <FrameLayout
@@ -28,23 +32,39 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center">
 
-                <ImageView
-                    android:id="@+id/profile_image"
+                <androidx.cardview.widget.CardView
                     android:layout_width="150dp"
                     android:layout_height="150dp"
-                    android:scaleType="centerCrop"
-                    android:background="@drawable/rounded_image_background"
-                    android:contentDescription="Profile Image" />
+                    app:cardCornerRadius="75dp"
+                    app:cardElevation="8dp">
+                    <ImageView
+                        android:id="@+id/profile_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:background="@drawable/rounded_image_background"
+                        android:contentDescription="Profile Image" />
+                </androidx.cardview.widget.CardView>
 
-                <ImageView
-                    android:id="@+id/edit_icon"
+                <androidx.cardview.widget.CardView
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_gravity="bottom|end"
-                    android:background="@drawable/rounded_edit_icon"
-                    android:padding="8dp"
-                    android:src="@drawable/ic_edit"
-                    android:contentDescription="Edit Profile" />
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="8dp"
+                    app:cardBackgroundColor="#6A5ACD">
+
+                    <ImageView
+                        android:id="@+id/edit_icon"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="10dp"
+                        android:src="@drawable/ic_edit"
+                        android:contentDescription="Edit Profile"
+                        app:tint="#FFFFFF" />
+                </androidx.cardview.widget.CardView>
             </FrameLayout>
 
             <!-- Username -->
@@ -53,166 +73,253 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="14dp"
                 android:text="Staff_name"
                 android:textColor="#FFFFFF"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:shadowColor="#50000000"
+                android:shadowDx="1"
+                android:shadowDy="1"
+                android:shadowRadius="2" />
 
             <TextView
                 android:id="@+id/user_handle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginTop="4dp"
                 android:layout_marginBottom="16dp"
                 android:text="Staff"
-                android:textColor="#FFFFFF"
-                android:textSize="14sp" />
+                android:textColor="#F0F0F0"
+                android:textSize="16sp" />
 
-            <!-- Rounded Information Box -->
-            <LinearLayout
-                android:layout_width="370dp"
+            <!-- Enhanced Rounded Information Box -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="24dp"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/rounded_background"
-                android:orientation="vertical"
-                android:padding="25dp"
-                android:layout_gravity="center">
+                app:cardCornerRadius="20dp"
+                app:cardElevation="10dp">
 
-                <!-- Email -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="25dp">
+                    android:orientation="vertical"
+                    android:padding="25dp">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <!-- Email -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Email"
-                        android:textColor="@color/Lavender"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:layout_gravity="start" />
+                        android:orientation="horizontal"
+                        android:layout_marginTop="16dp"
+                        android:gravity="center_vertical">
 
-                    <TextView
-                        android:id="@+id/emailValue"
-                        android:layout_width="0dp"
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_email"
+                            android:layout_marginEnd="12dp"
+                            android:contentDescription="Email Icon"
+                            app:tint="@color/Lavender" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Email"
+                            android:textColor="@color/Lavender"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/emailValue"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textColor="#333333"
+                            android:textSize="16sp"
+                            android:gravity="end"
+                            android:maxLines="1"
+                            android:ellipsize="end" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="6dp"
+                        android:background="#EEEEEE" />
+
+                    <!-- Address -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:textColor="#000000"
-                        android:textSize="16sp"
-                        android:gravity="end" />
+                        android:orientation="horizontal"
+                        android:layout_marginTop="16dp"
+                        android:gravity="center_vertical">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_location"
+                            android:layout_marginEnd="12dp"
+                            android:contentDescription="Address Icon"
+                            app:tint="@color/Lavender" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Address"
+                            android:textColor="@color/Lavender"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/addressValue"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textColor="#333333"
+                            android:textSize="16sp"
+                            android:gravity="end"
+                            android:maxLines="2"
+                            android:ellipsize="end" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="6dp"
+                        android:background="#EEEEEE" />
+
+                    <!-- Phone -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="16dp"
+                        android:gravity="center_vertical">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_phone"
+                            android:layout_marginEnd="12dp"
+                            android:contentDescription="Phone Icon"
+                            app:tint="@color/Lavender" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Phone"
+                            android:textColor="@color/Lavender"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/phoneValue"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textColor="#333333"
+                            android:textSize="16sp"
+                            android:gravity="end" />
+                    </LinearLayout>
                 </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:layout_marginTop="20dp"
-                    android:background="#CCCCCC" />
-
-                <!-- Address -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="25dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Address"
-                        android:textColor="@color/Lavender"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:layout_gravity="start" />
-
-                    <TextView
-                        android:id="@+id/addressValue"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:textColor="#000000"
-                        android:textSize="16sp"
-                        android:gravity="end" />
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:layout_marginTop="20dp"
-                    android:background="#CCCCCC" />
-
-                <!-- Phone -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="25dp"
-                    android:layout_marginBottom="25dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Phone"
-                        android:textColor="@color/Lavender"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:layout_gravity="start" />
-
-                    <TextView
-                        android:id="@+id/phoneValue"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:textColor="#000000"
-                        android:textSize="16sp"
-                        android:gravity="end" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <!-- Edit Profile and Log Out Buttons -->
+            <!-- Enhanced Buttons with Elevation and Material Design -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="36dp"
+                android:layout_marginHorizontal="24dp"
                 android:gravity="center">
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/edit_profile_button"
-                    android:layout_width="150dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_height="56dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="10dp"
                     android:backgroundTint="@color/Lavender"
-                    android:padding="12dp"
                     android:text="Edit Profile"
                     android:textColor="#FFFFFF"
+                    android:textSize="16sp"
                     android:textStyle="bold"
-                    android:layout_gravity="center"
-                    android:layout_marginRight="20dp" />
+                    app:cornerRadius="12dp"
+                    app:elevation="6dp"
+                    app:icon="@drawable/ic_edit"
+                    app:iconGravity="textStart"
+                    app:iconPadding="8dp"
+                    app:iconTint="#FFFFFF" />
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnLogout"
-                    android:layout_width="150dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_height="56dp"
+                    android:layout_weight="1"
+                    android:layout_marginStart="10dp"
                     android:backgroundTint="@color/Lavender"
-                    android:padding="12dp"
                     android:text="Log Out"
                     android:textColor="#FFFFFF"
+                    android:textSize="16sp"
                     android:textStyle="bold"
-                    android:layout_gravity="center" />
+                    app:cornerRadius="12dp"
+                    app:elevation="6dp"
+                    app:icon="@drawable/ic_logout"
+                    app:iconGravity="textStart"
+                    app:iconPadding="8dp"
+                    app:iconTint="#FFFFFF" />
             </LinearLayout>
         </LinearLayout>
 
-        <!-- Centered Loading Progress Bar -->
-        <ProgressBar
-            android:id="@+id/loading_progress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+        <!-- Enhanced Loading Progress Bar -->
+        <FrameLayout
+            android:id="@+id/loading_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:visibility="gone"
-            android:indeterminate="true"
-            style="@android:style/Widget.Material.ProgressBar.Large"
-            android:layout_gravity="center" />
+            android:background="#80000000">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="12dp"
+                app:cardBackgroundColor="#FFFFFF">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="20dp">
+
+                    <ProgressBar
+                        android:id="@+id/loading_progress"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:indeterminate="true"
+                        android:indeterminateTint="@color/Lavender"
+                        style="@style/Widget.AppCompat.ProgressBar" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="Loading..."
+                        android:textColor="@color/Lavender"
+                        android:textSize="16sp" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </FrameLayout>
     </RelativeLayout>
 </ScrollView>

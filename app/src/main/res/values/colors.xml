@@ -92,6 +92,9 @@
 <color name="divider">#E0E0E0</color>
 <color name="chip_text">#2196F3</color>
 
+    <color name="splashGradientStart">#F8F9FA</color>
+    <color name="splashGradientEnd">#E1F5FE</color>
+
 
 
 </resources>
