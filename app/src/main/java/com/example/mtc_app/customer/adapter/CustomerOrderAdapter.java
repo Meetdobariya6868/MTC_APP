@@ -1,6 +1,7 @@
-package com.example.mtc_app.customer.adapters;
+package com.example.mtc_app.customer.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,24 +12,20 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mtc_app.R;
+import com.example.mtc_app.admin.AdminOrderDetail;
 import com.example.mtc_app.customer.models.CustomerHomePageOrder;
 import com.google.android.material.button.MaterialButton;
 
 import java.util.List;
 
 public class CustomerOrderAdapter extends RecyclerView.Adapter<CustomerOrderAdapter.OrderViewHolder> {
+
     private List<CustomerHomePageOrder> orderList;
     private Context context;
-    private final OnOrderClickListener listener;
 
-    public interface OnOrderClickListener {
-        void onOrderClick(String orderId);
-    }
-
-    public CustomerOrderAdapter(Context context, List<CustomerHomePageOrder> orderList, OnOrderClickListener listener) {
+    public CustomerOrderAdapter(Context context, List<CustomerHomePageOrder> orderList) {
         this.context = context;
         this.orderList = orderList;
-        this.listener = listener;
     }
 
     @NonNull
@@ -41,13 +38,17 @@ public class CustomerOrderAdapter extends RecyclerView.Adapter<CustomerOrderAdap
     @Override
     public void onBindViewHolder(@NonNull OrderViewHolder holder, int position) {
         CustomerHomePageOrder order = orderList.get(position);
+
         holder.orderStatus.setText("Status: " + order.getStatus());
         holder.dispatchMode.setText("Dispatch Mode: " + order.getDispatchMode());
         holder.orderDate.setText("Date: " + order.getDate());
         holder.segment.setText("Segment: " + order.getSegment());
-        holder.price.setText("Total Price: " + order.getPrice());
-
-        holder.orderDetailsButton.setOnClickListener(v -> listener.onOrderClick(order.getOrderId()));
+        holder.price.setText("Total Price: ₹" + order.getPrice());
+        holder.orderDetailsButton.setOnClickListener(v -> {
+            Intent intent = new Intent(context, AdminOrderDetail.class);
+            intent.putExtra("orderId", order.getOrderId());
+            context.startActivity(intent);
+        });
     }
 
     @Override

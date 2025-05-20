@@ -1,5 +1,6 @@
 package com.example.mtc_app.customerRepresentative;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,11 +9,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -34,6 +39,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -71,6 +77,7 @@ public class CustomerDetails extends Fragment {
         recyclerView.setAdapter(adapter);
 
 
+
         Bundle args = getArguments();
         if (args != null) {
             customerPhone = args.getString("customer_phone");
@@ -91,7 +98,8 @@ public class CustomerDetails extends Fragment {
                 .get()
                 .addOnSuccessListener(querySnapshots -> {
                     orderList.clear();
-                    orderIds.clear(); // 🔹 Clear previously stored IDs
+                    orderIds.clear();
+
                     for (DocumentSnapshot doc : querySnapshots.getDocuments()) {
                         String segment = doc.getString("segment");
                         String dispatchMode = doc.getString("Mode of Dispatch");
@@ -106,16 +114,16 @@ public class CustomerDetails extends Fragment {
                                 price,
                                 status
                         );
+
                         orderList.add(order);
-                        orderIds.add(doc.getId()); // 🔹 Save document ID
+                        orderIds.add(doc.getId());
                     }
-                    adapter = new CustomerOrderAdapter(requireContext(), orderList, orderIds); // 🔹 Updated adapter call
-                    recyclerView.setAdapter(adapter);
+
+                    // 🔁 Reverse only once before setting in adapter
                     Collections.reverse(orderList);
                     Collections.reverse(orderIds);
-                    adapter.notifyDataSetChanged();
 
-                    adapter.notifyDataSetChanged();
+                    adapter.notifyDataSetChanged(); // Refresh existing adapter
                 })
                 .addOnFailureListener(e -> {
                     Log.e("OrderFetch", "Error fetching orders", e);

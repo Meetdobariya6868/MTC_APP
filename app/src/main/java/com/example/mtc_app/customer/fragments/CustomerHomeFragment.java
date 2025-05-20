@@ -1,7 +1,6 @@
 package com.example.mtc_app.customer.fragments;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
@@ -19,9 +18,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mtc_app.R;
-import com.example.mtc_app.customer.adapters.CustomerOrderAdapter;
+import com.example.mtc_app.customer.adapter.CustomerOrderAdapter;
 import com.example.mtc_app.customer.models.CustomerHomePageOrder;
-import com.example.mtc_app.customer.orders.CustomerOrderDetails;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -56,7 +54,7 @@ public class CustomerHomeFragment extends Fragment {
         searchInput = view.findViewById(R.id.searchInput);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        customerOrderAdapter = new CustomerOrderAdapter(getContext(), filteredOrderList, this::onOrderClick);
+        customerOrderAdapter = new CustomerOrderAdapter(getContext(), filteredOrderList); // removed listener
         recyclerView.setAdapter(customerOrderAdapter);
 
         loadCachedOrders();
@@ -175,11 +173,5 @@ public class CustomerHomeFragment extends Fragment {
             }
         }
         customerOrderAdapter.notifyDataSetChanged();
-    }
-
-    private void onOrderClick(String orderId) {
-        Intent intent = new Intent(getContext(), CustomerOrderDetails.class);
-        intent.putExtra("orderId", orderId);
-        startActivity(intent);
     }
 }

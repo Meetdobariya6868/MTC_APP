@@ -1,10 +1,14 @@
 package com.example.mtc_app.customerRepresentative;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -16,6 +20,7 @@ import com.example.mtc_app.admin.AdminOrderDetail;
 import com.example.mtc_app.customer.orders.CustomerOrderDetails;
 import com.example.mtc_app.customerRepresentative.CustomerOrder;
 import com.google.android.material.button.MaterialButton;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
 
@@ -50,15 +55,21 @@ public class CustomerOrderAdapter extends RecyclerView.Adapter<CustomerOrderAdap
         holder.segment.setText("Segment: " + order.getSegment());
         holder.dispatchMode.setText("Dispatch: " + order.getDispatchMode());
         holder.orderDate.setText("Date: " + order.getOrderDate());
+
+        // View Order Details
         holder.orderDetailsButton.setOnClickListener(v -> {
-            Intent intent = new Intent(context, AdminOrderDetail.class);  // Corrected class name
-            intent.putExtra("orderId", orderIds.get(position));           // Passing document ID
+            Intent intent = new Intent(context, AdminOrderDetail.class);
+            intent.putExtra("orderId", orderIds.get(position));
             context.startActivity(intent);
         });
 
-        // Optionally set the spinner value to match order.getStatus()
-        // Spinner dropdown may need adapter setup if not using static XML entries
+        // Setup Spinner
         String[] statuses = context.getResources().getStringArray(R.array.status_options);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, statuses);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        holder.statusDropdown.setAdapter(adapter);
+
+        // Set current status in dropdown
         for (int i = 0; i < statuses.length; i++) {
             if (statuses[i].equalsIgnoreCase(order.getStatus())) {
                 holder.statusDropdown.setSelection(i);
@@ -66,6 +77,8 @@ public class CustomerOrderAdapter extends RecyclerView.Adapter<CustomerOrderAdap
             }
         }
 
+        // Handle dropdown status change with confirmation
+        setupStatusDropdown(holder.statusDropdown, holder.orderStatus, orderIds.get(position), order.getStatus());
     }
 
     @Override
@@ -90,4 +103,63 @@ public class CustomerOrderAdapter extends RecyclerView.Adapter<CustomerOrderAdap
             orderDetailsButton = itemView.findViewById(R.id.orderDetailsButton);
         }
     }
+
+    private void setupStatusDropdown(Spinner spinner, TextView statusText, String orderId, String currentStatus) {
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            boolean isFirstSelection = true;
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (isFirstSelection) {
+                    isFirstSelection = false;
+                    return;
+                }
+
+                String newStatus = parent.getItemAtPosition(position).toString();
+
+                new AlertDialog.Builder(context)
+                        .setTitle("Change Status")
+                        .setMessage("Are you sure you want to update status to \"" + newStatus + "\"?")
+                        .setPositiveButton("Yes", (dialog, which) -> {
+                            statusText.setText(newStatus);
+
+                            // Choose colors
+                            int color = newStatus.equalsIgnoreCase("Open")
+                                    ? context.getResources().getColor(android.R.color.holo_green_dark)
+                                    : context.getResources().getColor(android.R.color.holo_orange_dark);
+
+                            statusText.setTextColor(color);
+
+                            // Set tinted dot icon to the left
+                            Drawable dot = context.getResources().getDrawable(android.R.drawable.presence_online).mutate();
+                            dot.setTint(color);
+                            statusText.setCompoundDrawablesWithIntrinsicBounds(dot, null, null, null);
+
+                            // Firestore update
+                            FirebaseFirestore.getInstance()
+                                    .collection("Total Orders")
+                                    .document(orderId)
+                                    .update("Status", newStatus);
+
+                        })
+                        .setNegativeButton("No", (dialog, which) -> {
+                            // Revert spinner if canceled
+                            String[] statuses = context.getResources().getStringArray(R.array.status_options);
+                            for (int i = 0; i < statuses.length; i++) {
+                                if (statuses[i].equalsIgnoreCase(currentStatus)) {
+                                    spinner.setSelection(i);
+                                    break;
+                                }
+                            }
+                            dialog.dismiss();
+                        })
+                        .show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
+    }
+
+
 }
