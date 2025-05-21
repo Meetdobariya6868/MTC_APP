@@ -1,6 +1,8 @@
 package com.example.mtc_app.customer.fragments;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -64,7 +66,7 @@ public class MakeOrderFragment extends Fragment {
     // Brick
     private CheckBox cbWaterAbsorptionBrick, cbDimensionTestBrick, cbCompressiveStrengthBrick, cbEfflorescenceBrick;
 
-    TextInputEditText etDiscount;
+    TextInputEditText etFinalPrice;
     // Soil
     private CheckBox cbCBRTestUnsoakedSoil, cbGrainSizeAnalysisSoil, cbTestSoakedSoil, cbPlasticLimitSoil;
     private CheckBox cbLightCompactionTestSoil, cbHeavyCompactionTestSoil, cbFreeSwellIndexSoil, cbUnconfinedCompressionSoil;
@@ -217,8 +219,24 @@ public class MakeOrderFragment extends Fragment {
         cbAbrasionValueCoarse = view.findViewById(R.id.AGGREGATE_abrasion_value_coarse);
         cbCrushingValueCoarse = view.findViewById(R.id.AGGREGATE_crushing_value_coarse);
         cbSoundnessCyclesCoarse = view.findViewById(R.id.AGGREGATE_soundness_cycles_coarse);
-        etDiscount = view.findViewById(R.id.et_discount);
+        etFinalPrice = view.findViewById(R.id.et_final_price);
+        etFinalPrice.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                updateDisplayedTotalPriceFromManualField();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+
+
         tvTotalPrice = view.findViewById(R.id.tv_total_price);
+
         cbAlkaliReactivityCoarse = view.findViewById(R.id.AGGREGATE_alkali_reactivity_coarse);
 
         // Initialize Paver Block checkboxes
@@ -957,6 +975,19 @@ public class MakeOrderFragment extends Fragment {
         return view;
     }
 
+    private void updateDisplayedTotalPriceFromManualField() {
+        String manualPriceStr = etFinalPrice.getText().toString().trim();
+        if (!manualPriceStr.isEmpty()) {
+            try {
+                int manualValue = Integer.parseInt(manualPriceStr);
+                tvTotalPrice.setText("Total Price: " + manualValue + " /- Rs");
+            } catch (NumberFormatException ignored) {}
+        } else {
+            tvTotalPrice.setText("Total Price: " + totalPrice + " /- Rs"); // fallback to auto-calculated
+        }
+    }
+
+
     @Override
     public void onResume() {
         super.onResume();
@@ -997,16 +1028,27 @@ public class MakeOrderFragment extends Fragment {
         String Lab = etLab.getText().toString().trim();
         String LabJob = etLabJob.getText().toString().trim();
 
-        TextInputEditText etDiscount = view.findViewById(R.id.et_discount);
-        String discountStr = etDiscount.getText().toString().trim();
-        int discount = 0;
-        if (!discountStr.isEmpty()) {
-            try {
-                discount = Integer.parseInt(discountStr);
-            } catch (NumberFormatException e) {
-                discount = 0;
+        etFinalPrice = view.findViewById(R.id.et_final_price);
+        etFinalPrice.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                calculateTotalPrice();  // Automatically update totalPrice display
             }
-        }
+        });
+
+
+        tvTotalPrice.setText("Total Price: " + totalPrice + " /- Rs");
+        updateDisplayedTotalPriceFromManualField();
+
+
+
+
 
         // Validate inputs
         if (!validateInputs(customerName, dispatchAddress, mobileNumber, email, Lab, LabJob)) return;
@@ -1227,9 +1269,8 @@ public class MakeOrderFragment extends Fragment {
 //        data.put("Terms And Conditions", termsAndConditions);
         data.put("Created At", createdAt);
 
-        int finalPrice = Math.max(totalPrice - discount, 0);
-        data.put("Total Price", finalPrice);
-        data.put("Discount", discount);
+        data.put("Total Price", totalPrice);
+
 
         data.put("Radio Selections", radioSelections);
         data.put("Selected Points", selectedPoints);
@@ -1484,19 +1525,19 @@ public class MakeOrderFragment extends Fragment {
 
 
     private void calculateTotalPrice() {
-        String discountStr = etDiscount.getText().toString().trim();
-        int discount = 0;
-        if (!discountStr.isEmpty()) {
+        String manualPriceStr = etFinalPrice.getText().toString().trim();
+        if (!manualPriceStr.isEmpty()) {
             try {
-                discount = Integer.parseInt(discountStr);
+                totalPrice = Integer.parseInt(manualPriceStr);  // Override totalPrice
             } catch (NumberFormatException e) {
-                discount = 0;
+                // Keep totalPrice unchanged if input is invalid
             }
         }
-
-        int finalPrice = Math.max(totalPrice - discount, 0);
-        tvTotalPrice.setText("Total Price: " + finalPrice + " /- Rs");
+        tvTotalPrice.setText("Total Price: " + totalPrice + " /- Rs");
     }
+
+
+
 
 
 
