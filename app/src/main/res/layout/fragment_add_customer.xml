@@ -1,110 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="685dp"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_marginBottom="8dp"
-    android:layout_marginEnd="24dp"
-    android:layout_marginStart="24dp"
-    android:layout_marginTop="8dp"
-    android:orientation="vertical"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    android:fitsSystemWindows="true">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:background="#FFFFFF">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/loginHeader"
-        android:text="Add Customer"
-        android:layout_marginTop="@dimen/loginViewsMargin" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputName"
-        style="@style/parent"
-        android:layout_marginTop="@dimen/loginViewsMargin">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/editTextName"
-            style="@style/modifiedEditText"
-            android:hint="@string/login_name_hint"
-            android:inputType="textPersonName"
-            android:maxLines="1" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputMobile"
-        style="@style/parent"
-        android:layout_marginTop="@dimen/loginViewsMargin">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/editTextMobile"
-            style="@style/modifiedEditText"
-            android:hint="@string/login_mobile_number_hint"
-            android:inputType="phone"
-            android:maxLines="1" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputEmail"
-        style="@style/parent"
-        android:layout_marginTop="@dimen/loginViewsMargin">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/editTextEmail"
-            style="@style/modifiedEditText"
-            android:hint="@string/login_email_hint"
-            android:inputType="textEmailAddress"
-            android:maxLines="1" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputPassword"
-        style="@style/parent"
-        android:layout_marginTop="@dimen/loginViewsMargin">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/editTextPassword"
-            style="@style/modifiedEditText"
-            android:hint="@string/login_password_hint"
-            android:inputType="textPassword"
-            android:maxLines="1" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <!-- Address Field -->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputAddress"
-        style="@style/parent"
-        android:layout_marginTop="@dimen/loginViewsMargin">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/editTextAddress"
-            style="@style/modifiedEditText"
-            android:hint="Address"
-            android:inputType="textPostalAddress"
-            android:maxLines="1" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <!-- Signup Button -->
-    <Button
-        android:id="@+id/addCustomerButton"
+    <!-- Toolbar at the top -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        style="@style/loginButton"
-        android:text="Add"
-        android:textSize="20sp"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/loginViewsMargin" />
-
-    <!-- Progress Bar -->
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/loginViewsMargin" />
+        android:background="@color/Lavender"
+        app:title="Add Customer"
+        android:titleTextColor="@android:color/white"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-</LinearLayout>
+
+    <!-- Form content below toolbar -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar"
+        android:paddingTop="8dp"
+        android:paddingBottom="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/loginHeader"
+                android:text="Add Customer"
+                android:layout_marginTop="@dimen/loginViewsMargin" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputName"
+                style="@style/parent"
+                android:layout_marginTop="@dimen/loginViewsMargin">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextName"
+                    style="@style/modifiedEditText"
+                    android:hint="@string/login_name_hint"
+                    android:inputType="textPersonName"
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputMobile"
+                style="@style/parent"
+                android:layout_marginTop="@dimen/loginViewsMargin">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextMobile"
+                    style="@style/modifiedEditText"
+                    android:hint="@string/login_mobile_number_hint"
+                    android:inputType="phone"
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputEmail"
+                style="@style/parent"
+                android:layout_marginTop="@dimen/loginViewsMargin">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextEmail"
+                    style="@style/modifiedEditText"
+                    android:hint="@string/login_email_hint"
+                    android:inputType="textEmailAddress"
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputPassword"
+                style="@style/parent"
+                android:layout_marginTop="@dimen/loginViewsMargin">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextPassword"
+                    style="@style/modifiedEditText"
+                    android:hint="@string/login_password_hint"
+                    android:inputType="textPassword"
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputAddress"
+                style="@style/parent"
+                android:layout_marginTop="@dimen/loginViewsMargin">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextAddress"
+                    style="@style/modifiedEditText"
+                    android:hint="Address"
+                    android:inputType="textPostalAddress"
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/addCustomerButton"
+                android:layout_width="match_parent"
+                style="@style/loginButton"
+                android:text="Add"
+                android:textSize="20sp"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/loginViewsMargin" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/loginViewsMargin" />
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

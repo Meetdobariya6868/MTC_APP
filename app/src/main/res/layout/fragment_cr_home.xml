@@ -1,14 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    android:id="@+id/fragment_container"
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="685dp"
+    android:layout_height="match_parent"
     android:background="#FFFFFF"
     android:fitsSystemWindows="true">
 
+    <!-- Toolbar -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/Lavender"
+        app:title="Home"
+        android:titleTextColor="@android:color/white"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
+    <!-- Search Bar -->
     <LinearLayout
         android:id="@+id/searchBarLayout"
         android:layout_width="match_parent"
@@ -37,33 +47,22 @@
             android:singleLine="true"
             android:textColor="@android:color/black"
             android:textColorHint="@android:color/darker_gray"/>
-
-        <!--        <ImageView-->
-        <!--            android:id="@+id/filterIcon"-->
-        <!--            android:layout_width="24dp"-->
-        <!--            android:layout_height="24dp"-->
-        <!--            android:contentDescription="Filter Icon"-->
-        <!--            android:src="@drawable/filter"-->
-        <!--            app:tint="@color/Lavender" />-->
     </LinearLayout>
 
-    <!-- 🔄 Progress Bar -->
+    <!-- RecyclerView -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewCustomers"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingHorizontal="3dp"/>
+
+    <!-- Progress Bar (optional placement at bottom or above list) -->
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@id/searchView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/recyclerView"
-        android:layout_marginTop="12dp"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewCustomers"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="72dp"
-        android:paddingHorizontal="3dp"/>
-
-</FrameLayout>
+        android:layout_marginBottom="16dp"/>
+</LinearLayout>

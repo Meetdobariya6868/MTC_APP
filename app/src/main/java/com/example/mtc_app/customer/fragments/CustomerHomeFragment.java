@@ -26,6 +26,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class CustomerHomeFragment extends Fragment {
 
@@ -106,13 +107,27 @@ public class CustomerHomeFragment extends Fragment {
                         List<CustomerHomePageOrder> fetchedList = new ArrayList<>();
 
                         for (QueryDocumentSnapshot document : task.getResult()) {
+                            String orderId = document.getId();
+                            String status = document.getString("Status");
+                            String createdAt = document.getString("Created At");
+                            int totalPrice = document.getLong("Total Price") != null
+                                    ? document.getLong("Total Price").intValue()
+                                    : 0;
+
+                            String dispatchMode = "";
+                            Map<String, Object> radioSelections = (Map<String, Object>) document.get("Radio Selections");
+                            if (radioSelections != null && radioSelections.containsKey("Mode of Dispatch")) {
+                                dispatchMode = String.valueOf(radioSelections.get("Mode of Dispatch"));
+                            }
+
                             CustomerHomePageOrder order = new CustomerHomePageOrder(
-                                    document.getId(),
-                                    document.getString("Status"),
-                                    document.getString("Mode of Dispatch"),
-                                    document.getString("Created At"),
-                                    document.getLong("Total Price") != null ? document.getLong("Total Price").intValue() : 0
+                                    orderId,
+                                    status,
+                                    dispatchMode,
+                                    createdAt,
+                                    totalPrice
                             );
+
                             fetchedList.add(order);
                         }
 
@@ -130,6 +145,7 @@ public class CustomerHomeFragment extends Fragment {
                     }
                 });
     }
+
 
     private void cacheOrders(List<CustomerHomePageOrder> orders) {
         Context context = getContext();

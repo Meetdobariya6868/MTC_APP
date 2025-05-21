@@ -4,8 +4,10 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ParseException;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,10 +40,14 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 public class CustomerDetails extends Fragment {
 
@@ -100,37 +106,50 @@ public class CustomerDetails extends Fragment {
                     orderList.clear();
                     orderIds.clear();
 
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+                    List<Pair<CustomerOrder, String>> tempList = new ArrayList<>();
+
                     for (DocumentSnapshot doc : querySnapshots.getDocuments()) {
+                        String status = doc.getString("Status");
+                        if (status == null || !status.equalsIgnoreCase("Open")) continue;
+
                         String segment = doc.getString("segment");
-                        String dispatchMode = doc.getString("Mode of Dispatch");
                         String orderDate = doc.getString("Created At");
                         String price = String.valueOf(doc.get("Total Price"));
-                        String status = doc.getString("Status");
+                        Map<String, Object> radioSelections = (Map<String, Object>) doc.get("Radio Selections");
+                        String dispatchMode = "";
 
-                        CustomerOrder order = new CustomerOrder(
-                                segment,
-                                dispatchMode,
-                                orderDate,
-                                price,
-                                status
-                        );
+                        if (radioSelections != null && radioSelections.containsKey("Mode of Dispatch")) {
+                            dispatchMode = String.valueOf(radioSelections.get("Mode of Dispatch"));
+                        }
 
-                        orderList.add(order);
+                        CustomerOrder order = new CustomerOrder(segment, dispatchMode, orderDate, price, status);
                         orderIds.add(doc.getId());
+                        tempList.add(new Pair<>(order, orderDate));
                     }
 
-                    // 🔁 Reverse only once before setting in adapter
-                    Collections.reverse(orderList);
-                    Collections.reverse(orderIds);
+                    // Sort by date descending
+                    Collections.sort(tempList, (o1, o2) -> {
+                        try {
+                            Date d1 = sdf.parse(o1.second);
+                            Date d2 = sdf.parse(o2.second);
+                            return d2.compareTo(d1); // Newest first
+                        } catch (ParseException | java.text.ParseException e) {
+                            return 0;
+                        }
+                    });
 
-                    adapter.notifyDataSetChanged(); // Refresh existing adapter
+                    for (Pair<CustomerOrder, String> pair : tempList) {
+                        orderList.add(pair.first);
+                    }
+
+                    adapter.notifyDataSetChanged();
                 })
                 .addOnFailureListener(e -> {
                     Log.e("OrderFetch", "Error fetching orders", e);
                     Toast.makeText(requireContext(), "Failed to load orders", Toast.LENGTH_SHORT).show();
                 });
     }
-
 
     private void setButtonHandlers(View view) {
         MaterialButton editButton = view.findViewById(R.id.editButton);

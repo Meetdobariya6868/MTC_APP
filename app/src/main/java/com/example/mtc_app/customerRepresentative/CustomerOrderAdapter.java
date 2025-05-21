@@ -78,7 +78,7 @@ public class CustomerOrderAdapter extends RecyclerView.Adapter<CustomerOrderAdap
         }
 
         // Handle dropdown status change with confirmation
-        setupStatusDropdown(holder.statusDropdown, holder.orderStatus, orderIds.get(position), order.getStatus());
+        setupStatusDropdown(holder.statusDropdown, holder.orderStatus, orderIds.get(position), order.getStatus(), position);
     }
 
     @Override
@@ -104,18 +104,18 @@ public class CustomerOrderAdapter extends RecyclerView.Adapter<CustomerOrderAdap
         }
     }
 
-    private void setupStatusDropdown(Spinner spinner, TextView statusText, String orderId, String currentStatus) {
+    private void setupStatusDropdown(Spinner spinner, TextView statusText, String orderId, String currentStatus, int position) {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             boolean isFirstSelection = true;
 
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
                 if (isFirstSelection) {
                     isFirstSelection = false;
                     return;
                 }
 
-                String newStatus = parent.getItemAtPosition(position).toString();
+                String newStatus = parent.getItemAtPosition(pos).toString();
 
                 new AlertDialog.Builder(context)
                         .setTitle("Change Status")
@@ -123,27 +123,36 @@ public class CustomerOrderAdapter extends RecyclerView.Adapter<CustomerOrderAdap
                         .setPositiveButton("Yes", (dialog, which) -> {
                             statusText.setText(newStatus);
 
-                            // Choose colors
                             int color = newStatus.equalsIgnoreCase("Open")
                                     ? context.getResources().getColor(android.R.color.holo_green_dark)
                                     : context.getResources().getColor(android.R.color.holo_orange_dark);
 
                             statusText.setTextColor(color);
 
-                            // Set tinted dot icon to the left
-                            Drawable dot = context.getResources().getDrawable(android.R.drawable.presence_online).mutate();
+                            Drawable dot = context.getResources()
+                                    .getDrawable(android.R.drawable.presence_online)
+                                    .mutate();
                             dot.setTint(color);
                             statusText.setCompoundDrawablesWithIntrinsicBounds(dot, null, null, null);
 
-                            // Firestore update
+                            // Firestore status update
                             FirebaseFirestore.getInstance()
                                     .collection("Total Orders")
                                     .document(orderId)
-                                    .update("Status", newStatus);
+                                    .update("Status", newStatus)
+                                    .addOnSuccessListener(unused -> {
+                                        if (newStatus.equalsIgnoreCase("Reported")) {
+                                            // Remove from current list and notify
+                                            orderList.remove(position);
+                                            orderIds.remove(position);
+                                            notifyItemRemoved(position);
+                                            notifyItemRangeChanged(position, orderList.size());
+                                        }
+                                    });
 
                         })
                         .setNegativeButton("No", (dialog, which) -> {
-                            // Revert spinner if canceled
+                            // Revert spinner if cancelled
                             String[] statuses = context.getResources().getStringArray(R.array.status_options);
                             for (int i = 0; i < statuses.length; i++) {
                                 if (statuses[i].equalsIgnoreCase(currentStatus)) {
@@ -160,6 +169,7 @@ public class CustomerOrderAdapter extends RecyclerView.Adapter<CustomerOrderAdap
             public void onNothingSelected(AdapterView<?> parent) {}
         });
     }
+
 
 
 }

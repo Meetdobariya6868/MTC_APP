@@ -220,4 +220,15 @@ public class CRProfile extends Fragment {
                     Toast.makeText(requireContext(), "Failed to load profile.", Toast.LENGTH_SHORT).show();
                 });
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser != null) {
+            fetchProfileData(currentUser.getUid());  // Force fresh reload
+        }
+    }
+
 }

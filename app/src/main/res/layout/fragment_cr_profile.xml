@@ -6,9 +6,11 @@
     android:fillViewport="true"
     android:background="#FFFFFF">
 
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
 
         <View
             android:layout_width="match_parent"
@@ -22,6 +24,7 @@
             android:layout_marginTop="70dp"
             android:paddingTop="16dp"
             android:paddingBottom="30dp">
+
 
             <!-- Profile Image -->
             <FrameLayout

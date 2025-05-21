@@ -31,14 +31,15 @@
         android:background="@color/white">
 
         <!-- Toolbar -->
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:background="@color/Lavender"
-            android:elevation="4dp"
-            android:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+<!--        <androidx.appcompat.widget.Toolbar-->
+<!--            android:id="@+id/toolbar"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="56dp"-->
+<!--            android:background="@color/Lavender"-->
+<!--            android:elevation="4dp"-->
+<!--            app:title="Home"-->
+<!--            android:popupTheme="@style/ThemeOverlay.AppCompat.Light"-->
+<!--            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />-->
 
         <!-- Main Content Area -->
         <FrameLayout
