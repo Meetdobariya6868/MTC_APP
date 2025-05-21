@@ -1619,21 +1619,6 @@
                             android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
-                        <!-- Discount Input Field -->
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/til_discount"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="Enter Discount in Rs"
-                            app:boxBackgroundMode="outline">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/et_discount"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:inputType="number" />
-                        </com.google.android.material.textfield.TextInputLayout>
-
                         <!-- Total Price Display -->
                         <TextView
                             android:id="@+id/tv_total_price"
@@ -1949,6 +1934,22 @@
                             android:inputType="text"
                             android:textColorHint="@color/gray" />
                     </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Discount Input Field -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/til_discount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Enter Final Price in Rs"
+                        app:boxBackgroundMode="outline">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_final_price"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="number" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
                 </LinearLayout>
             </ScrollView>
         </LinearLayout>

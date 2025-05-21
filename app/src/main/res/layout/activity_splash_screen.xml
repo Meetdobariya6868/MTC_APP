@@ -3,16 +3,141 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white">
+    android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/logoImage"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:src="@drawable/mtc_logo"
+    <!-- Gradient Background -->
+    <View
+        android:id="@+id/backgroundGradient"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/splash_gradient_bg"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Particle Background View -->
+    <com.example.mtc_app.splashScreen.ParticlesView
+        android:id="@+id/particleView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Circular Reveal Container -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/logoContainer"
+        android:layout_width="280dp"
+        android:layout_height="280dp"
+        app:cardCornerRadius="140dp"
+        app:cardElevation="16dp"
+        app:cardBackgroundColor="#FFFFFF"
+        android:alpha="0.98"
+        android:contentDescription="Logo container"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- Ripple Background for Logo -->
+        <com.skyfishjy.library.RippleBackground
+            android:id="@+id/rippleBackground"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:rb_color="#2196F3"
+            app:rb_radius="32dp"
+            app:rb_rippleAmount="5"
+            app:rb_duration="3000"
+            app:rb_scale="6">
+
+            <!-- Fixed Logo Image - Using FrameLayout to properly center the image -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center">
+
+                <ImageView
+                    android:id="@+id/logoImage"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:src="@drawable/mtc_logo"
+                    android:layout_gravity="center"
+                    android:contentDescription="MTC Company Logo"
+                    android:scaleType="fitCenter"
+                    android:adjustViewBounds="true"
+                    android:padding="10dp" />
+            </FrameLayout>
+
+        </com.skyfishjy.library.RippleBackground>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Pulsating Outer Circle -->
+    <View
+        android:id="@+id/pulseCircle"
+        android:layout_width="310dp"
+        android:layout_height="310dp"
+        android:background="@drawable/circle_outline"
+        app:layout_constraintTop_toTopOf="@id/logoContainer"
+        app:layout_constraintBottom_toBottomOf="@id/logoContainer"
+        app:layout_constraintStart_toStartOf="@id/logoContainer"
+        app:layout_constraintEnd_toEndOf="@id/logoContainer"/>
+
+    <!-- Interactive Progress Ring -->
+    <com.mikhaellopez.circularprogressbar.CircularProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="320dp"
+        android:layout_height="320dp"
+        app:cpb_background_progressbar_color="#ECEFF1"
+        app:cpb_background_progressbar_width="4dp"
+        app:cpb_progress_direction="to_right"
+        app:cpb_progress_max="100"
+        app:cpb_progressbar_color="#2196F3"
+        app:cpb_progressbar_width="4dp"
+        app:cpb_round_border="true"
+        android:contentDescription="Loading progress"
+        app:layout_constraintTop_toTopOf="@id/logoContainer"
+        app:layout_constraintBottom_toBottomOf="@id/logoContainer"
+        app:layout_constraintStart_toStartOf="@id/logoContainer"
+        app:layout_constraintEnd_toEndOf="@id/logoContainer"/>
+
+    <!-- Brand Name with Modern Typography -->
+    <TextView
+        android:id="@+id/brandText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="MTC"
+        android:textSize="42sp"
+        android:textColor="#2E3B4E"
+        android:textStyle="bold"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:letterSpacing="0.1"
+        android:alpha="0"
+        android:elevation="4dp"
+        android:layout_marginTop="40dp"
+        app:layout_constraintTop_toBottomOf="@id/logoContainer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Enhanced Tagline with Subtle Shadow -->
+    <TextView
+        android:id="@+id/taglineText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="A Material Testing App"
+        android:textSize="18sp"
+        android:textColor="#5D7290"
+        android:fontFamily="sans-serif-light"
+        android:letterSpacing="0.05"
+        android:alpha="0"
+        android:shadowColor="#22000000"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="2"
+        android:elevation="4dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/brandText"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
