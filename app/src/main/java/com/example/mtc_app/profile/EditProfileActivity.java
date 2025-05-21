@@ -31,7 +31,7 @@ public class EditProfileActivity extends AppCompatActivity {
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int REQUEST_IMAGE_PICK = 2;
 
-    private EditText addressEditText, phoneEditText;
+    private EditText addressEditText, phoneEditText, nameEditText;
     private Button saveButton, tryAgainButton, okButton;
     private ImageView profileImage;
     private View buttonsLayout;
@@ -49,6 +49,7 @@ public class EditProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_profile);
 
         addressEditText = findViewById(R.id.edit_address);
+        nameEditText = findViewById(R.id.edit_name);
         phoneEditText = findViewById(R.id.edit_phone);
         saveButton = findViewById(R.id.save_button);
 //        tryAgainButton = findViewById(R.id.tryAgainButton);
@@ -76,9 +77,10 @@ public class EditProfileActivity extends AppCompatActivity {
         saveButton.setOnClickListener(v -> {
             String newAddress = addressEditText.getText().toString().trim();
             String newPhone = phoneEditText.getText().toString().trim();
+            String newName = nameEditText.getText().toString().trim();
 
             String userId = auth.getCurrentUser().getUid();
-            updateProfile(userId, newAddress, newPhone);
+            updateProfile(userId, newAddress, newPhone, newName);
         });
     }
 
@@ -97,10 +99,12 @@ public class EditProfileActivity extends AppCompatActivity {
     private void populateUserData(DocumentSnapshot documentSnapshot) {
         String address = documentSnapshot.getString("address");
         String phone = documentSnapshot.getString("phone");
+        String name = documentSnapshot.getString("name");
         String imageUrl = documentSnapshot.getString("image");
 
         addressEditText.setText(address);
         phoneEditText.setText(phone);
+        nameEditText.setText(name);
 
         if (imageUrl != null && !imageUrl.isEmpty()) {
             // Load the image using a library like Glide or Picasso
@@ -146,9 +150,9 @@ public class EditProfileActivity extends AppCompatActivity {
         }
     }
 
-    private void updateProfile(String userId, String newAddress, String newPhone) {
+    private void updateProfile(String userId, String newAddress, String newPhone, String newName) {
         firestore.collection("users").document(userId)
-                .update("address", newAddress, "phone", newPhone)
+                .update("address", newAddress, "phone", newPhone, "name", newName)
                 .addOnSuccessListener(aVoid -> {
                     // Show success toast
                     Toast.makeText(this, "Profile updated successfully!", Toast.LENGTH_SHORT).show();

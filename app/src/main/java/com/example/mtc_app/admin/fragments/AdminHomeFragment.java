@@ -10,12 +10,18 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
 import com.example.mtc_app.R;
 import com.example.mtc_app.admin.AdminOrderDetail;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,30 +30,25 @@ public class AdminHomeFragment extends Fragment {
     private LinearLayout orderContainer;
     private FirebaseFirestore db;
     private EditText searchView;
-    private List<DocumentSnapshot> allOrders = new ArrayList<>(); // Store all fetched orders
+    private List<DocumentSnapshot> allOrders = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_admin_home, container, false);
 
-        // Initialize Firestore
         db = FirebaseFirestore.getInstance();
-
-        // Find Views
         orderContainer = rootView.findViewById(R.id.orderContainer);
-        searchView = rootView.findViewById(R.id.searchView); // Get reference to EditText
+        searchView = rootView.findViewById(R.id.searchView);
 
-        // Fetch orders dynamically
-        loadOrdersFromFirestore();
+        listenToOrderChanges(); // Start listening for real-time updates
 
-        // Add search listener
         searchView.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                filterOrders(s.toString()); // Filter as user types
+                filterOrders(s.toString());
             }
 
             @Override
@@ -57,13 +58,25 @@ public class AdminHomeFragment extends Fragment {
         return rootView;
     }
 
-    private void loadOrdersFromFirestore() {
+    private void listenToOrderChanges() {
         db.collection("Total Orders")
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful() && task.getResult() != null) {
-                        allOrders = task.getResult().getDocuments(); // Store all orders globally
-                        displayOrders(allOrders); // Show all orders initially
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                        if (error != null) {
+                            // Handle error
+                            return;
+                        }
+
+                        if (value != null) {
+                            allOrders = value.getDocuments();
+                            String query = searchView.getText().toString();
+                            if (!query.isEmpty()) {
+                                filterOrders(query);
+                            } else {
+                                displayOrders(allOrders);
+                            }
+                        }
                     }
                 });
     }
@@ -81,7 +94,7 @@ public class AdminHomeFragment extends Fragment {
             }
         }
 
-        displayOrders(filteredOrders); // Refresh the UI with filtered results
+        displayOrders(filteredOrders);
     }
 
     private void displayOrders(List<DocumentSnapshot> orders) {
@@ -92,19 +105,14 @@ public class AdminHomeFragment extends Fragment {
             TextView orderTitle = orderView.findViewById(R.id.orderTitle);
             TextView customerName = orderView.findViewById(R.id.customerName);
 
-            // Fetch data dynamically
             String orderId = order.getId();
             String name = order.getString("Customer Name");
             String phone = order.getString("Mobile Number");
 
-            // Set data to UI
             orderTitle.setText("Order ID: " + name);
             customerName.setText("Customer: " + phone);
 
-            // Set click listener to open order details
             orderView.setOnClickListener(v -> openOrderDetail(order));
-
-            // Add dynamic order card to container
             orderContainer.addView(orderView);
         }
     }

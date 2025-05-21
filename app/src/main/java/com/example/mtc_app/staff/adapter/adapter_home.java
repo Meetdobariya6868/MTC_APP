@@ -43,6 +43,7 @@ public class adapter_home extends RecyclerView.Adapter<adapter_home.HomeViewHold
         holder.itemIcon.setImageResource(item.getIconResId());
         holder.testSummary.setText(item.getTestSummary()); // Ensure testSummary is displayed
         holder.itemActionIcon.setImageResource(R.drawable.ic_chevron_right);
+        holder.orderStatus.setText(item.getOrderStatus());
 
 //        holder.cardView.setOnClickListener(v -> {
 //            Intent intent = new Intent(context, staff_detailed_page.class);
@@ -52,6 +53,22 @@ public class adapter_home extends RecyclerView.Adapter<adapter_home.HomeViewHold
 //            intent.putExtra("testSummary", item.getTestSummary()); // Pass testSummary to details page
 //            context.startActivity(intent);
 //        });
+
+        // Show popup with full test selection details on click
+        holder.cardView.setOnClickListener(v -> {
+            androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(context);
+            builder.setTitle("Test Selections");
+
+            // Format testSummary with line breaks if needed
+            String formattedTestSummary = item.getTestSummary().replace(",", ",\n").replace("{", "").replace("}", "").replace("[", "").replace("]", "");
+
+            builder.setMessage(formattedTestSummary);
+
+            builder.setPositiveButton("Close", (dialog, which) -> dialog.dismiss());
+
+            androidx.appcompat.app.AlertDialog dialog = builder.create();
+            dialog.show();
+        });
     }
 
     @Override
@@ -60,7 +77,7 @@ public class adapter_home extends RecyclerView.Adapter<adapter_home.HomeViewHold
     }
 
     public static class HomeViewHolder extends RecyclerView.ViewHolder {
-        TextView itemTitle, itemSubtitle, testSummary; // Added testSummary
+        TextView itemTitle, itemSubtitle, testSummary, orderStatus; // Added testSummary
         ImageView itemIcon, itemActionIcon;
         CardView cardView;
 
@@ -70,8 +87,10 @@ public class adapter_home extends RecyclerView.Adapter<adapter_home.HomeViewHold
             itemSubtitle = itemView.findViewById(R.id.itemSubtitle);
             testSummary = itemView.findViewById(R.id.itemSample); // Ensure this exists in XML
             itemIcon = itemView.findViewById(R.id.itemIcon);
+            orderStatus = itemView.findViewById(R.id.orderStatus);
             itemActionIcon = itemView.findViewById(R.id.itemActionIcon);
             cardView = itemView.findViewById(R.id.cardView);
+
         }
     }
 }

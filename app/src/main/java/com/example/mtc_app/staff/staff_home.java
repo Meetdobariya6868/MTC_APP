@@ -126,16 +126,17 @@ public class staff_home extends AppCompatActivity {
 
                             // If filteredTestSelections is empty, it means this order has no relevant tests
                             if (!filteredTestSelections.isEmpty()) {
-                                String title = doc.getString("Customer Name");
-                                String subtitle = doc.getString("Dispatch Address");
+                                String title = doc.getString("LabNumber");
+                                String subtitle = doc.getString("Created At");
                                 String categoryItem = doc.getString("Email");
+                                String orderStatus = doc.getString("Status");
                                 String testSummary = filteredTestSelections.toString(); // Convert filtered Map to String
 
                                 // Log fetched data
                                 Log.d("Firestore", "Filtered Item: " + title + " | " + subtitle + " | " + categoryItem + " | " + testSummary);
 
                                 // Create ItemData object
-                                ItemData item = new ItemData(title, subtitle, R.drawable.ic_placeholder, categoryItem, testSummary);
+                                ItemData item = new ItemData(title, subtitle, R.drawable.ic_placeholder, categoryItem, testSummary, orderStatus);
                                 itemList.add(item);
                             }
                         }

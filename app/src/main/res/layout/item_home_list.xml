@@ -67,7 +67,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Segment: "
+                    android:text="Date: "
                     android:textColor="#757575"
                     android:textSize="14sp" />
 
@@ -75,7 +75,7 @@
                     android:id="@+id/itemSubtitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Agricultural"
+                    android:text="2025-05-18"
                     android:textColor="#333333"
                     android:textSize="14sp" />
             </LinearLayout>
@@ -89,7 +89,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Date: "
+                    android:text="Segment: "
                     android:textColor="#757575"
                     android:textSize="14sp" />
 
@@ -97,7 +97,7 @@
                     android:id="@+id/itemSample"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="2025-05-18"
+                    android:text="Architech"
                     android:textColor="#333333"
                     android:textSize="14sp"
                     android:maxLines="3"
