@@ -92,11 +92,13 @@ public class AdminHomeFragment extends Fragment {
         List<DocumentSnapshot> filteredOrders = new ArrayList<>();
 
         for (DocumentSnapshot order : allOrders) {
-            String name = order.getString("Customer Name");
+            String customerName = order.getString("Customer Name");
             String phone = order.getString("Mobile Number");
+            String jobId = order.getString("LabJobNumber"); // Get Job ID from Firestore
 
-            if ((name != null && name.toLowerCase().contains(query.toLowerCase())) ||
-                    (phone != null && phone.contains(query))) {
+            if ((customerName != null && customerName.toLowerCase().contains(query.toLowerCase())) ||
+                    (phone != null && phone.contains(query)) ||
+                    (jobId != null && jobId.toLowerCase().contains(query.toLowerCase()))) {
                 filteredOrders.add(order);
             }
         }
@@ -109,15 +111,16 @@ public class AdminHomeFragment extends Fragment {
 
         for (DocumentSnapshot order : orders) {
             View orderView = getLayoutInflater().inflate(R.layout.order_card, orderContainer, false);
-            TextView orderTitle = orderView.findViewById(R.id.orderTitle);
-            TextView customerName = orderView.findViewById(R.id.customerName);
+            TextView jobIdTextView = orderView.findViewById(R.id.jobId);
+            TextView customerNameTextView = orderView.findViewById(R.id.customerName);
 
-            String orderId = order.getId();
-            String name = order.getString("Customer Name");
-            String phone = order.getString("Mobile Number");
+            // Get the correct data from Firestore
+            String jobId = order.getString("LabJobNumber");
+            String customerName = order.getString("Customer Name");
 
-            orderTitle.setText("Order ID: " + name);
-            customerName.setText("Customer: " + phone);
+            // Display Job ID and Customer Name correctly
+            jobIdTextView.setText("Job ID: " + (jobId != null ? jobId : "N/A"));
+            customerNameTextView.setText("Customer: " + (customerName != null ? customerName : "N/A"));
 
             orderView.setOnClickListener(v -> openOrderDetail(order));
             orderContainer.addView(orderView);
@@ -130,6 +133,7 @@ public class AdminHomeFragment extends Fragment {
         intent.putExtra("name", order.getString("Customer Name"));
         intent.putExtra("address", order.getString("Dispatch Address"));
         intent.putExtra("phone", order.getString("Mobile Number"));
+        intent.putExtra("jobId", order.getString("LabJobNumber"));
         startActivity(intent);
     }
 }

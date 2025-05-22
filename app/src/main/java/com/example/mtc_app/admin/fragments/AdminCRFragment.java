@@ -95,27 +95,22 @@ public class AdminCRFragment extends Fragment {
         for (DocumentSnapshot cr : crUsers) {
             String name = cr.getString("name");
             String phone = cr.getString("phone");
-            addCRCard(name, phone);
+            addCRCard(name, phone, cr.getId()); // Pass document ID
         }
     }
 
-    private void addCRCard(String name, String phone) {
+    private void addCRCard(String name, String phone, String crUid) {
         View cardView = getLayoutInflater().inflate(R.layout.order_card, crContainer, false);
 
-        TextView nameTextView = cardView.findViewById(R.id.orderTitle);
+        TextView nameTextView = cardView.findViewById(R.id.jobId);
         TextView phoneTextView = cardView.findViewById(R.id.customerName);
 
-        nameTextView.setText(name);
-        phoneTextView.setText(phone);
+        // Display CR Name and Phone correctly
+        nameTextView.setText("CR Name: " + (name != null ? name : "N/A"));
+        phoneTextView.setText("Phone: " + (phone != null ? phone : "N/A"));
 
         cardView.setOnClickListener(v -> {
-            for (DocumentSnapshot cr : allCRUsers) {
-                if (name.equals(cr.getString("name")) && phone.equals(cr.getString("phone"))) {
-                    String crUid = cr.getId(); // assuming doc ID is UID
-                    openCRHome(crUid, name);
-                    break;
-                }
-            }
+            openCRHome(crUid, name);
         });
 
         crContainer.addView(cardView);
@@ -127,5 +122,4 @@ public class AdminCRFragment extends Fragment {
         intent.putExtra("cr_name", crName);
         startActivity(intent);
     }
-
 }

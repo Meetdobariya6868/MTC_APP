@@ -67,11 +67,8 @@ public class AdminStaffFragment extends Fragment {
         cement.setOnClickListener(v -> openStaffModule("cement"));
         steel.setOnClickListener(v -> openStaffModule("steel"));
 
-
-        soil.setTag("soil");
-        cement.setTag("cement");
-        steel.setTag("steel");
-
+        // Fetch staff users from Firestore
+        fetchStaffUsers();
 
         // Add search listener
         searchView.addTextChangedListener(new TextWatcher() {
@@ -103,6 +100,19 @@ public class AdminStaffFragment extends Fragment {
         return view;
     }
 
+    private void fetchStaffUsers() {
+        db.collection("users")
+                .whereEqualTo("role", "staff") // Assuming staff role exists
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null) {
+                        allStaffUsers.clear();
+                        allStaffUsers.addAll(task.getResult().getDocuments());
+                        displayStaffUsers(allStaffUsers);
+                    }
+                });
+    }
+
     private void openStaffModule(String category) {
         Intent intent = new Intent(requireContext(), staff_home.class);
         intent.putExtra("category", category);
@@ -113,7 +123,9 @@ public class AdminStaffFragment extends Fragment {
         List<DocumentSnapshot> filteredList = new ArrayList<>();
         for (DocumentSnapshot staff : allStaffUsers) {
             String name = staff.getString("name");
-            if (name != null && name.toLowerCase().contains(query.toLowerCase())) {
+            String phone = staff.getString("phone");
+            if ((name != null && name.toLowerCase().contains(query.toLowerCase())) ||
+                    (phone != null && phone.contains(query))) {
                 filteredList.add(staff);
             }
         }
@@ -131,10 +143,13 @@ public class AdminStaffFragment extends Fragment {
 
     private void addStaffCard(String name, String phone) {
         View cardView = getLayoutInflater().inflate(R.layout.order_card, crContainer, false);
-        TextView nameTextView = cardView.findViewById(R.id.orderTitle);
+        TextView nameTextView = cardView.findViewById(R.id.jobId);
         TextView phoneTextView = cardView.findViewById(R.id.customerName);
-        nameTextView.setText(name);
-        phoneTextView.setText(phone);
+
+        // Display Staff Name and Phone correctly
+        nameTextView.setText("Staff Name: " + (name != null ? name : "N/A"));
+        phoneTextView.setText("Phone: " + (phone != null ? phone : "N/A"));
+
         crContainer.addView(cardView);
     }
 }
