@@ -51,6 +51,10 @@ public class EditProfileActivity extends AppCompatActivity {
         }
 
         saveButton.setOnClickListener(v -> saveUserProfile());
+
+        Button cancelButton = findViewById(R.id.cancel_text);
+        cancelButton.setOnClickListener(v -> finish());
+
     }
 
     private void fetchUserData() {

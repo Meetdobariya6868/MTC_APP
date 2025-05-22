@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.mtc_app.R;
 import com.example.mtc_app.login.CustomerLoginActivity;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
@@ -65,7 +66,6 @@ public class RegisterActivity extends AppCompatActivity {
     private boolean validateInputs(String name, String email, String password, String phone) {
         boolean isValid = true;
 
-        // Name: not empty, only letters, max 25 chars, min 2
         if (TextUtils.isEmpty(name)) {
             nameField.setError("Name is required");
             isValid = false;
@@ -74,7 +74,6 @@ public class RegisterActivity extends AppCompatActivity {
             isValid = false;
         }
 
-        // Email: not empty + pattern
         if (TextUtils.isEmpty(email)) {
             emailField.setError("Email is required");
             isValid = false;
@@ -83,7 +82,6 @@ public class RegisterActivity extends AppCompatActivity {
             isValid = false;
         }
 
-        // Password: not empty + min 6
         if (TextUtils.isEmpty(password)) {
             passwordField.setError("Password is required");
             isValid = false;
@@ -92,7 +90,6 @@ public class RegisterActivity extends AppCompatActivity {
             isValid = false;
         }
 
-        // Phone: not empty + 10 digits
         if (TextUtils.isEmpty(phone)) {
             phoneField.setError("Phone number is required");
             isValid = false;
@@ -120,15 +117,37 @@ public class RegisterActivity extends AppCompatActivity {
 
         progressBar.setVisibility(View.VISIBLE);
 
-        auth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(task -> {
-                    progressBar.setVisibility(View.GONE);
-                    if (task.isSuccessful()) {
-                        String userId = auth.getCurrentUser().getUid();
-                        saveUserDetailsToFirestore(userId, name, email, phone, role);
+        // First check if phone is already registered
+        firestore.collection("users")
+                .whereEqualTo("phone", phone)
+                .get()
+                .addOnSuccessListener(snapshot -> {
+                    if (!snapshot.isEmpty()) {
+                        progressBar.setVisibility(View.GONE);
+                        phoneField.setError("This phone number is already registered.");
                     } else {
-                        Toast.makeText(this, "Registration failed: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                        // Try FirebaseAuth registration (email check)
+                        auth.createUserWithEmailAndPassword(email, password)
+                                .addOnCompleteListener(task -> {
+                                    progressBar.setVisibility(View.GONE);
+                                    if (task.isSuccessful()) {
+                                        String userId = auth.getCurrentUser().getUid();
+                                        saveUserDetailsToFirestore(userId, name, email, phone, role);
+                                    } else {
+                                        if (task.getException() instanceof FirebaseAuthUserCollisionException) {
+                                            emailField.setError("This email address is already registered.");
+                                        } else if (task.getException() != null && task.getException().getMessage().contains("PERMISSION_DENIED")) {
+                                            Toast.makeText(this, "Registration failed: Permission denied. Please contact admin.", Toast.LENGTH_LONG).show();
+                                        } else {
+                                            Toast.makeText(this, "Registration failed: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                        }
+                                    }
+                                });
                     }
+                })
+                .addOnFailureListener(e -> {
+                    progressBar.setVisibility(View.GONE);
+                    Toast.makeText(this, "Something went wrong while checking phone number: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 });
     }
 
@@ -149,6 +168,6 @@ public class RegisterActivity extends AppCompatActivity {
                     startActivity(new Intent(RegisterActivity.this, CustomerLoginActivity.class));
                     finish();
                 })
-                .addOnFailureListener(e -> Toast.makeText(this, "Error saving user: " + e.getMessage(), Toast.LENGTH_LONG).show());
+                .addOnFailureListener(e -> Toast.makeText(this, "Failed to save user data: " + e.getMessage(), Toast.LENGTH_LONG).show());
     }
 }

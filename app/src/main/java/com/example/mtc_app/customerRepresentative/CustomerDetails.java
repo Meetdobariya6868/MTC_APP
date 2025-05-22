@@ -179,6 +179,33 @@ public class CustomerDetails extends Fragment {
                         .show();
             });
         }
+
+        MaterialButton emailButton = view.findViewById(R.id.emailButton);
+        if (emailButton != null) {
+            emailButton.setOnClickListener(v -> {
+                String toEmail = userEmail != null && userEmail.getText() != null
+                        ? userEmail.getText().toString()
+                        : "";
+
+                if (toEmail.isEmpty()) {
+                    Toast.makeText(requireContext(), "Email not available", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("message/rfc822");
+                intent.setPackage("com.google.android.gm"); // Force Gmail
+                intent.putExtra(Intent.EXTRA_EMAIL, new String[]{toEmail});
+                intent.putExtra(Intent.EXTRA_SUBJECT, "Report of Your Material Testing Order");
+                intent.putExtra(Intent.EXTRA_TEXT, "Dear Customer,\n\n");
+
+                try {
+                    startActivity(intent);
+                } catch (android.content.ActivityNotFoundException ex) {
+                    Toast.makeText(requireContext(), "Gmail app not found", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 
     private void deleteCustomerAndOrders() {

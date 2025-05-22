@@ -139,6 +139,19 @@
                     app:iconGravity="textStart"
                     app:iconPadding="8dp" />
 
+                <!-- Email Button -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/emailButton"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Email"
+                    android:textColor="@android:color/holo_red_light"
+                    app:icon="@android:drawable/ic_dialog_email"
+                    app:iconTint="@color/errorColor"
+                    app:iconGravity="textStart"
+                    app:iconPadding="8dp" />
+
                 <!-- Login Button -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/loginButton"
@@ -146,9 +159,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Login"
-                    android:textColor="@android:color/holo_red_light"
+                    android:textColor="@color/Lavender"
                     app:icon="@drawable/ic_login"
-                    app:iconTint="@color/errorColor"
                     app:iconGravity="textStart"
                     app:iconPadding="8dp" />
 
