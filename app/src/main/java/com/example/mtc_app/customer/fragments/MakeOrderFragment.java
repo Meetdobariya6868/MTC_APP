@@ -27,6 +27,7 @@ import com.example.mtc_app.R;
 import com.example.mtc_app.customer.CustomerHomePageActivity;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
@@ -355,11 +356,23 @@ public class MakeOrderFragment extends Fragment {
         cbUltrasonicPulseVelocityNDT = view.findViewById(R.id.NDT_ultrasonic_pulse_velocity);
         cbReboundHammerTestNDT = view.findViewById(R.id.NDT_rebound_hammer_test);
 
-        SharedPreferences prefs = getContext().getSharedPreferences("user_profile", Context.MODE_PRIVATE);
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        SharedPreferences prefs = requireContext().getSharedPreferences("user_profile_" + uid, Context.MODE_PRIVATE);
+
         String savedName = prefs.getString("name", "");
         String savedEmail = prefs.getString("email", "");
         String savedAddress = prefs.getString("address", "");
         String savedPhone = prefs.getString("phone", "");
+
+        etCustomerName.setText(savedName);
+        etEmail.setText(savedEmail);
+        etDispatchAddress.setText(savedAddress);
+        etMobile.setText(savedPhone);
+
+        etCustomerName.setText(prefs.getString("name", ""));
+        etEmail.setText(prefs.getString("email", ""));
+        etDispatchAddress.setText(prefs.getString("address", ""));
+        etMobile.setText(prefs.getString("phone", ""));
 
         etCustomerName.setText(savedName);
         etEmail.setText(savedEmail);
@@ -1292,7 +1305,8 @@ public class MakeOrderFragment extends Fragment {
 //        SharedPreferences.Editor editor = requireContext().getSharedPreferences("user_profile", Context.MODE_PRIVATE).edit();
         Context context = getContext();
         if (context != null) {
-            SharedPreferences.Editor editor = context.getSharedPreferences("user_profile", Context.MODE_PRIVATE).edit();
+            String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            SharedPreferences.Editor editor = context.getSharedPreferences("user_profile_" + uid, Context.MODE_PRIVATE).edit();
             editor.putString("name", customerName);
             editor.putString("email", email);
             editor.putString("address", dispatchAddress);

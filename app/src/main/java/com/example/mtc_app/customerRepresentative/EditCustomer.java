@@ -128,21 +128,7 @@ public class EditCustomer extends Fragment {
             return;
         }
 
-        if (!newPhone.equals(oldPhone)) {
-            db.collection("users")
-                    .whereEqualTo("phone", newPhone)
-                    .get()
-                    .addOnSuccessListener(queryDocumentSnapshots -> {
-                        if (!queryDocumentSnapshots.isEmpty()) {
-                            editTextMobile.setError("Phone number already exists");
-                        } else {
-                            updateFirestore(newName, newPhone, newEmail, newPassword, newAddress);
-                        }
-                    })
-                    .addOnFailureListener(e -> Toast.makeText(getContext(), "Error checking phone number", Toast.LENGTH_SHORT).show());
-        } else {
-            updateFirestore(newName, newPhone, newEmail, newPassword, newAddress);
-        }
+        updateFirestore(newName, newPhone, newEmail, newPassword, newAddress);
     }
 
     private void updateFirestore(String name, String phone, String email, String password, String address) {

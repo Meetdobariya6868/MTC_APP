@@ -121,33 +121,39 @@ public class RegisterActivity extends AppCompatActivity {
         firestore.collection("users")
                 .whereEqualTo("phone", phone)
                 .get()
-                .addOnSuccessListener(snapshot -> {
-                    if (!snapshot.isEmpty()) {
-                        progressBar.setVisibility(View.GONE);
-                        phoneField.setError("This phone number is already registered.");
-                    } else {
-                        // Try FirebaseAuth registration (email check)
-                        auth.createUserWithEmailAndPassword(email, password)
-                                .addOnCompleteListener(task -> {
-                                    progressBar.setVisibility(View.GONE);
-                                    if (task.isSuccessful()) {
-                                        String userId = auth.getCurrentUser().getUid();
-                                        saveUserDetailsToFirestore(userId, name, email, phone, role);
-                                    } else {
-                                        if (task.getException() instanceof FirebaseAuthUserCollisionException) {
-                                            emailField.setError("This email address is already registered.");
-                                        } else if (task.getException() != null && task.getException().getMessage().contains("PERMISSION_DENIED")) {
-                                            Toast.makeText(this, "Registration failed: Permission denied. Please contact admin.", Toast.LENGTH_LONG).show();
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        if (!task.getResult().isEmpty()) {
+                            progressBar.setVisibility(View.GONE);
+                            phoneField.setError("This phone number is already registered.");
+                        } else {
+                            // Proceed to check email
+                            auth.createUserWithEmailAndPassword(email, password)
+                                    .addOnCompleteListener(authTask -> {
+                                        progressBar.setVisibility(View.GONE);
+                                        if (authTask.isSuccessful()) {
+                                            String userId = auth.getCurrentUser().getUid();
+                                            saveUserDetailsToFirestore(userId, name, email, phone, role);
                                         } else {
-                                            Toast.makeText(this, "Registration failed: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                            if (authTask.getException() instanceof FirebaseAuthUserCollisionException) {
+                                                emailField.setError("This email address is already registered.");
+                                            } else if (authTask.getException() != null && authTask.getException().getMessage().contains("PERMISSION_DENIED")) {
+                                                Toast.makeText(this, "Registration failed: Permission denied. Please contact admin.", Toast.LENGTH_LONG).show();
+                                            } else {
+                                                Toast.makeText(this, "Registration failed: " + authTask.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                            }
                                         }
-                                    }
-                                });
+                                    });
+                        }
+                    } else {
+                        progressBar.setVisibility(View.GONE);
+                        Exception e = task.getException();
+                        if (e != null) {
+                            Toast.makeText(this, "Error while checking phone: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(this, "Unknown error occurred while checking phone", Toast.LENGTH_LONG).show();
+                        }
                     }
-                })
-                .addOnFailureListener(e -> {
-                    progressBar.setVisibility(View.GONE);
-                    Toast.makeText(this, "Something went wrong while checking phone number: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 });
     }
 

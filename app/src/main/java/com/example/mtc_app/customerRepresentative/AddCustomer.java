@@ -102,15 +102,32 @@ public class AddCustomer extends Fragment {
 
         progressBar.setVisibility(View.VISIBLE);
 
-        auth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        String userId = auth.getCurrentUser().getUid();
-                        saveCustomerToFirestore(userId, name, phone, email, address, role);
-                    } else {
+        // Check if mobile number already exists
+        firestore.collection("users")
+                .whereEqualTo("phone", phone)
+                .get()
+                .addOnSuccessListener(phoneQuery -> {
+                    if (!phoneQuery.isEmpty()) {
                         progressBar.setVisibility(View.GONE);
-                        Toast.makeText(getContext(), "Registration failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        editTextMobile.setError("This mobile number is already registered");
+                        return;
                     }
+
+                    // Proceed to create user if mobile is not registered
+                    auth.createUserWithEmailAndPassword(email, password)
+                            .addOnCompleteListener(task -> {
+                                if (task.isSuccessful()) {
+                                    String userId = auth.getCurrentUser().getUid();
+                                    saveCustomerToFirestore(userId, name, phone, email, address, role);
+                                } else {
+                                    progressBar.setVisibility(View.GONE);
+                                    Toast.makeText(getContext(), "Registration failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                })
+                .addOnFailureListener(e -> {
+                    progressBar.setVisibility(View.GONE);
+                    Toast.makeText(getContext(), "Failed to validate mobile number", Toast.LENGTH_SHORT).show();
                 });
     }
 
