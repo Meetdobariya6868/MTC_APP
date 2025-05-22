@@ -3,6 +3,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -107,7 +109,7 @@ public class AddOrder extends Fragment {
     // Customer & Dispatch Details
     private EditText etCustomerName, etDispatchAddress, etMobile, etEmail, etLab, etLabJob;
 //    private EditText termsAndConditionsField;
-
+TextInputEditText etFinalPrice;
     // Dispatch Mode
     private RadioGroup modeOfDispatchGroup;
     private RadioButton rbPost, rbCourier, rbSealed, rbOpen, rbReqYes, rbResYes, rbSampleSealed;
@@ -985,7 +987,7 @@ public class AddOrder extends Fragment {
         submitButton.setEnabled(false);
 
         // Get current date
-        String createdAt = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+        String createdAt = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
 
         // Collect basic form data
         String customerName = etCustomerName.getText().toString().trim();
@@ -995,6 +997,28 @@ public class AddOrder extends Fragment {
 //        String termsAndConditions = termsAndConditionsField.getText().toString().trim();
         String Lab = etLab.getText().toString().trim();
         String LabJob = etLabJob.getText().toString().trim();
+
+        etFinalPrice = view.findViewById(R.id.et_final_price);
+        etFinalPrice.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                calculateTotalPrice();  // Automatically update totalPrice display
+            }
+        });
+
+
+        tvTotalPrice.setText("Total Price: " + totalPrice + " /- Rs");
+        updateDisplayedTotalPriceFromManualField();
+
+
+
+
 
         // Validate inputs
         if (!validateInputs(customerName, dispatchAddress, mobileNumber, email, Lab, LabJob)) return;
@@ -1214,12 +1238,15 @@ public class AddOrder extends Fragment {
         data.put("Email", email);
 //        data.put("Terms And Conditions", termsAndConditions);
         data.put("Created At", createdAt);
+
         data.put("Total Price", totalPrice);
+
+
         data.put("Radio Selections", radioSelections);
         data.put("Selected Points", selectedPoints);
         data.put("LabNumber", Lab);
         data.put("LabJobNumber",LabJob);
-        data.put("Status", "Open"); // Automatically set status to "Open"
+        data.put("Status", "Open");
 
         if (!reviewRemarks.isEmpty()) {
             data.put("Review Remarks", reviewRemarks);
@@ -1488,10 +1515,16 @@ public class AddOrder extends Fragment {
 
 
     private void calculateTotalPrice() {
+        String manualPriceStr = etFinalPrice.getText().toString().trim();
+        if (!manualPriceStr.isEmpty()) {
+            try {
+                totalPrice = Integer.parseInt(manualPriceStr);  // Override totalPrice
+            } catch (NumberFormatException e) {
+                // Keep totalPrice unchanged if input is invalid
+            }
+        }
         tvTotalPrice.setText("Total Price: " + totalPrice + " /- Rs");
     }
-
-
 
     // Checkbox Listener to show/hide TextInputLayout
     private void setUpCheckboxListener(CheckBox checkBox, TextInputLayout textInputLayout) {
@@ -1503,6 +1536,19 @@ public class AddOrder extends Fragment {
             }
         });
     }
+
+    private void updateDisplayedTotalPriceFromManualField() {
+        String manualPriceStr = etFinalPrice.getText().toString().trim();
+        if (!manualPriceStr.isEmpty()) {
+            try {
+                int manualValue = Integer.parseInt(manualPriceStr);
+                tvTotalPrice.setText("Total Price: " + manualValue + " /- Rs");
+            } catch (NumberFormatException ignored) {}
+        } else {
+            tvTotalPrice.setText("Total Price: " + totalPrice + " /- Rs");
+        }
+    }
+
 
 
 

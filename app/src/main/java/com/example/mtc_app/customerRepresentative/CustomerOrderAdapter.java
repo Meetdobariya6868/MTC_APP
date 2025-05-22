@@ -52,9 +52,9 @@ public class CustomerOrderAdapter extends RecyclerView.Adapter<CustomerOrderAdap
 
         holder.orderStatus.setText(order.getStatus());
         holder.price.setText("₹ " + order.getPrice());
-        holder.segment.setText("Segment: " + order.getSegment());
-        holder.dispatchMode.setText("Dispatch: " + order.getDispatchMode());
-        holder.orderDate.setText("Date: " + order.getOrderDate());
+        holder.segment.setText("Job ID : " + order.getSegment());
+        holder.dispatchMode.setText("Dispatch : " + order.getDispatchMode());
+        holder.orderDate.setText("Date : " + order.getOrderDate());
 
         // View Order Details
         holder.orderDetailsButton.setOnClickListener(v -> {

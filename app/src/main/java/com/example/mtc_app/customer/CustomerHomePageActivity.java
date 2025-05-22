@@ -33,9 +33,9 @@ public class CustomerHomePageActivity extends AppCompatActivity {
             if (itemId == R.id.nav_home) {
                 setFragment(new CustomerHomeFragment(), "Home Page");
                 return true;
-            } else if (itemId == R.id.nav_request_order) {
-                setFragment(new MakeOrderFragment(), "Make Orders");
-                return true;
+//            } else if (itemId == R.id.nav_request_order) {
+//                setFragment(new MakeOrderFragment(), "Make Orders");
+//                return true;
             } else if (itemId == R.id.nav_profile) {
                 setFragment(new CustomerProfileFragment(), "Profile");
                 return true;

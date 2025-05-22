@@ -29,6 +29,7 @@ import com.android.volley.Request;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.mtc_app.R;
+import com.example.mtc_app.customer.fragments.MakeOrderFragment;
 import com.example.mtc_app.customerRepresentative.CustomerOrderAdapter;
 import com.example.mtc_app.customer.CustomerHomePageActivity;
 import com.example.mtc_app.customerRepresentative.CustomerOrder;
@@ -113,7 +114,7 @@ public class CustomerDetails extends Fragment {
                         String status = doc.getString("Status");
                         if (status == null || !status.equalsIgnoreCase("Open")) continue;
 
-                        String segment = doc.getString("segment");
+                        String segment = doc.getString("LabJobNumber");
                         String orderDate = doc.getString("Created At");
                         String price = String.valueOf(doc.get("Total Price"));
                         Map<String, Object> radioSelections = (Map<String, Object>) doc.get("Radio Selections");
@@ -162,8 +163,21 @@ public class CustomerDetails extends Fragment {
         }
 
         if (addOrderButton != null) {
-            addOrderButton.setOnClickListener(v -> openFragment(new AddOrder()));
+            addOrderButton.setOnClickListener(v -> {
+                Fragment makeOrderFragment = new MakeOrderFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("customer_phone", customerPhone); // pass phone
+                makeOrderFragment.setArguments(bundle);
+
+                requireActivity().getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, makeOrderFragment)
+                        .addToBackStack(null)
+                        .commit();
+            });
         }
+
+
 
         if (loginButton != null) {
             loginButton.setOnClickListener(v -> loginAsThisUser());
