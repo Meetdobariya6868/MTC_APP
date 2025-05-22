@@ -36,6 +36,7 @@ public class CustomerHomeFragment extends Fragment {
     private EditText searchInput;
 
     private CustomerOrderAdapter customerOrderAdapter;
+    private View progressBar;
     private final List<CustomerHomePageOrder> orderList = new ArrayList<>();
     private final List<CustomerHomePageOrder> filteredOrderList = new ArrayList<>();
 
@@ -53,6 +54,7 @@ public class CustomerHomeFragment extends Fragment {
 
         recyclerView = view.findViewById(R.id.recyclerView);
         searchInput = view.findViewById(R.id.searchInput);
+        progressBar = view.findViewById(R.id.progressBar);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         customerOrderAdapter = new CustomerOrderAdapter(getContext(), filteredOrderList); // removed listener
@@ -95,6 +97,8 @@ public class CustomerHomeFragment extends Fragment {
     private void fetchOrdersFromFirestore() {
         if (!isAdded() || auth.getCurrentUser() == null) return;
 
+        progressBar.setVisibility(View.VISIBLE);  // Show loading
+
         String userEmail = auth.getCurrentUser().getEmail();
 
         db.collection("Total Orders")
@@ -102,6 +106,8 @@ public class CustomerHomeFragment extends Fragment {
                 .get()
                 .addOnCompleteListener(task -> {
                     if (!isAdded()) return;
+
+                    progressBar.setVisibility(View.GONE); // Hide loading
 
                     if (task.isSuccessful() && task.getResult() != null) {
                         List<CustomerHomePageOrder> fetchedList = new ArrayList<>();
@@ -142,6 +148,12 @@ public class CustomerHomeFragment extends Fragment {
                         }
                     } else {
                         Toast.makeText(getContext(), "Error loading orders", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    if (isAdded()) {
+                        progressBar.setVisibility(View.GONE);
+                        Toast.makeText(getContext(), "Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }

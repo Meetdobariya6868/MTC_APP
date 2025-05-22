@@ -29,7 +29,7 @@ public class AdminStaffFragment extends Fragment {
     private FirebaseFirestore db;
     CardView soil, cement, steel;
     private LinearLayout crContainer;
-    private List<DocumentSnapshot> allStaffUsers = new ArrayList<>();
+    private List<DocumentSnapshot> allStaffUsers = new ArrayList<>(); // Store all fetched CR users
     private EditText searchView;
 
     public AdminStaffFragment() {
@@ -49,26 +49,10 @@ public class AdminStaffFragment extends Fragment {
         cement = view.findViewById(R.id.cement);
         steel = view.findViewById(R.id.steel);
 
-        List<CardView> categoryCards = new ArrayList<>();
-        if (soil != null) {
-            soil.setTag("soil");
-            categoryCards.add(soil);
-        }
-        if (cement != null) {
-            cement.setTag("cement");
-            categoryCards.add(cement);
-        }
-        if (steel != null) {
-            steel.setTag("steel");
-            categoryCards.add(steel);
-        }
-
         soil.setOnClickListener(v -> openStaffModule("soil"));
         cement.setOnClickListener(v -> openStaffModule("cement"));
         steel.setOnClickListener(v -> openStaffModule("steel"));
 
-        // Fetch staff users from Firestore
-        fetchStaffUsers();
 
         // Add search listener
         searchView.addTextChangedListener(new TextWatcher() {
@@ -77,78 +61,54 @@ public class AdminStaffFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String query = s.toString().toLowerCase();
-
-                // Filter staff users
-                filterStaffUsers(query);
-
-                // Filter category cards
-                for (CardView card : categoryCards) {
-                    String tag = (String) card.getTag();
-                    if (tag != null && tag.toLowerCase().contains(query)) {
-                        card.setVisibility(View.VISIBLE);
-                    } else {
-                        card.setVisibility(View.GONE);
-                    }
-                }
+                filterCRUsers(s.toString()); // Filter as user types
             }
 
             @Override
             public void afterTextChanged(Editable s) {}
         });
 
+//        fetchCRUsers();
         return view;
     }
 
-    private void fetchStaffUsers() {
-        db.collection("users")
-                .whereEqualTo("role", "staff") // Assuming staff role exists
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful() && task.getResult() != null) {
-                        allStaffUsers.clear();
-                        allStaffUsers.addAll(task.getResult().getDocuments());
-                        displayStaffUsers(allStaffUsers);
-                    }
-                });
-    }
-
     private void openStaffModule(String category) {
-        Intent intent = new Intent(requireContext(), staff_home.class);
+        Intent intent = new Intent(requireContext(), staff_home.class); // Replace StaffActivity with your actual activity
         intent.putExtra("category", category);
         startActivity(intent);
     }
 
-    private void filterStaffUsers(String query) {
-        List<DocumentSnapshot> filteredList = new ArrayList<>();
-        for (DocumentSnapshot staff : allStaffUsers) {
-            String name = staff.getString("name");
-            String phone = staff.getString("phone");
-            if ((name != null && name.toLowerCase().contains(query.toLowerCase())) ||
-                    (phone != null && phone.contains(query))) {
-                filteredList.add(staff);
+
+    private void filterCRUsers(String query) {
+        List<DocumentSnapshot> filteredCRs = new ArrayList<>();
+
+        for (DocumentSnapshot cr : allStaffUsers) {
+            String name = cr.getString("name");  // Fetching from Firestore
+
+            if ((name != null && name.toLowerCase().contains(query.toLowerCase()))) {
+                filteredCRs.add(cr);
             }
         }
-        displayStaffUsers(filteredList);
+
+        displayCRUsers(filteredCRs); // Refresh UI with filtered results
     }
 
-    private void displayStaffUsers(List<DocumentSnapshot> staffList) {
+    private void displayCRUsers(List<DocumentSnapshot> crUsers) {
         crContainer.removeAllViews();
-        for (DocumentSnapshot staff : staffList) {
-            String name = staff.getString("name");
-            String phone = staff.getString("phone");
-            addStaffCard(name, phone);
+
+        for (DocumentSnapshot cr : crUsers) {
+            String name = cr.getString("name");
+            String phone = cr.getString("phone");
+            addCRCard(name, phone);
         }
     }
 
-    private void addStaffCard(String name, String phone) {
+    private void addCRCard(String name, String phone) {
         View cardView = getLayoutInflater().inflate(R.layout.order_card, crContainer, false);
-        TextView nameTextView = cardView.findViewById(R.id.jobId);
+
         TextView phoneTextView = cardView.findViewById(R.id.customerName);
 
-        // Display Staff Name and Phone correctly
-        nameTextView.setText("Staff Name: " + (name != null ? name : "N/A"));
-        phoneTextView.setText("Phone: " + (phone != null ? phone : "N/A"));
+        phoneTextView.setText(phone);
 
         crContainer.addView(cardView);
     }

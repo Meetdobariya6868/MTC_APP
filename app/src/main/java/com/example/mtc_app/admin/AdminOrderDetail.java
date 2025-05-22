@@ -4,7 +4,9 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +26,8 @@ public class AdminOrderDetail extends AppCompatActivity {
             testSelectionText, totalPriceText, deviationDetailText, discussionDetailText, dateText;
     private TextView radioSelectionsText, reviewRemarksText, selectedPointsText, testSelectionsText;
     private Button editButton, deleteButton;
+    private ProgressBar progressBar;
+
     private String orderId;
 
     private DocumentReference orderRef;
@@ -53,6 +57,7 @@ public class AdminOrderDetail extends AppCompatActivity {
         reviewRemarksText = findViewById(R.id.reviewRemarksText);
         selectedPointsText = findViewById(R.id.selectedPointsText);
         testSelectionsText = findViewById(R.id.testSelectionsText);
+        progressBar = findViewById(R.id.progressBar);
 
         orderId = getIntent().getStringExtra("orderId");
         if (orderId != null) {
@@ -77,8 +82,15 @@ public class AdminOrderDetail extends AppCompatActivity {
     }
 
     private void listenToOrderChanges() {
+        progressBar.setVisibility(View.VISIBLE);
+
         orderRef.addSnapshotListener((documentSnapshot, error) -> {
-            if (error != null || documentSnapshot == null || !documentSnapshot.exists()) return;
+            if (error != null || documentSnapshot == null || !documentSnapshot.exists()) {
+                progressBar.setVisibility(View.GONE); // Hide loader on error
+                Toast.makeText(this, "Failed to load data", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            progressBar.setVisibility(View.GONE);
 
             // Update UI with latest data
             String customerName = documentSnapshot.getString("Customer Name");

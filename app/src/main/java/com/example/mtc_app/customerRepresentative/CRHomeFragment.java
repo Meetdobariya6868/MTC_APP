@@ -30,6 +30,8 @@ public class CRHomeFragment extends Fragment {
 
     private FirebaseFirestore db;
     private RecyclerView recyclerView;
+    private View progressBar;
+
     private CustomerAdapter adapter;
     private List<Customer> customerList, filteredList;
     private EditText searchInput;
@@ -45,6 +47,8 @@ public class CRHomeFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
         recyclerView = view.findViewById(R.id.recyclerViewCustomers);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        progressBar = view.findViewById(R.id.progressBar);
+
 
         searchInput = view.findViewById(R.id.searchInput);
 
@@ -69,6 +73,8 @@ public class CRHomeFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
     private void loadCustomerData() {
+        progressBar.setVisibility(View.VISIBLE);  // Show ProgressBar before loading
+
         CollectionReference usersRef = db.collection("users");
 
         usersRef.whereEqualTo("role", "customer")
@@ -81,16 +87,21 @@ public class CRHomeFragment extends Fragment {
                     for (DocumentSnapshot document : queryDocumentSnapshots) {
                         Customer customer = document.toObject(Customer.class);
                         if (customer != null) {
-                            customer.setId(document.getId()); // Set Firestore document ID manually
+                            customer.setId(document.getId());
                             customerList.add(customer);
                         }
                     }
 
                     filteredList.addAll(customerList);
                     adapter.notifyDataSetChanged();
+                    progressBar.setVisibility(View.GONE);  // Hide when done
                 })
-                .addOnFailureListener(e -> Log.e("Firestore", "Error fetching customer data", e));
+                .addOnFailureListener(e -> {
+                    Log.e("Firestore", "Error fetching customer data", e);
+                    progressBar.setVisibility(View.GONE);  // Hide on error
+                });
     }
+
 
 
     private void setupSearchFunctionality() {
