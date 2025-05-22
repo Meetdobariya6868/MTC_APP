@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -30,6 +31,7 @@ public class AdminHomeFragment extends Fragment {
     private LinearLayout orderContainer;
     private FirebaseFirestore db;
     private EditText searchView;
+    private ProgressBar progressBar;
     private List<DocumentSnapshot> allOrders = new ArrayList<>();
 
     @Override
@@ -39,6 +41,7 @@ public class AdminHomeFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
         orderContainer = rootView.findViewById(R.id.orderContainer);
         searchView = rootView.findViewById(R.id.searchView);
+        progressBar = rootView.findViewById(R.id.progressBar);
 
         listenToOrderChanges(); // Start listening for real-time updates
 
@@ -59,10 +62,14 @@ public class AdminHomeFragment extends Fragment {
     }
 
     private void listenToOrderChanges() {
+        progressBar.setVisibility(View.VISIBLE); // Show loading indicator
+
         db.collection("Total Orders")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                        progressBar.setVisibility(View.GONE); // Hide it once data is received
+
                         if (error != null) {
                             // Handle error
                             return;
