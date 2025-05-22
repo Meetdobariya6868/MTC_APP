@@ -1,68 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<FrameLayout
+    android:id="@+id/fragment_container"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
     android:fitsSystemWindows="true">
 
-    <!-- Toolbar -->
+    <!-- Toolbar at top -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="56dp"
         android:background="@color/Lavender"
         app:title="Home"
         android:titleTextColor="@android:color/white"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <!-- Search Bar -->
+    <!-- Search bar just below toolbar -->
     <LinearLayout
         android:id="@+id/searchBarLayout"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_margin="16dp"
-        android:background="@drawable/search_background"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingStart="12dp"
-        android:paddingEnd="12dp">
+        android:layout_marginTop="65dp"
+    android:layout_marginHorizontal="16dp"
+    android:background="@drawable/search_background"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingStart="12dp"
+    android:paddingEnd="12dp">
 
-        <ImageView
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:src="@android:drawable/ic_menu_search"
-            app:tint="@color/Lavender" />
+    <ImageView
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:src="@android:drawable/ic_menu_search"
+        app:tint="@color/Lavender" />
 
-        <EditText
-            android:id="@+id/searchInput"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@android:color/transparent"
-            android:hint="Search..."
-            android:paddingStart="8dp"
-            android:singleLine="true"
-            android:textColor="@android:color/black"
-            android:textColorHint="@android:color/darker_gray"/>
-    </LinearLayout>
-
-    <!-- RecyclerView -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewCustomers"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
+    <EditText
+        android:id="@+id/searchInput"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
         android:layout_weight="1"
-        android:paddingHorizontal="3dp"/>
-
-    <!-- Progress Bar (optional placement at bottom or above list) -->
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:visibility="gone"
-        android:layout_marginBottom="16dp"/>
+        android:background="@android:color/transparent"
+        android:hint="Search..."
+        android:paddingStart="8dp"
+        android:singleLine="true"
+        android:textColor="@android:color/black"
+        android:textColorHint="@android:color/darker_gray" />
 </LinearLayout>
+
+    <!-- Progress Bar positioned below the search bar -->
+<ProgressBar
+android:id="@+id/progressBar"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_marginTop="120dp"
+android:layout_gravity="center_horizontal"
+android:visibility="gone" />
+
+    <!-- RecyclerView adjusted below search bar -->
+<androidx.recyclerview.widget.RecyclerView
+android:id="@+id/recyclerViewCustomers"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:layout_marginTop="120dp"
+android:paddingHorizontal="3dp"/>
+    </FrameLayout>
