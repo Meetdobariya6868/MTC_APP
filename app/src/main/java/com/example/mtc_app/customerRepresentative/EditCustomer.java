@@ -16,7 +16,6 @@ import androidx.fragment.app.Fragment;
 import com.example.mtc_app.R;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,13 +27,10 @@ public class EditCustomer extends Fragment {
     private Button saveButton;
     private String oldPhone, documentId;
 
-    public EditCustomer() {
-        // Required empty public constructor
-    }
+    public EditCustomer() {}
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_edit_customer, container, false);
     }
 
@@ -42,10 +38,8 @@ public class EditCustomer extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Initialize Firestore
         db = FirebaseFirestore.getInstance();
 
-        // Initialize UI elements
         editTextName = view.findViewById(R.id.editTextName2);
         editTextMobile = view.findViewById(R.id.editTextMobile2);
         editTextEmail = view.findViewById(R.id.editTextEmail2);
@@ -53,7 +47,6 @@ public class EditCustomer extends Fragment {
         editTextAddress = view.findViewById(R.id.editTextAddress2);
         saveButton = view.findViewById(R.id.addCustomerButton2);
 
-        // Retrieve phone number from arguments
         Bundle args = getArguments();
         if (args != null) {
             oldPhone = args.getString("customer_phone");
@@ -61,11 +54,9 @@ public class EditCustomer extends Fragment {
             fetchCustomerDetails(oldPhone);
         }
 
-        // Save button click listener
         saveButton.setOnClickListener(v -> updateCustomerDetails());
     }
 
-    // Fetch customer details from Firestore
     private void fetchCustomerDetails(String phone) {
         db.collection("users")
                 .whereEqualTo("phone", phone)
@@ -74,9 +65,8 @@ public class EditCustomer extends Fragment {
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     if (!queryDocumentSnapshots.isEmpty()) {
                         DocumentSnapshot document = queryDocumentSnapshots.getDocuments().get(0);
-                        documentId = document.getId(); // Store Firestore document ID
+                        documentId = document.getId();
 
-                        // Populate UI fields
                         editTextName.setText(document.getString("name"));
                         editTextEmail.setText(document.getString("email"));
                         editTextPassword.setText(document.getString("password"));
@@ -88,7 +78,6 @@ public class EditCustomer extends Fragment {
                 .addOnFailureListener(e -> Toast.makeText(getContext(), "Error fetching details", Toast.LENGTH_SHORT).show());
     }
 
-    // Update customer details in Firestore
     private void updateCustomerDetails() {
         if (TextUtils.isEmpty(documentId)) {
             Toast.makeText(getContext(), "No customer to update", Toast.LENGTH_SHORT).show();
@@ -101,19 +90,51 @@ public class EditCustomer extends Fragment {
         String newPassword = editTextPassword.getText().toString().trim();
         String newAddress = editTextAddress.getText().toString().trim();
 
-        if (newName.isEmpty() || newPhone.isEmpty() || newEmail.isEmpty() || newPassword.isEmpty() || newAddress.isEmpty()) {
-            Toast.makeText(getContext(), "All fields must be filled", Toast.LENGTH_SHORT).show();
+        // Validation
+        if (newName.isEmpty()) {
+            editTextName.setError("Name is required");
+            return;
+        } else if (!newName.matches("^[a-zA-Z ]+$")) {
+            editTextName.setError("Name must contain only letters and spaces");
             return;
         }
 
-        // If the phone number was changed, check if it's already in use
+        if (newPhone.isEmpty()) {
+            editTextMobile.setError("Mobile number is required");
+            return;
+        } else if (!newPhone.matches("\\d{10}")) {
+            editTextMobile.setError("Enter a valid 10-digit mobile number");
+            return;
+        }
+
+        if (newEmail.isEmpty()) {
+            editTextEmail.setError("Email is required");
+            return;
+        } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(newEmail).matches()) {
+            editTextEmail.setError("Enter a valid email address");
+            return;
+        }
+
+        if (newPassword.isEmpty()) {
+            editTextPassword.setError("Password is required");
+            return;
+        } else if (newPassword.length() < 6) {
+            editTextPassword.setError("Password must be at least 6 characters long");
+            return;
+        }
+
+        if (newAddress.isEmpty()) {
+            editTextAddress.setError("Address is required");
+            return;
+        }
+
         if (!newPhone.equals(oldPhone)) {
             db.collection("users")
                     .whereEqualTo("phone", newPhone)
                     .get()
                     .addOnSuccessListener(queryDocumentSnapshots -> {
                         if (!queryDocumentSnapshots.isEmpty()) {
-                            Toast.makeText(getContext(), "Phone number already exists", Toast.LENGTH_SHORT).show();
+                            editTextMobile.setError("Phone number already exists");
                         } else {
                             updateFirestore(newName, newPhone, newEmail, newPassword, newAddress);
                         }
@@ -124,7 +145,6 @@ public class EditCustomer extends Fragment {
         }
     }
 
-    // Perform the update operation in Firestore
     private void updateFirestore(String name, String phone, String email, String password, String address) {
         Map<String, Object> updatedData = new HashMap<>();
         updatedData.put("name", name);
@@ -137,7 +157,7 @@ public class EditCustomer extends Fragment {
                 .update(updatedData)
                 .addOnSuccessListener(aVoid -> {
                     Toast.makeText(getContext(), "Customer updated successfully", Toast.LENGTH_SHORT).show();
-                    requireActivity().getSupportFragmentManager().popBackStack();  // Go back to previous fragment
+                    requireActivity().getSupportFragmentManager().popBackStack();
                 })
                 .addOnFailureListener(e -> Toast.makeText(getContext(), "Update failed", Toast.LENGTH_SHORT).show());
     }

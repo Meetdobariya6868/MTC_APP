@@ -11,6 +11,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
+import com.google.android.material.button.MaterialButton;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -33,6 +35,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
     private EditText addressEditText, phoneEditText, nameEditText;
     private Button saveButton, tryAgainButton, okButton;
+    private MaterialButton cancelButton;
     private ImageView profileImage;
     private View buttonsLayout;
 
@@ -52,6 +55,7 @@ public class EditProfileActivity extends AppCompatActivity {
         nameEditText = findViewById(R.id.edit_name);
         phoneEditText = findViewById(R.id.edit_phone);
         saveButton = findViewById(R.id.save_button);
+        cancelButton = findViewById(R.id.cancel_text);
 //        tryAgainButton = findViewById(R.id.tryAgainButton);
 //        okButton = findViewById(R.id.okButton);
         profileImage = findViewById(R.id.profile_image);
@@ -67,6 +71,14 @@ public class EditProfileActivity extends AppCompatActivity {
 //        if (okButton != null) {
 //            okButton.setOnClickListener(v -> uploadImageToStorage());
 //        }
+
+        // Cancel button click listener
+        if (cancelButton != null) {
+            cancelButton.setOnClickListener(v -> {
+                // Simply finish the activity to go back to the previous screen (profile page)
+                finish();
+            });
+        }
 
         firestore = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();

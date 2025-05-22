@@ -34,7 +34,6 @@ public class AddCustomer extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_add_customer, container, false);
     }
 
@@ -42,7 +41,6 @@ public class AddCustomer extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Initialize views
         editTextName = view.findViewById(R.id.editTextName);
         editTextMobile = view.findViewById(R.id.editTextMobile);
         editTextEmail = view.findViewById(R.id.editTextEmail);
@@ -51,34 +49,62 @@ public class AddCustomer extends Fragment {
         addCustomerButton = view.findViewById(R.id.addCustomerButton);
         progressBar = view.findViewById(R.id.progressBar);
 
-        // Initialize Firebase
         auth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
 
-        // Set up button click listener
         addCustomerButton.setOnClickListener(v -> addCustomer());
     }
 
     private void addCustomer() {
-        String name = editTextName.getText().toString();
-        String phone = editTextMobile.getText().toString();
-        String email = editTextEmail.getText().toString();
-        String password = editTextPassword.getText().toString();
-        String address = editTextAddress.getText().toString();
+        String name = editTextName.getText().toString().trim();
+        String phone = editTextMobile.getText().toString().trim();
+        String email = editTextEmail.getText().toString().trim();
+        String password = editTextPassword.getText().toString().trim();
+        String address = editTextAddress.getText().toString().trim();
         String role = "customer";
 
-        if (TextUtils.isEmpty(name) || TextUtils.isEmpty(phone) || TextUtils.isEmpty(email) || TextUtils.isEmpty(password) || TextUtils.isEmpty(address)) {
-            Toast.makeText(getContext(), "All fields are required", Toast.LENGTH_SHORT).show();
+        if (name.isEmpty()) {
+            editTextName.setError("Name is required");
+            return;
+        } else if (!name.matches("^[a-zA-Z ]+$")) {
+            editTextName.setError("Name must contain only letters and spaces");
+            return;
+        }
+
+        if (phone.isEmpty()) {
+            editTextMobile.setError("Mobile number is required");
+            return;
+        } else if (!phone.matches("\\d{10}")) {
+            editTextMobile.setError("Enter a valid 10-digit mobile number");
+            return;
+        }
+
+        if (email.isEmpty()) {
+            editTextEmail.setError("Email is required");
+            return;
+        } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            editTextEmail.setError("Enter a valid email address");
+            return;
+        }
+
+        if (password.isEmpty()) {
+            editTextPassword.setError("Password is required");
+            return;
+        } else if (password.length() < 6) {
+            editTextPassword.setError("Password must be at least 6 characters long");
+            return;
+        }
+
+        if (address.isEmpty()) {
+            editTextAddress.setError("Address is required");
             return;
         }
 
         progressBar.setVisibility(View.VISIBLE);
 
-        // Register the customer in Firebase Authentication
         auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        // Get the newly created user's UID
                         String userId = auth.getCurrentUser().getUid();
                         saveCustomerToFirestore(userId, name, phone, email, address, role);
                     } else {
@@ -89,7 +115,6 @@ public class AddCustomer extends Fragment {
     }
 
     private void saveCustomerToFirestore(String userId, String name, String phone, String email, String address, String role) {
-        // Create user data
         String createdAt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
 
         Map<String, Object> customer = new HashMap<>();
@@ -100,14 +125,11 @@ public class AddCustomer extends Fragment {
         customer.put("role", role);
         customer.put("created_at", createdAt);
 
-        // Save to Firestore
         firestore.collection("users").document(userId)
                 .set(customer)
                 .addOnSuccessListener(aVoid -> {
                     progressBar.setVisibility(View.GONE);
                     Toast.makeText(getContext(), "Customer added successfully", Toast.LENGTH_SHORT).show();
-
-                    // Optional: Clear input fields after success
                     clearInputFields();
                 })
                 .addOnFailureListener(e -> {

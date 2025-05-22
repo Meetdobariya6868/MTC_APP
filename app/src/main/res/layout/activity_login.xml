@@ -102,18 +102,6 @@
                 android:elevation="4dp"
                 android:fontFamily="sans-serif-medium"/>
 
-            <TextView
-                android:id="@+id/forgotPasswordText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Forgot Password?"
-                android:textAlignment="center"
-                android:textColor="@color/lavender"
-                android:padding="16dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:background="?attr/selectableItemBackground"
-                android:fontFamily="sans-serif-medium"/>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 

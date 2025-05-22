@@ -1319,17 +1319,45 @@ public class MakeOrderFragment extends Fragment {
                     submitButton.setEnabled(true);
                 });
     }
-    private boolean validateInputs(String customerName, String dispatchAddress, String mobileNumber, String email,  String lab, String labJob) {
-        if (customerName.isEmpty() || dispatchAddress.isEmpty() || mobileNumber.isEmpty() || email.isEmpty()) {
-            showError("All fields are required");
+    private boolean validateInputs(String customerName, String dispatchAddress, String mobileNumber, String email, String lab, String labJob) {
+        if (customerName.isEmpty()) {
+            showError("Customer name is required");
+            return false;
+        }
+        if (!customerName.matches("^[a-zA-Z ]+$")) {
+            showError("Customer name must contain only letters");
+            return false;
+        }
+        if (dispatchAddress.isEmpty()) {
+            showError("Dispatch address is required");
+            return false;
+        }
+        if (mobileNumber.isEmpty()) {
+            showError("Mobile number is required");
             return false;
         }
         if (!mobileNumber.matches("\\d{10}")) {
-            showError("Please enter a valid 10-digit mobile number");
+            showError("Mobile number must be exactly 10 digits");
+            return false;
+        }
+        if (email.isEmpty()) {
+            showError("Email is required");
             return false;
         }
         if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             showError("Please enter a valid email address");
+            return false;
+        }
+        if (lab.isEmpty()) {
+            showError("Lab number is required");
+            return false;
+        }
+        if (labJob.isEmpty()) {
+            showError("Lab job number is required");
+            return false;
+        }
+        if (modeOfDispatchGroup.getCheckedRadioButtonId() == -1) {
+            showError("Please select a Mode of Dispatch option");
             return false;
         }
         return true;

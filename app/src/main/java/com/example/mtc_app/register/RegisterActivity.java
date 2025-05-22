@@ -13,7 +13,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mtc_app.R;
-import com.example.mtc_app.admin.AdminHomePageActivity;
 import com.example.mtc_app.login.CustomerLoginActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -38,14 +37,9 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        // Initialize all views
         initializeViews();
-
-        // Set up Firebase
         auth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
-
-        // Set click listeners
         setupClickListeners();
     }
 
@@ -55,52 +49,55 @@ public class RegisterActivity extends AppCompatActivity {
         passwordField = findViewById(R.id.passwordField);
         phoneField = findViewById(R.id.phoneField);
         registerButton = findViewById(R.id.registerButton);
-
-        // Add a null check for progressBar
         progressBar = findViewById(R.id.progressBar);
-        if (progressBar == null) {
-            // Log an error or show a toast if progressBar is not found
-            Toast.makeText(this, "Progress bar not found in layout", Toast.LENGTH_SHORT).show();
-        }
     }
 
     private void setupClickListeners() {
-        // Redirect to Login/Admin Home click listener
         TextView redirectToLogin = findViewById(R.id.tv_redirect_to_login);
         redirectToLogin.setOnClickListener(v -> {
-            Intent intent = new Intent(RegisterActivity.this, CustomerLoginActivity.class);
-            startActivity(intent);
+            startActivity(new Intent(RegisterActivity.this, CustomerLoginActivity.class));
             finish();
         });
 
-        // Register button click listener
         registerButton.setOnClickListener(view -> registerUser());
     }
 
     private boolean validateInputs(String name, String email, String password, String phone) {
         boolean isValid = true;
 
-        // Name validation: Only letters, minimum 2 characters
-        if (!Pattern.matches("^[a-zA-Z ]{2,}$", name)) {
-            nameField.setError("Name must contain only letters and be at least 2 characters long");
+        // Name: not empty, only letters, max 25 chars, min 2
+        if (TextUtils.isEmpty(name)) {
+            nameField.setError("Name is required");
+            isValid = false;
+        } else if (!Pattern.matches("^[a-zA-Z ]{2,25}$", name)) {
+            nameField.setError("Name must contain only letters (2–25 characters)");
             isValid = false;
         }
 
-        // Email validation using a more comprehensive regex
-        if (!Pattern.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}$", email)) {
-            emailField.setError("Invalid email address");
+        // Email: not empty + pattern
+        if (TextUtils.isEmpty(email)) {
+            emailField.setError("Email is required");
+            isValid = false;
+        } else if (!Pattern.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$", email)) {
+            emailField.setError("Please enter a valid email address");
             isValid = false;
         }
 
-        // Password validation: Minimum 6 characters
-        if (password.length() < 6) {
+        // Password: not empty + min 6
+        if (TextUtils.isEmpty(password)) {
+            passwordField.setError("Password is required");
+            isValid = false;
+        } else if (password.length() < 6) {
             passwordField.setError("Password must be at least 6 characters long");
             isValid = false;
         }
 
-        // Phone number validation: Exactly 10 digits
-        if (!Pattern.matches("^[0-9]{10}$", phone)) {
-            phoneField.setError("Phone number must be 10 digits");
+        // Phone: not empty + 10 digits
+        if (TextUtils.isEmpty(phone)) {
+            phoneField.setError("Phone number is required");
+            isValid = false;
+        } else if (!Pattern.matches("^[0-9]{10}$", phone)) {
+            phoneField.setError("Phone number must be exactly 10 digits");
             isValid = false;
         }
 
@@ -108,9 +105,8 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void registerUser() {
-        // Add null check for progressBar before using it
         if (progressBar == null) {
-            Toast.makeText(this, "Progress bar is not initialized", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Progress bar not initialized", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -118,53 +114,41 @@ public class RegisterActivity extends AppCompatActivity {
         String email = emailField.getText().toString().trim();
         String password = passwordField.getText().toString().trim();
         String phone = phoneField.getText().toString().trim();
-
-        // Set role as "customer" for all registrations
         String role = "customer";
 
-        // Validate inputs before proceeding
-        if (!validateInputs(name, email, password, phone)) {
-            return;
-        }
+        if (!validateInputs(name, email, password, phone)) return;
 
         progressBar.setVisibility(View.VISIBLE);
 
         auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
-                    // Ensure progressBar is not null before hiding
-                    if (progressBar != null) {
-                        progressBar.setVisibility(View.GONE);
-                    }
-
+                    progressBar.setVisibility(View.GONE);
                     if (task.isSuccessful()) {
                         String userId = auth.getCurrentUser().getUid();
                         saveUserDetailsToFirestore(userId, name, email, phone, role);
                     } else {
-                        Toast.makeText(this, "Registration failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Registration failed: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
                     }
                 });
     }
 
     private void saveUserDetailsToFirestore(String userId, String name, String email, String phone, String role) {
-        // Get current date and time
         String createdAt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
 
-        // Create user data map
         Map<String, Object> user = new HashMap<>();
         user.put("name", name);
         user.put("email", email);
         user.put("phone", phone);
-        user.put("role", role);  // Role is set as "customer" during registration
+        user.put("role", role);
         user.put("created_at", createdAt);
 
         firestore.collection("users").document(userId)
                 .set(user)
                 .addOnSuccessListener(aVoid -> {
                     Toast.makeText(this, "Registration successful", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(RegisterActivity.this, CustomerLoginActivity.class);
-                    startActivity(intent);
+                    startActivity(new Intent(RegisterActivity.this, CustomerLoginActivity.class));
                     finish();
                 })
-                .addOnFailureListener(e -> Toast.makeText(this, "Error saving user: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+                .addOnFailureListener(e -> Toast.makeText(this, "Error saving user: " + e.getMessage(), Toast.LENGTH_LONG).show());
     }
 }

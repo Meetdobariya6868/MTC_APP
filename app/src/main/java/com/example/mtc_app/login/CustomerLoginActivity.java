@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -38,39 +39,29 @@ public class CustomerLoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        // Initialize views
         emailField = findViewById(R.id.emailField);
         passwordField = findViewById(R.id.passwordField);
         loginButton = findViewById(R.id.loginButton);
         registerTextView = findViewById(R.id.registerButton);
         progressBar = findViewById(R.id.progressBar);
 
-        // Initialize Firebase
         auth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
 
-        // Check if user is already logged in
         SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
         boolean isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false);
 
         if (isLoggedIn) {
-            // Redirect to the appropriate role-based page without showing the login form
             String userRole = sharedPreferences.getString("userRole", "");
             redirectToRoleBasedPage(userRole);
             return;
         }
 
-        // Set up login button click listener
         loginButton.setOnClickListener(view -> loginUser());
 
-        // Set up register text view click listener
-        registerTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Navigate to registration activity
-                Intent intent = new Intent(CustomerLoginActivity.this, RegisterActivity.class);
-                startActivity(intent);
-            }
+        registerTextView.setOnClickListener(v -> {
+            Intent intent = new Intent(CustomerLoginActivity.this, RegisterActivity.class);
+            startActivity(intent);
         });
     }
 
@@ -78,10 +69,22 @@ public class CustomerLoginActivity extends AppCompatActivity {
         String email = emailField.getText().toString().trim();
         String password = passwordField.getText().toString().trim();
 
-        if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
-            Toast.makeText(this, "All fields are required", Toast.LENGTH_SHORT).show();
-            return;
+        boolean isValid = true;
+
+        if (TextUtils.isEmpty(email)) {
+            emailField.setError("Email is required");
+            isValid = false;
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            emailField.setError("Enter a valid email address");
+            isValid = false;
         }
+
+        if (TextUtils.isEmpty(password)) {
+            passwordField.setError("Password is required");
+            isValid = false;
+        }
+
+        if (!isValid) return;
 
         progressBar.setVisibility(View.VISIBLE);
 
@@ -94,7 +97,35 @@ public class CustomerLoginActivity extends AppCompatActivity {
                             checkUserRole(user.getUid());
                         }
                     } else {
-                        Toast.makeText(this, "Login failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        Exception exception = task.getException();
+                        if (exception != null) {
+                            String errorMessage;
+                            String errorCode = "";
+
+                            if (exception instanceof com.google.firebase.auth.FirebaseAuthException) {
+                                errorCode = ((com.google.firebase.auth.FirebaseAuthException) exception).getErrorCode();
+                            }
+
+                            switch (errorCode) {
+                                case "ERROR_USER_NOT_FOUND":
+                                    errorMessage = "This email is not registered";
+                                    break;
+                                case "ERROR_WRONG_PASSWORD":
+                                    errorMessage = "Incorrect password";
+                                    break;
+                                case "ERROR_INVALID_EMAIL":
+                                    errorMessage = "Invalid email format";
+                                    break;
+                                case "ERROR_USER_DISABLED":
+                                    errorMessage = "This account has been disabled";
+                                    break;
+                                default:
+                                    errorMessage = "Login failed. Please check your credentials.";
+                                    break;
+                            }
+
+                            Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
     }
@@ -122,7 +153,6 @@ public class CustomerLoginActivity extends AppCompatActivity {
     }
 
     private void saveUserRoleInPreferences(String role) {
-        // Save login status and user role to SharedPreferences
         getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
                 .edit()
                 .putBoolean("isLoggedIn", true)
