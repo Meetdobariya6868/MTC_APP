@@ -1292,14 +1292,18 @@ public class MakeOrderFragment extends Fragment {
 //        SharedPreferences.Editor editor = requireContext().getSharedPreferences("user_profile", Context.MODE_PRIVATE).edit();
         Context context = getContext();
         if (context != null) {
-            SharedPreferences.Editor editor = context.getSharedPreferences("user_profile", Context.MODE_PRIVATE).edit();
-            editor.putString("name", customerName);
-            editor.putString("email", email);
-            editor.putString("address", dispatchAddress);
-            editor.putString("phone", mobileNumber);
-            editor.apply();
+            if (getArguments() == null || getArguments().getString("customer_phone") == null) {
+                // Only save if it’s not a customer-specific view
+                SharedPreferences.Editor editor = context.getSharedPreferences("user_profile", Context.MODE_PRIVATE).edit();
+                editor.putString("name", customerName);
+                editor.putString("email", email);
+                editor.putString("address", dispatchAddress);
+                editor.putString("phone", mobileNumber);
+                editor.apply();
+            }
 
         }
+
 
 
 

@@ -1,7 +1,6 @@
 package com.example.mtc_app.customerRepresentative;
 
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,34 +62,22 @@ public class AddCustomer extends Fragment {
         String address = editTextAddress.getText().toString().trim();
         String role = "customer";
 
-        if (name.isEmpty()) {
-            editTextName.setError("Name is required");
-            return;
-        } else if (!name.matches("^[a-zA-Z ]+$")) {
-            editTextName.setError("Name must contain only letters and spaces");
+        if (name.isEmpty() || !name.matches("^[a-zA-Z ]+$")) {
+            editTextName.setError("Enter a valid name (letters and spaces only)");
             return;
         }
 
-        if (phone.isEmpty()) {
-            editTextMobile.setError("Mobile number is required");
-            return;
-        } else if (!phone.matches("\\d{10}")) {
+        if (phone.isEmpty() || !phone.matches("\\d{10}")) {
             editTextMobile.setError("Enter a valid 10-digit mobile number");
             return;
         }
 
-        if (email.isEmpty()) {
-            editTextEmail.setError("Email is required");
-            return;
-        } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+        if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             editTextEmail.setError("Enter a valid email address");
             return;
         }
 
-        if (password.isEmpty()) {
-            editTextPassword.setError("Password is required");
-            return;
-        } else if (password.length() < 6) {
+        if (password.isEmpty() || password.length() < 6) {
             editTextPassword.setError("Password must be at least 6 characters long");
             return;
         }
@@ -102,7 +89,6 @@ public class AddCustomer extends Fragment {
 
         progressBar.setVisibility(View.VISIBLE);
 
-        // Check if mobile number already exists
         firestore.collection("users")
                 .whereEqualTo("phone", phone)
                 .get()
@@ -113,7 +99,6 @@ public class AddCustomer extends Fragment {
                         return;
                     }
 
-                    // Proceed to create user if mobile is not registered
                     auth.createUserWithEmailAndPassword(email, password)
                             .addOnCompleteListener(task -> {
                                 if (task.isSuccessful()) {

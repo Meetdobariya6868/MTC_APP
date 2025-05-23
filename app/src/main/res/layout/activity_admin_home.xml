@@ -28,7 +28,7 @@
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
         <!-- Main Content Area -->
-        <FrameLayout
+        <RelativeLayout
             android:id="@+id/fragment_container"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -36,11 +36,13 @@
             android:background="#FFFFFF"
             android:fitsSystemWindows="true">
 
+            <!-- Search Bar -->
             <LinearLayout
                 android:id="@+id/searchBarLayout"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_margin="16dp"
+                android:layout_alignParentTop="true"
                 android:background="@drawable/search_background"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
@@ -63,48 +65,39 @@
                     android:paddingStart="8dp"
                     android:singleLine="true"
                     android:textColor="@android:color/black"
-                    android:textColorHint="@android:color/darker_gray"/>
-
-                <!-- Optional filter icon (commented out) -->
-                <!--
-                <ImageView
-                    android:id="@+id/filterIcon"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:contentDescription="Filter Icon"
-                    android:src="@drawable/filter"
-                    app:tint="@color/Lavender" />
-                -->
+                    android:textColorHint="@android:color/darker_gray" />
             </LinearLayout>
 
-            <!-- 🔄 Progress Bar -->
+            <!-- Progress Bar -->
             <ProgressBar
                 android:id="@+id/progressBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:layout_gravity="center"
-                android:layout_marginTop="12dp"/>
+                android:layout_centerInParent="true"
+                android:visibility="gone" />
 
+            <!-- RecyclerView -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewCustomers"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="72dp"
-                android:paddingHorizontal="3dp"/>
+                android:layout_below="@id/searchBarLayout"
+                android:clipToPadding="true"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:paddingStart="3dp"
+                android:paddingEnd="3dp" />
+        </RelativeLayout>
 
-        </FrameLayout>
-
-        <!-- CoordinatorLayout to handle FAB behavior -->
+        <!-- Bottom Navigation View inside CoordinatorLayout -->
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <!-- Bottom Navigation View -->
             <com.google.android.material.bottomnavigation.BottomNavigationView
                 android:id="@+id/bottom_navigation"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="bottom"
                 android:background="@color/white"
                 app:itemHorizontalTranslationEnabled="false"
@@ -113,7 +106,5 @@
                 app:labelVisibilityMode="labeled"
                 app:menu="@menu/admin_bottom_menu" />
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
     </LinearLayout>
-
 </androidx.drawerlayout.widget.DrawerLayout>
