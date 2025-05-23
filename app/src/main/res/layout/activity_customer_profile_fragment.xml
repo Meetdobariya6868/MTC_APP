@@ -31,9 +31,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
+                android:visibility="invisible"
                 android:background="@drawable/rounded_image_background"
                 android:contentDescription="Profile Image" />
         </androidx.cardview.widget.CardView>
+
+        <ProgressBar
+            android:id="@+id/profile_image_loader"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="38dp"
+            android:layout_height="39dp"
+            android:layout_gravity="center"
+            android:indeterminate="true"
+            android:theme="@style/Widget.AppCompat.ProgressBar"
+            android:visibility="visible"
+            android:indeterminateTint="@android:color/black"/>
 
         <androidx.cardview.widget.CardView
             android:id="@+id/edit_button_container"

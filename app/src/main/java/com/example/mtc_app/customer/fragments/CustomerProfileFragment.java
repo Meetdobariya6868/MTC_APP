@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,11 +20,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.target.ImageViewTarget;
 import com.example.mtc_app.R;
 import com.example.mtc_app.customer.profile.EditProfileActivity;
 import com.example.mtc_app.login.CustomerLoginActivity;
@@ -42,7 +45,6 @@ public class CustomerProfileFragment extends Fragment {
 
     private TextView usernameText, userHandleText, emailValueText, addressValueText, phoneValueText;
     private Button editProfileButton, logOutButton;
-    private ProgressBar loadingProgress;
     private ImageView profilePicture, editProfileIcon;
 
     private FirebaseAuth auth;
@@ -52,6 +54,8 @@ public class CustomerProfileFragment extends Fragment {
     private static final int CAMERA_REQUEST_CODE = 101;
     private static final String CLOUDINARY_FOLDER_NAME = "profile_images";
     private static final String PREFS_NAME = "UserProfilePrefs";
+    private ProgressBar profileImageLoader;
+
 
     public CustomerProfileFragment() {}
 
@@ -67,8 +71,8 @@ public class CustomerProfileFragment extends Fragment {
         phoneValueText = view.findViewById(R.id.phone_value);
         editProfileButton = view.findViewById(R.id.edit_profile_button);
         logOutButton = view.findViewById(R.id.logOut);
-        loadingProgress = view.findViewById(R.id.loading_progress);
         editProfileIcon = view.findViewById(R.id.edit_icon);
+        profileImageLoader = view.findViewById(R.id.profile_image_loader);
 
         auth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
@@ -175,7 +179,6 @@ public class CustomerProfileFragment extends Fragment {
     }
 
     private void performLogout() {
-        loadingProgress.setVisibility(View.VISIBLE);
         auth.signOut();
 
         requireActivity().getSharedPreferences("MyAppPrefs", 0).edit().clear().apply();
@@ -234,12 +237,38 @@ public class CustomerProfileFragment extends Fragment {
         phoneValueText.setText(phone);
 
         if (imageUrl != null && !imageUrl.isEmpty()) {
+            profileImageLoader.setVisibility(View.VISIBLE);
+            profilePicture.setVisibility(View.INVISIBLE); // Hide image view until it's ready
+
             Glide.with(getContext())
                     .load(imageUrl)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .thumbnail(0.25f)
-                    .into(profilePicture);
+                    .into(new ImageViewTarget<Drawable>(profilePicture) {
+                        @Override
+                        protected void setResource(@Nullable Drawable resource) {
+                            if (resource != null) {
+                                profilePicture.setImageDrawable(resource);
+                                profilePicture.setVisibility(View.VISIBLE);
+                            }
+                            profileImageLoader.setVisibility(View.GONE);
+                        }
+
+                        @Override
+                        public void onLoadFailed(@Nullable Drawable errorDrawable) {
+                            super.onLoadFailed(errorDrawable);
+                            profileImageLoader.setVisibility(View.GONE);
+                            profilePicture.setVisibility(View.VISIBLE); // Optional: fallback to showing old image
+                            Toast.makeText(getContext(), "Failed to load image", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        } else {
+            // If no image URL exists, hide loader and optionally show placeholder
+            profileImageLoader.setVisibility(View.GONE);
+            profilePicture.setImageResource(R.drawable.ic_profile); // Optional default
+            profilePicture.setVisibility(View.VISIBLE);
         }
+
 
         SharedPreferences.Editor editor = getActivity()
                 .getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)

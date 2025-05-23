@@ -30,7 +30,6 @@ public class CustomerLoginActivity extends AppCompatActivity {
     private EditText emailField, passwordField;
     private Button loginButton;
     private TextView registerTextView;
-    private ProgressBar progressBar;
     private FirebaseAuth auth;
     private FirebaseFirestore firestore;
 
@@ -43,7 +42,6 @@ public class CustomerLoginActivity extends AppCompatActivity {
         passwordField = findViewById(R.id.passwordField);
         loginButton = findViewById(R.id.loginButton);
         registerTextView = findViewById(R.id.registerButton);
-        progressBar = findViewById(R.id.progressBar);
 
         auth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
@@ -86,11 +84,18 @@ public class CustomerLoginActivity extends AppCompatActivity {
 
         if (!isValid) return;
 
-        progressBar.setVisibility(View.VISIBLE);
+        // Show progress inside button
+        ProgressBar loginButtonProgress = findViewById(R.id.loginButtonProgress);
+        loginButtonProgress.setVisibility(View.VISIBLE);
+        loginButton.setEnabled(false);
+        loginButton.setText("");
 
         auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
-                    progressBar.setVisibility(View.GONE);
+                    loginButtonProgress.setVisibility(View.GONE);
+                    loginButton.setEnabled(true);
+                    loginButton.setText("Sign In");
+
                     if (task.isSuccessful()) {
                         FirebaseUser user = auth.getCurrentUser();
                         if (user != null) {
@@ -98,37 +103,36 @@ public class CustomerLoginActivity extends AppCompatActivity {
                         }
                     } else {
                         Exception exception = task.getException();
-                        if (exception != null) {
-                            String errorMessage;
-                            String errorCode = "";
+                        String errorMessage;
+                        String errorCode = "";
 
-                            if (exception instanceof com.google.firebase.auth.FirebaseAuthException) {
-                                errorCode = ((com.google.firebase.auth.FirebaseAuthException) exception).getErrorCode();
-                            }
-
-                            switch (errorCode) {
-                                case "ERROR_USER_NOT_FOUND":
-                                    errorMessage = "This email is not registered";
-                                    break;
-                                case "ERROR_WRONG_PASSWORD":
-                                    errorMessage = "Incorrect password";
-                                    break;
-                                case "ERROR_INVALID_EMAIL":
-                                    errorMessage = "Invalid email format";
-                                    break;
-                                case "ERROR_USER_DISABLED":
-                                    errorMessage = "This account has been disabled";
-                                    break;
-                                default:
-                                    errorMessage = "Login failed. Please check your credentials.";
-                                    break;
-                            }
-
-                            Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
+                        if (exception instanceof com.google.firebase.auth.FirebaseAuthException) {
+                            errorCode = ((com.google.firebase.auth.FirebaseAuthException) exception).getErrorCode();
                         }
+
+                        switch (errorCode) {
+                            case "ERROR_USER_NOT_FOUND":
+                                errorMessage = "This email is not registered";
+                                break;
+                            case "ERROR_WRONG_PASSWORD":
+                                errorMessage = "Incorrect password";
+                                break;
+                            case "ERROR_INVALID_EMAIL":
+                                errorMessage = "Invalid email format";
+                                break;
+                            case "ERROR_USER_DISABLED":
+                                errorMessage = "This account has been disabled";
+                                break;
+                            default:
+                                errorMessage = "Login failed. Please check your credentials.";
+                                break;
+                        }
+
+                        Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
                     }
                 });
     }
+
 
     private void checkUserRole(String userId) {
         firestore.collection("users").document(userId).get()
