@@ -69,7 +69,6 @@
                     android:adjustViewBounds="true"
                     android:padding="10dp" />
             </FrameLayout>
-
         </com.skyfishjy.library.RippleBackground>
     </androidx.cardview.widget.CardView>
 
