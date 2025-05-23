@@ -129,7 +129,7 @@ public class CustomerHomeFragment extends Fragment {
                                 dispatchMode = String.valueOf(radioSelections.get("Mode of Dispatch"));
                             }
 
-<<<<<<< HEAD
+
                             CustomerHomePageOrder order = new CustomerHomePageOrder(
                                     orderId,
                                     status,
@@ -140,9 +140,9 @@ public class CustomerHomeFragment extends Fragment {
                             );
 
                             fetchedList.add(order);
-=======
-                            fetchedList.add(new CustomerHomePageOrder(orderId, status, dispatchMode, createdAt, totalPrice));
->>>>>>> 8584525ed397b64e440fecd43f7c236c482a6c15
+
+                            fetchedList.add(new CustomerHomePageOrder(orderId, status,segment, dispatchMode, createdAt, totalPrice));
+
                         }
 
                         orderList.clear();
