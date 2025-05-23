@@ -59,6 +59,10 @@ public class CustomerHomeFragment extends Fragment {
         customerOrderAdapter = new CustomerOrderAdapter(getContext(), filteredOrderList); // removed listener
         recyclerView.setAdapter(customerOrderAdapter);
 
+        recyclerView.setVisibility(View.GONE); // Hide initially
+        progressBar.setVisibility(View.VISIBLE); // Show progress initially
+
+
         loadCachedOrders();
         setupSearchFunctionality();
         recyclerView.post(this::fetchOrdersFromFirestore);
@@ -96,7 +100,8 @@ public class CustomerHomeFragment extends Fragment {
     private void fetchOrdersFromFirestore() {
         if (!isAdded() || auth.getCurrentUser() == null) return;
 
-        progressBar.setVisibility(View.VISIBLE);  // Show loading
+        progressBar.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.GONE);  // Hide data while loading
 
         String userEmail = auth.getCurrentUser().getEmail();
 
@@ -105,8 +110,6 @@ public class CustomerHomeFragment extends Fragment {
                 .get()
                 .addOnCompleteListener(task -> {
                     if (!isAdded()) return;
-
-                    progressBar.setVisibility(View.GONE); // Hide loading
 
                     if (task.isSuccessful() && task.getResult() != null) {
                         List<CustomerHomePageOrder> fetchedList = new ArrayList<>();
@@ -126,6 +129,7 @@ public class CustomerHomeFragment extends Fragment {
                                 dispatchMode = String.valueOf(radioSelections.get("Mode of Dispatch"));
                             }
 
+<<<<<<< HEAD
                             CustomerHomePageOrder order = new CustomerHomePageOrder(
                                     orderId,
                                     status,
@@ -136,6 +140,9 @@ public class CustomerHomeFragment extends Fragment {
                             );
 
                             fetchedList.add(order);
+=======
+                            fetchedList.add(new CustomerHomePageOrder(orderId, status, dispatchMode, createdAt, totalPrice));
+>>>>>>> 8584525ed397b64e440fecd43f7c236c482a6c15
                         }
 
                         orderList.clear();
@@ -144,10 +151,12 @@ public class CustomerHomeFragment extends Fragment {
                         filteredOrderList.addAll(orderList);
                         customerOrderAdapter.notifyDataSetChanged();
 
-                        if (isAdded()) {
-                            cacheOrders(orderList);
-                        }
+                        cacheOrders(orderList);
+
+                        recyclerView.setVisibility(View.VISIBLE);  // ✅ Show data only after it's ready
+                        progressBar.setVisibility(View.GONE);      // ✅ Hide loader
                     } else {
+                        progressBar.setVisibility(View.GONE);
                         Toast.makeText(getContext(), "Error loading orders", Toast.LENGTH_SHORT).show();
                     }
                 })
@@ -158,7 +167,6 @@ public class CustomerHomeFragment extends Fragment {
                     }
                 });
     }
-
 
     private void cacheOrders(List<CustomerHomePageOrder> orders) {
         Context context = getContext();
