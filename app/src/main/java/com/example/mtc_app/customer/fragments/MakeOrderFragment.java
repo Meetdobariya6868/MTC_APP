@@ -254,7 +254,6 @@ public class MakeOrderFragment extends Fragment {
         tilAggregateFineQuantity = view.findViewById(R.id.til_aggregate_fine_quantity);
         tilAggregateCoarseQuantity = view.findViewById(R.id.til_aggregate_coarse_quantity);
         tilCementQuantity = view.findViewById(R.id.til_cement_quantity);
-        tillConstWaterQuantity = view.findViewById(R.id.til_const_water_quantity);
         tilWasteWaterQuantity = view.findViewById(R.id.til_waste_water_quantity);
         tillFlyAsh = view.findViewById(R.id.til_fly_ash_quantity);
         tilMixDesignQuantity = view.findViewById(R.id.til_mix_water_quantity);
@@ -993,7 +992,7 @@ public class MakeOrderFragment extends Fragment {
         super.onResume();
 
         // Hide the progress bar when the fragment is visible
-        if (getActivity() != null) {
+        if (getActivity() != null && getActivity() instanceof CustomerHomePageActivity) {
             ((CustomerHomePageActivity) getActivity()).hideProgressBar();
         }
     }
@@ -1007,7 +1006,6 @@ public class MakeOrderFragment extends Fragment {
     }
 
     private void submitData(View view) {
-
         if (etCustomerName == null || etDispatchAddress == null || etLab == null || etLabJob == null) {
             Log.e("SubmitData", "EditText fields are null");
             return;
@@ -1028,19 +1026,19 @@ public class MakeOrderFragment extends Fragment {
         String Lab = etLab.getText().toString().trim();
         String LabJob = etLabJob.getText().toString().trim();
 
-        etFinalPrice = view.findViewById(R.id.et_final_price);
-        etFinalPrice.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                calculateTotalPrice();  // Automatically update totalPrice display
-            }
-        });
+//        etFinalPrice = view.findViewById(R.id.et_final_price);
+//        etFinalPrice.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//                calculateTotalPrice();  // Automatically update totalPrice display
+//            }
+//        });
 
 
         tvTotalPrice.setText("Total Price: " + totalPrice + " /- Rs");
@@ -1269,6 +1267,8 @@ public class MakeOrderFragment extends Fragment {
 //        data.put("Terms And Conditions", termsAndConditions);
         data.put("Created At", createdAt);
 
+        String manualPriceStr = etFinalPrice.getText().toString().trim();
+        if (!manualPriceStr.isEmpty()) totalPrice = Integer.parseInt(manualPriceStr);
         data.put("Total Price", totalPrice);
 
 

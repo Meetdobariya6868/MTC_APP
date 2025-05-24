@@ -62,7 +62,6 @@ public class CustomerHomeFragment extends Fragment {
         recyclerView.setVisibility(View.GONE); // Hide initially
         progressBar.setVisibility(View.VISIBLE); // Show progress initially
 
-
         loadCachedOrders();
         setupSearchFunctionality();
         recyclerView.post(this::fetchOrdersFromFirestore);
@@ -82,9 +81,9 @@ public class CustomerHomeFragment extends Fragment {
 
                 for (String row : cachedData.split(";;")) {
                     String[] parts = row.split("\\|\\|");
-                    if (parts.length == 5) {
+                    if (parts.length == 6) {
                         orderList.add(new CustomerHomePageOrder(
-                                parts[0], parts[1], parts[2], parts[3],parts[4], Integer.parseInt(parts[5])
+                                parts[0], parts[1], parts[2], parts[3], parts[4], Integer.parseInt(parts[5])
                         ));
                     }
                 }
@@ -129,7 +128,6 @@ public class CustomerHomeFragment extends Fragment {
                                 dispatchMode = String.valueOf(radioSelections.get("Mode of Dispatch"));
                             }
 
-
                             CustomerHomePageOrder order = new CustomerHomePageOrder(
                                     orderId,
                                     status,
@@ -139,10 +137,7 @@ public class CustomerHomeFragment extends Fragment {
                                     totalPrice
                             );
 
-                            fetchedList.add(order);
-
-                            fetchedList.add(new CustomerHomePageOrder(orderId, status,segment, dispatchMode, createdAt, totalPrice));
-
+                            fetchedList.add(order);  // ✅ Only add once!
                         }
 
                         orderList.clear();
@@ -178,6 +173,7 @@ public class CustomerHomeFragment extends Fragment {
                     .append(order.getStatus() != null ? order.getStatus() : "").append("||")
                     .append(order.getDispatchMode() != null ? order.getDispatchMode() : "").append("||")
                     .append(order.getDate() != null ? order.getDate() : "").append("||")
+                    .append(order.getSegment() != null ? order.getSegment() : "").append("||")
                     .append(order.getPrice()).append(";;");
         }
 
