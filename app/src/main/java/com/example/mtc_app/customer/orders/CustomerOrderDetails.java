@@ -113,6 +113,15 @@ public class CustomerOrderDetails extends AppCompatActivity {
                 testSelectionText.setText("No Test Selection available");
             }
 
+            String labJobNumber = documentSnapshot.getString("LabJobNumber");
+            TextView labJobNumberText = findViewById(R.id.labJobNumberText);
+            if (labJobNumber != null && !labJobNumber.isEmpty()) {
+                labJobNumberText.setText("Job ID: " + labJobNumber);
+            } else {
+                labJobNumberText.setText("Job ID: Not Available");
+            }
+
+
             Map<String, Object> radioSelections = (Map<String, Object>) documentSnapshot.get("Radio Selections");
             radioSelectionsText.setText(buildBulletList(radioSelections, "No Radio Selections"));
 
