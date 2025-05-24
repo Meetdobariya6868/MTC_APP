@@ -1,4 +1,4 @@
-package com.example.mtc_app.customer.models;
+package com.example.mtc_app.customer.model;
 
 public class CustomerHomePageOrder {
     private String orderId;  // Unique ID from Firestore
@@ -12,9 +12,10 @@ public class CustomerHomePageOrder {
     public CustomerHomePageOrder() { }
 
     // 🔹 Constructor for manual object creation
-    public CustomerHomePageOrder(String orderId, String status, String dispatchMode, String date, int price) {
+    public CustomerHomePageOrder(String orderId, String status,String segment, String dispatchMode, String date, int price) {
         this.orderId = orderId;
         this.status = status;
+        this.segment = segment;
         this.dispatchMode = dispatchMode;
         this.date = date;
         this.price = price;

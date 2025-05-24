@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mtc_app.R;
 import com.example.mtc_app.customer.adapter.CustomerOrderAdapter;
-import com.example.mtc_app.customer.models.CustomerHomePageOrder;
+import com.example.mtc_app.customer.model.CustomerHomePageOrder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -34,7 +34,6 @@ public class CustomerHomeFragment extends Fragment {
     private FirebaseAuth auth;
     private RecyclerView recyclerView;
     private EditText searchInput;
-
     private CustomerOrderAdapter customerOrderAdapter;
     private View progressBar;
     private final List<CustomerHomePageOrder> orderList = new ArrayList<>();
@@ -85,7 +84,7 @@ public class CustomerHomeFragment extends Fragment {
                     String[] parts = row.split("\\|\\|");
                     if (parts.length == 5) {
                         orderList.add(new CustomerHomePageOrder(
-                                parts[0], parts[1], parts[2], parts[3], Integer.parseInt(parts[4])
+                                parts[0], parts[1], parts[2], parts[3],parts[4], Integer.parseInt(parts[5])
                         ));
                     }
                 }
@@ -117,6 +116,7 @@ public class CustomerHomeFragment extends Fragment {
 
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             String orderId = document.getId();
+                            String segment = document.getString("LabJobNumber");
                             String status = document.getString("Status");
                             String createdAt = document.getString("Created At");
                             int totalPrice = document.getLong("Total Price") != null
@@ -129,7 +129,20 @@ public class CustomerHomeFragment extends Fragment {
                                 dispatchMode = String.valueOf(radioSelections.get("Mode of Dispatch"));
                             }
 
-                            fetchedList.add(new CustomerHomePageOrder(orderId, status, dispatchMode, createdAt, totalPrice));
+
+                            CustomerHomePageOrder order = new CustomerHomePageOrder(
+                                    orderId,
+                                    status,
+                                    segment,
+                                    dispatchMode,
+                                    createdAt,
+                                    totalPrice
+                            );
+
+                            fetchedList.add(order);
+
+                            fetchedList.add(new CustomerHomePageOrder(orderId, status,segment, dispatchMode, createdAt, totalPrice));
+
                         }
 
                         orderList.clear();

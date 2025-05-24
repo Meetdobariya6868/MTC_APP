@@ -1,6 +1,7 @@
 package com.example.mtc_app.customerRepresentative;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -191,32 +192,87 @@ public class CRProfile extends Fragment {
     }
 
     private void fetchProfileData(String userId) {
+        SharedPreferences prefs = requireContext().getSharedPreferences("cr_profile", Context.MODE_PRIVATE);
+        String cachedName = prefs.getString("name", null);
+        String cachedEmail = prefs.getString("email", null);
+        String cachedAddress = prefs.getString("address", null);
+        String cachedPhone = prefs.getString("phone", null);
+        String cachedImageUrl = prefs.getString("profileImageUrl", null);
+
+        if (cachedName != null && cachedEmail != null && cachedPhone != null) {
+            // ✅ Load from cached CR profile
+            profileName.setText(cachedName);
+            profileEmail.setText(cachedEmail);
+            addressValue.setText(cachedAddress);
+            profilePhone.setText(cachedPhone);
+
+            if (cachedImageUrl != null && !cachedImageUrl.isEmpty()) {
+                Glide.with(requireContext())
+                        .load(cachedImageUrl)
+                        .placeholder(R.drawable.cust_profile)
+                        .into(profilePicture);
+            }
+
+            return; // 🚫 Skip Firestore since CR profile is already cached
+        }
+
+        // ⛔ No cached CR profile — load from Firestore
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser == null) return;
+
+        String currentEmail = currentUser.getEmail();
+
         db.collection("users")
                 .document(userId)
                 .get()
                 .addOnSuccessListener(documentSnapshot -> {
-                    if (documentSnapshot.exists()) {
-                        username.setText(documentSnapshot.getString("name"));
-                        profileEmail.setText(documentSnapshot.getString("email"));
-                        addressValue.setText(documentSnapshot.getString("address"));
-                        profilePhone.setText(documentSnapshot.getString("phone"));
-
-                        String profileImageUrl = documentSnapshot.getString("profileImageUrl");
-                        if (profileImageUrl != null && !profileImageUrl.isEmpty()) {
-                            if (isAdded()) {
-                                Glide.with(requireContext())
-                                        .load(profileImageUrl)
-                                        .placeholder(R.drawable.cust_profile)
-                                        .into(profilePicture);
-                            }
-
-                        }
-                    } else {
+                    if (!documentSnapshot.exists()) {
                         Toast.makeText(requireContext(), "User not found.", Toast.LENGTH_SHORT).show();
+                        return;
                     }
+
+                    String role = documentSnapshot.getString("role");
+                    String email = documentSnapshot.getString("email");
+                    String phone = documentSnapshot.getString("phone");
+
+                    if (!"cr".equalsIgnoreCase(role)) {
+                        Toast.makeText(requireContext(), "Not authorized as CR.", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    if (email == null || phone == null || !email.equalsIgnoreCase(currentEmail)) {
+                        Toast.makeText(requireContext(), "CR email mismatch.", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    // 🔐 Valid CR — now save
+                    String name = documentSnapshot.getString("name");
+                    String address = documentSnapshot.getString("address");
+                    String profileImageUrl = documentSnapshot.getString("profileImageUrl");
+
+                    profileName.setText(name);
+                    profileEmail.setText(email);
+                    addressValue.setText(address);
+                    profilePhone.setText(phone);
+
+                    if (profileImageUrl != null && !profileImageUrl.isEmpty()) {
+                        Glide.with(requireContext())
+                                .load(profileImageUrl)
+                                .placeholder(R.drawable.cust_profile)
+                                .into(profilePicture);
+                    }
+
+                    // Save for future use
+                    prefs.edit()
+                            .putString("name", name)
+                            .putString("email", email)
+                            .putString("address", address)
+                            .putString("phone", phone)
+                            .putString("profileImageUrl", profileImageUrl)
+                            .apply();
                 })
                 .addOnFailureListener(e -> {
-                    Log.e("Firestore", "Error fetching profile data", e);
+                    Log.e("Firestore", "Error fetching CR profile", e);
                     Toast.makeText(requireContext(), "Failed to load profile.", Toast.LENGTH_SHORT).show();
                 });
     }

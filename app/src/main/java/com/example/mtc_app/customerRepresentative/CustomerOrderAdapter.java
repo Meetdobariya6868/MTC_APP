@@ -152,11 +152,13 @@ public class CustomerOrderAdapter extends RecyclerView.Adapter<CustomerOrderAdap
 
                         })
                         .setNegativeButton("No", (dialog, which) -> {
-                            // Revert spinner if cancelled
+                            // Revert spinner if cancelled without triggering selection again
                             String[] statuses = context.getResources().getStringArray(R.array.status_options);
                             for (int i = 0; i < statuses.length; i++) {
                                 if (statuses[i].equalsIgnoreCase(currentStatus)) {
-                                    spinner.setSelection(i);
+                                    spinner.setOnItemSelectedListener(null);
+                                    spinner.setSelection(i, false); // don't trigger listener
+                                    setupStatusDropdown(spinner, statusText, orderId, currentStatus, position);
                                     break;
                                 }
                             }
