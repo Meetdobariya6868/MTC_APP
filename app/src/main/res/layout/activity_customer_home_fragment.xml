@@ -4,17 +4,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#FFFFFF">
+    android:layout_height="685dp"
+    android:background="#FFFFFF"
+    android:fitsSystemWindows="true">
 
     <!-- 🔍 Custom Styled Search Bar -->
     <LinearLayout
         android:id="@+id/searchView"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_margin="16dp"
         android:background="@drawable/search_background"
         android:gravity="center_vertical"
         android:orientation="horizontal"
@@ -40,15 +39,14 @@
             android:textColorHint="@android:color/darker_gray"/>
     </LinearLayout>
 
+
     <!-- 📜 RecyclerView (List of Orders) -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="82dp"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:paddingBottom="16dp"
+        android:layout_marginTop="72dp"
+        android:paddingHorizontal="3dp"
         android:clipToPadding="false"
         android:scrollbars="vertical"
         android:overScrollMode="never"/>
@@ -60,5 +58,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:visibility="gone" />
+        android:visibility="gone"
+        tools:ignore="DuplicateIds" />
 </FrameLayout>
