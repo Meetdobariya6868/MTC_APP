@@ -27,12 +27,14 @@ public class staff_home extends AppCompatActivity {
     private RecyclerView recyclerView;
     private adapter_home adapter;
     private List<ItemData> itemList, filteredList;
+    private List<String> itemDocumentIds, filteredDocumentIds; // 🔥 Both lists for consistency
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private String staffCategory;
-    private ImageView profileIcon, filterButton;
+    private ImageView profileIcon;
     private EditText searchBar;
-    private String passedCategory = null; // for Intent override
+    private String passedCategory = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +46,10 @@ public class staff_home extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         itemList = new ArrayList<>();
         filteredList = new ArrayList<>();
-        adapter = new adapter_home(filteredList, this);
+        itemDocumentIds = new ArrayList<>();
+        filteredDocumentIds = new ArrayList<>();
+
+        adapter = new adapter_home(filteredList, this, filteredDocumentIds); // 🔥 Updated adapter call
         recyclerView.setAdapter(adapter);
 
         profileIcon = findViewById(R.id.profileIcon);
@@ -55,19 +60,15 @@ public class staff_home extends AppCompatActivity {
             startActivity(intent);
         });
 
-        // Get the optional category passed from AdminStaffFragment
         passedCategory = getIntent().getStringExtra("category");
 
-//        loadUserCategory();
-
         if (passedCategory != null && !passedCategory.isEmpty()) {
-            // If category passed from intent, use it directly
             Toast.makeText(this, "Category: " + passedCategory, Toast.LENGTH_SHORT).show();
             loadProducts(passedCategory);
         } else {
-            // Otherwise, use Firestore to get logged-in user's category
             loadUserCategory();
         }
+
         setupSearchListener();
     }
 
@@ -86,7 +87,6 @@ public class staff_home extends AppCompatActivity {
     private void loadProducts(String category) {
         List<String> productCategories = new ArrayList<>();
 
-        // Define product categories based on staff category
         if ("aggregate".equalsIgnoreCase(category)) {
             productCategories.add("Aggregate Coarse");
             productCategories.add("Aggregate Fine");
@@ -103,76 +103,72 @@ public class staff_home extends AppCompatActivity {
             return;
         }
 
-        Log.d("Firestore", "Fetching data for categories: " + productCategories);
-
         db.collection("Total Orders")
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     itemList.clear();
                     filteredList.clear();
+                    itemDocumentIds.clear();
+                    filteredDocumentIds.clear();
 
                     for (DocumentSnapshot doc : queryDocumentSnapshots.getDocuments()) {
                         Map<String, Object> testSelections = (Map<String, Object>) doc.get("Test Selections");
+                        String status = doc.getString("Status");
 
-                        if (testSelections != null) {
-                            // Create a filtered map containing only allowed product categories
+                        if (testSelections != null && !"Reported".equalsIgnoreCase(status)) {
                             Map<String, Object> filteredTestSelections = new HashMap<>();
-
                             for (String key : testSelections.keySet()) {
                                 if (productCategories.contains(key)) {
                                     filteredTestSelections.put(key, testSelections.get(key));
                                 }
                             }
 
-                            // If filteredTestSelections is empty, it means this order has no relevant tests
                             if (!filteredTestSelections.isEmpty()) {
                                 String title = doc.getString("LabNumber");
                                 String subtitle = doc.getString("Created At");
                                 String categoryItem = doc.getString("Email");
-                                String orderStatus = doc.getString("Status");
-                                String testSummary = filteredTestSelections.toString(); // Convert filtered Map to String
+                                String testSummary = filteredTestSelections.toString();
+                                String documentId = doc.getId();
 
-                                // Log fetched data
-                                Log.d("Firestore", "Filtered Item: " + title + " | " + subtitle + " | " + categoryItem + " | " + testSummary);
-
-                                // Create ItemData object
-                                ItemData item = new ItemData(title, subtitle, R.drawable.ic_placeholder, categoryItem, testSummary, orderStatus);
+                                ItemData item = new ItemData(title, subtitle, R.drawable.ic_placeholder, categoryItem, testSummary, status, documentId);
                                 itemList.add(item);
+                                itemDocumentIds.add(documentId);
                             }
                         }
                     }
+
                     filteredList.addAll(itemList);
+                    filteredDocumentIds.addAll(itemDocumentIds);
                     adapter.notifyDataSetChanged();
                 })
                 .addOnFailureListener(e -> Log.e("Firestore", "Error fetching orders", e));
     }
 
-
     private void setupSearchListener() {
         searchBar.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                filterSearch(charSequence.toString());
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
+                filterSearch(s.toString());
             }
-
-            @Override
-            public void afterTextChanged(Editable editable) {}
+            @Override public void afterTextChanged(Editable s) {}
         });
     }
 
     private void filterSearch(String query) {
         filteredList.clear();
+        filteredDocumentIds.clear();
+
         if (query.isEmpty()) {
             filteredList.addAll(itemList);
+            filteredDocumentIds.addAll(itemDocumentIds);
         } else {
-            for (ItemData item : itemList) {
+            for (int i = 0; i < itemList.size(); i++) {
+                ItemData item = itemList.get(i);
                 if (item.getTitle().toLowerCase().contains(query.toLowerCase()) ||
                         item.getCategory().toLowerCase().contains(query.toLowerCase()) ||
-                        item.getTestSummary().toLowerCase().contains(query.toLowerCase())) { // Added testSummary filter
+                        item.getTestSummary().toLowerCase().contains(query.toLowerCase())) {
                     filteredList.add(item);
+                    filteredDocumentIds.add(itemDocumentIds.get(i));
                 }
             }
         }

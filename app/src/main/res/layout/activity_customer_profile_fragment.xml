@@ -139,7 +139,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="end"
-                    android:text="mnswap@gmail.com"
+                    android:text=""
                     android:textColor="#333333"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -220,7 +220,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="end"
-                    android:text="9016071000"
+                    android:text=""
                     android:textColor="#333333"
                     android:textSize="16sp" />
             </LinearLayout>

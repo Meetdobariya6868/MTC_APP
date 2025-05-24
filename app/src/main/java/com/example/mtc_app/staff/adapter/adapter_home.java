@@ -1,31 +1,34 @@
 package com.example.mtc_app.staff.adapter;
 
 import android.content.Context;
-import android.content.Intent;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.*;
+import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.mtc_app.R;
-import com.example.mtc_app.staff.staff_detailed_page;
-
+import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.List;
 
 public class adapter_home extends RecyclerView.Adapter<adapter_home.HomeViewHolder> {
     private List<ItemData> dataItems;
     private Context context;
+    private List<String> documentIds; // 🔥 Maintain filteredDocumentIds
 
-    public adapter_home(List<ItemData> dataItems, Context context) {
+    public adapter_home(List<ItemData> dataItems, Context context, List<String> documentIds) {
         this.dataItems = dataItems;
         this.context = context;
+        this.documentIds = documentIds; // 🔥 Keep document IDs list
     }
 
-    public void updateList(List<ItemData> newList) {
+    public void updateList(List<ItemData> newList, List<String> newDocIds) {
         dataItems.clear();
         dataItems.addAll(newList);
+        documentIds.clear();
+        documentIds.addAll(newDocIds); // 🔥 Update doc IDs list with data
         notifyDataSetChanged();
     }
 
@@ -38,36 +41,79 @@ public class adapter_home extends RecyclerView.Adapter<adapter_home.HomeViewHold
     @Override
     public void onBindViewHolder(HomeViewHolder holder, int position) {
         ItemData item = dataItems.get(position);
+        String documentId = documentIds.get(position); // 🔥 Map doc ID to item
+
         holder.itemTitle.setText(item.getTitle());
         holder.itemSubtitle.setText(item.getSubtitle());
-        holder.itemIcon.setImageResource(item.getIconResId());
-        holder.testSummary.setText(item.getTestSummary()); // Ensure testSummary is displayed
+        if (holder.itemIcon != null) {
+            holder.itemIcon.setImageResource(item.getIconResId());
+        }
+        holder.testSummary.setText(item.getTestSummary());
         holder.itemActionIcon.setImageResource(R.drawable.ic_chevron_right);
         holder.orderStatus.setText(item.getOrderStatus());
 
-//        holder.cardView.setOnClickListener(v -> {
-//            Intent intent = new Intent(context, staff_detailed_page.class);
-//            intent.putExtra("customerName", item.getTitle());
-//            intent.putExtra("dispatchAddress", item.getSubtitle());
-//            intent.putExtra("email", item.getCategory());
-//            intent.putExtra("testSummary", item.getTestSummary()); // Pass testSummary to details page
-//            context.startActivity(intent);
-//        });
+        String[] statuses = context.getResources().getStringArray(R.array.status_options);
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, statuses);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        holder.statusDropdown.setAdapter(spinnerAdapter);
 
-        // Show popup with full test selection details on click
+        int selectedPos = getPositionForStatus(statuses, item.getOrderStatus());
+        holder.statusDropdown.setSelection(selectedPos);
+
+        holder.statusDropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            boolean isFirst = true;
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+                if (isFirst) {
+                    isFirst = false;
+                    return;
+                }
+
+                String newStatus = parent.getItemAtPosition(pos).toString();
+                new AlertDialog.Builder(context)
+                        .setTitle("Change Status")
+                        .setMessage("Are you sure you want to update status to \"" + newStatus + "\"?")
+                        .setPositiveButton("Yes", (dialog, which) -> {
+                            FirebaseFirestore.getInstance()
+                                    .collection("Total Orders")
+                                    .document(documentId) // 🔥 Use mapped doc ID
+                                    .update("Status", newStatus)
+                                    .addOnSuccessListener(aVoid -> {
+                                        Toast.makeText(context, "Status updated", Toast.LENGTH_SHORT).show();
+                                        holder.orderStatus.setText(newStatus);
+
+                                        if (newStatus.equalsIgnoreCase("Reported")) {
+                                            int removedPos = holder.getAdapterPosition();
+                                            if (removedPos != RecyclerView.NO_POSITION) {
+                                                dataItems.remove(removedPos);
+                                                documentIds.remove(removedPos); // 🔥 Remove doc ID from list
+                                                notifyItemRemoved(removedPos);
+                                                notifyItemRangeChanged(removedPos, dataItems.size());
+                                            }
+                                        }
+                                    })
+                                    .addOnFailureListener(e -> Toast.makeText(context, "Failed to update status", Toast.LENGTH_SHORT).show());
+                        })
+                        .setNegativeButton("No", (dialog, which) -> holder.statusDropdown.setSelection(selectedPos))
+                        .show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
+
         holder.cardView.setOnClickListener(v -> {
-            androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(context);
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setTitle("Test Selections");
-
-            // Format testSummary with line breaks if needed
-            String formattedTestSummary = item.getTestSummary().replace(",", ",\n").replace("{", "").replace("}", "").replace("[", "").replace("]", "");
-
+            String formattedTestSummary = item.getTestSummary()
+                    .replace(",", ",\n")
+                    .replace("{", "")
+                    .replace("}", "")
+                    .replace("[", "")
+                    .replace("]", "");
             builder.setMessage(formattedTestSummary);
-
             builder.setPositiveButton("Close", (dialog, which) -> dialog.dismiss());
-
-            androidx.appcompat.app.AlertDialog dialog = builder.create();
-            dialog.show();
+            builder.show();
         });
     }
 
@@ -76,21 +122,29 @@ public class adapter_home extends RecyclerView.Adapter<adapter_home.HomeViewHold
         return dataItems.size();
     }
 
+    private int getPositionForStatus(String[] statuses, String status) {
+        for (int i = 0; i < statuses.length; i++) {
+            if (statuses[i].equalsIgnoreCase(status)) return i;
+        }
+        return 0;
+    }
+
     public static class HomeViewHolder extends RecyclerView.ViewHolder {
-        TextView itemTitle, itemSubtitle, testSummary, orderStatus; // Added testSummary
+        TextView itemTitle, itemSubtitle, testSummary, orderStatus;
         ImageView itemIcon, itemActionIcon;
         CardView cardView;
+        Spinner statusDropdown;
 
         public HomeViewHolder(View itemView) {
             super(itemView);
             itemTitle = itemView.findViewById(R.id.itemTitle);
             itemSubtitle = itemView.findViewById(R.id.itemSubtitle);
-            testSummary = itemView.findViewById(R.id.itemSample); // Ensure this exists in XML
+            testSummary = itemView.findViewById(R.id.itemSample);
             itemIcon = itemView.findViewById(R.id.itemIcon);
             orderStatus = itemView.findViewById(R.id.orderStatus);
             itemActionIcon = itemView.findViewById(R.id.itemActionIcon);
             cardView = itemView.findViewById(R.id.cardView);
-
+            statusDropdown = itemView.findViewById(R.id.statusDropdown);
         }
     }
 }

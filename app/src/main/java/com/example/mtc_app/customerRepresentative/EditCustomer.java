@@ -1,5 +1,7 @@
 package com.example.mtc_app.customerRepresentative;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -67,10 +69,25 @@ public class EditCustomer extends Fragment {
                         DocumentSnapshot document = queryDocumentSnapshots.getDocuments().get(0);
                         documentId = document.getId();
 
-                        editTextName.setText(document.getString("name"));
-                        editTextEmail.setText(document.getString("email"));
-                        editTextPassword.setText(document.getString("password"));
-                        editTextAddress.setText(document.getString("address"));
+                        String name = document.getString("name");
+                        String email = document.getString("email");
+                        String password = document.getString("password");
+                        String address = document.getString("address");
+
+                        editTextName.setText(name);
+                        editTextEmail.setText(email);
+                        editTextPassword.setText(password);
+                        editTextAddress.setText(address);
+
+                        // ✅ Save fetched customer data to a separate preferences file (optional)
+                        SharedPreferences prefs = requireContext().getSharedPreferences("edit_customer_temp", Context.MODE_PRIVATE);
+                        prefs.edit()
+                                .putString("name", name)
+                                .putString("email", email)
+                                .putString("password", password)
+                                .putString("address", address)
+                                .putString("phone", phone)
+                                .apply();
                     } else {
                         Toast.makeText(getContext(), "Customer not found", Toast.LENGTH_SHORT).show();
                     }
@@ -143,6 +160,11 @@ public class EditCustomer extends Fragment {
                 .update(updatedData)
                 .addOnSuccessListener(aVoid -> {
                     Toast.makeText(getContext(), "Customer updated successfully", Toast.LENGTH_SHORT).show();
+
+                    // ✅ Optional: Clear temporary customer data cache after update
+                    SharedPreferences prefs = requireContext().getSharedPreferences("edit_customer_temp", Context.MODE_PRIVATE);
+                    prefs.edit().clear().apply();
+
                     requireActivity().getSupportFragmentManager().popBackStack();
                 })
                 .addOnFailureListener(e -> Toast.makeText(getContext(), "Update failed", Toast.LENGTH_SHORT).show());
