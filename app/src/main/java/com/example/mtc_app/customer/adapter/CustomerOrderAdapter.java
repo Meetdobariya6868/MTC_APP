@@ -14,8 +14,8 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mtc_app.R;
-import com.example.mtc_app.admin.AdminOrderDetail;
 import com.example.mtc_app.customer.model.CustomerHomePageOrder;
+import com.example.mtc_app.customer.orders.CustomerOrderDetails;
 import com.google.android.material.button.MaterialButton;
 
 import java.util.List;
@@ -69,7 +69,15 @@ public class CustomerOrderAdapter extends RecyclerView.Adapter<CustomerOrderAdap
         } else {
             holder.orderStatus.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
         }
+
+        // Add this click listener for the button
+        holder.orderDetailsButton.setOnClickListener(v -> {
+            Intent intent = new Intent(context, CustomerOrderDetails.class);
+            intent.putExtra("orderId", order.getOrderId()); // replace with actual order ID getter
+            context.startActivity(intent);
+        });
     }
+
 
 
     @Override
@@ -90,7 +98,7 @@ public class CustomerOrderAdapter extends RecyclerView.Adapter<CustomerOrderAdap
             orderDate = itemView.findViewById(R.id.orderDate);
             segment = itemView.findViewById(R.id.segment);
             price = itemView.findViewById(R.id.price);
-            orderDetailsButton = itemView.findViewById(R.id.orderDetailsButton);
+            orderDetailsButton = itemView.findViewById(R.id.customerorderDetailsButton);
         }
     }
 }

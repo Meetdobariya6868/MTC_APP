@@ -1,584 +1,433 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#F8F7FF"
-    tools:context=".customer.orders.CustomerOrderDetails">
+    android:layout_height="match_parent">
 
-    <androidx.core.widget.NestedScrollView
+    <ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:clipToPadding="false"
-        android:overScrollMode="never"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:background="#F5F7FF">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:gravity="center_horizontal"
             android:padding="16dp">
 
-
-
-            <!-- Card Container for Order Details -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/orderCard"
+            <!-- Single Unified Card -->
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="6dp"
-                app:strokeWidth="1dp"
-                app:strokeColor="#D8D0F0"
-                app:cardBackgroundColor="@color/white"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginVertical="12dp"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="8dp"
+                app:cardBackgroundColor="@android:color/white">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <!-- Header Section with Lavender Background -->
-                    <LinearLayout
+                    <!-- Header Section with Gradient Background -->
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:background="@color/Lavender"
-                        android:padding="24dp">
+                        android:background="@drawable/header_gradient"
+                        android:paddingVertical="28dp"
+                        android:paddingHorizontal="24dp">
 
                         <TextView
-                            android:id="@+id/title"
+                            android:id="@+id/nameText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Order Details"
-                            android:textSize="28sp"
+                            android:text="John Doe"
+                            android:textSize="30sp"
                             android:textStyle="bold"
-                            android:textColor="@color/white"
+                            android:textColor="@android:color/white"
+                            android:fontFamily="sans-serif-medium"
                             android:letterSpacing="0.03"
-                            android:gravity="center"
-                            android:layout_gravity="center"/>
+                            android:layout_centerHorizontal="true"/>
 
-                        <View
-                            android:layout_width="100dp"
-                            android:layout_height="3dp"
-                            android:background="@color/white"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="8dp"
-                            android:alpha="0.7"/>
-                    </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/nameText"
+                            android:layout_marginTop="19dp"
+                            android:orientation="vertical">
 
-                    <!-- Content Section -->
+                            <TextView
+                                android:id="@+id/addressText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="12dp"
+                                android:alpha="0.95"
+                                android:drawableStart="@drawable/ic_location"
+                                android:drawablePadding="12dp"
+                                android:drawableTint="@android:color/white"
+                                android:fontFamily="sans-serif"
+                                android:gravity="center_vertical"
+                                android:text="123 Main Street"
+                                android:textColor="@android:color/white"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:id="@+id/phoneText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="12dp"
+                                android:alpha="0.95"
+                                android:drawableStart="@drawable/ic_phone"
+                                android:drawablePadding="12dp"
+                                android:drawableTint="@android:color/white"
+                                android:fontFamily="sans-serif"
+                                android:gravity="center_vertical"
+                                android:text="9876543210"
+                                android:textColor="@android:color/white"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:id="@+id/emailText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:alpha="0.95"
+                                android:drawableStart="@drawable/ic_email"
+                                android:drawablePadding="12dp"
+                                android:drawableTint="@android:color/white"
+                                android:fontFamily="sans-serif"
+                                android:gravity="center_vertical"
+                                android:text="john@example.com"
+                                android:textColor="@android:color/white"
+                                android:textSize="16sp" />
+                        </LinearLayout>
+                    </RelativeLayout>
+
+                    <!-- Order Information Section -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:padding="24dp">
+                        android:padding="20dp">
 
-                        <!-- Dynamic Order Fields with Improved Styling -->
+                        <!-- Order ID and Date Section -->
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
-                            android:layout_marginBottom="12dp">
+                            android:layout_marginBottom="16dp">
 
                             <TextView
-                                android:layout_width="wrap_content"
+                                android:id="@+id/dateText"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:text="Status: "
-                                android:textColor="#7B68EE"
-                                android:textSize="16sp"
-                                android:textStyle="bold"/>
-
-                            <TextView
-                                android:id="@+id/orderStatus"
-                                style="@style/OrderDetailText"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:textColor="#4A4A4A"
-                                android:textSize="16sp"/>
+                                android:layout_weight="1"
+                                android:text="2023-05-18"
+                                android:textSize="14sp"
+                                android:textColor="#666666"
+                                android:fontFamily="sans-serif-medium"
+                                android:gravity="end"/>
                         </LinearLayout>
 
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:background="#E6E1F9"
-                            android:layout_marginBottom="12dp"/>
-
+                        <!-- Price Section -->
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
-                            android:layout_marginBottom="12dp">
+                            android:layout_marginBottom="16dp">
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Order Date: "
-                                android:textColor="#7B68EE"
+                                android:text="Total Price:"
                                 android:textSize="16sp"
-                                android:textStyle="bold"/>
+                                android:textColor="#333333"
+                                android:textStyle="bold"
+                                android:fontFamily="sans-serif-medium"/>
 
                             <TextView
-                                android:id="@+id/orderDate"
-                                style="@style/OrderDetailText"
-                                android:layout_width="match_parent"
+                                android:id="@+id/totalPriceText"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:textColor="#4A4A4A"
-                                android:textSize="16sp"/>
+                                android:layout_weight="1"
+                                android:text="₹2,850.00"
+                                android:textSize="16sp"
+                                android:textColor="@color/Lavender"
+                                android:textStyle="bold"
+                                android:fontFamily="sans-serif-medium"
+                                android:gravity="end"/>
                         </LinearLayout>
 
-                        <View
+                        <!-- Radio Selections Section -->
+                        <TextView
                             android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:background="#E6E1F9"
-                            android:layout_marginBottom="12dp"/>
+                            android:layout_height="wrap_content"
+                            android:text="Order Specifications"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:textColor="#333333"
+                            android:fontFamily="sans-serif-medium"
+                            android:layout_marginBottom="10dp"/>
 
+                        <TextView
+                            android:id="@+id/radioSelectionsText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="• Sample Condition: Sealed\n• Compliance Statement: NO\n• Standard Deviation: NO\n• Mode of Dispatch: Post\n• Condition of Sample: SEALED\n• Capability Available: YES\n• Requirements Defined: NO\n• Method of Testing: true\n• Terms &amp; Conditions Accepted: true\n• Testing Services Approved: true"
+                            android:textSize="15sp"
+                            android:textColor="#555555"
+                            android:fontFamily="sans-serif"
+                            android:lineSpacingExtra="4dp"
+                            android:layout_marginBottom="20dp"
+                            android:paddingStart="8dp"/>
+
+                        <!-- Selected Points Section -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Selected Points"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:textColor="#333333"
+                            android:fontFamily="sans-serif-medium"
+                            android:layout_marginBottom="10dp"/>
+
+                        <TextView
+                            android:id="@+id/selectedPointsText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Not Available"
+                            android:textSize="15sp"
+                            android:textColor="#555555"
+                            android:fontFamily="sans-serif"
+                            android:lineSpacingExtra="4dp"
+                            android:layout_marginBottom="20dp"
+                            android:paddingStart="8dp"/>
+
+                        <!-- Deviation Details Section -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Deviation Details"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:textColor="#333333"
+                            android:fontFamily="sans-serif-medium"
+                            android:layout_marginBottom="10dp"/>
+
+                        <TextView
+                            android:id="@+id/deviationDetailText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Not Available"
+                            android:textSize="15sp"
+                            android:textColor="#555555"
+                            android:fontFamily="sans-serif"
+                            android:lineSpacingExtra="4dp"
+                            android:layout_marginBottom="20dp"
+                            android:paddingStart="8dp"/>
+
+                        <!-- Discussion Details Section -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Discussion Details"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:textColor="#333333"
+                            android:fontFamily="sans-serif-medium"
+                            android:layout_marginBottom="10dp"/>
+
+                        <TextView
+                            android:id="@+id/discussionDetailText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="great"
+                            android:textSize="15sp"
+                            android:textColor="#555555"
+                            android:fontFamily="sans-serif"
+                            android:lineSpacingExtra="4dp"
+                            android:layout_marginBottom="20dp"
+                            android:paddingStart="8dp"/>
+
+                        <!-- Test Selections Section -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Test Selections"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:textColor="#333333"
+                            android:fontFamily="sans-serif-medium"
+                            android:layout_marginBottom="10dp"/>
+
+                        <TextView
+                            android:id="@+id/testSelectionsText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Aggregate Fine:\n\nCement:\n\nSoil:\n   • FREE SWELL INDEX\n   • CONSOLIDATION TEST\n   • TRIAXIAL TEST CU\n\nSteel:"
+                            android:textSize="15sp"
+                            android:textColor="#555555"
+                            android:fontFamily="sans-serif"
+                            android:lineSpacingExtra="6dp"
+                            android:layout_marginBottom="20dp"
+                            android:paddingStart="8dp"/>
+
+                        <!-- Review Remarks Section -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Review Remarks"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:textColor="#333333"
+                            android:fontFamily="sans-serif-medium"
+                            android:layout_marginBottom="10dp"/>
+
+                        <TextView
+                            android:id="@+id/reviewRemarksText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Not Available"
+                            android:textSize="15sp"
+                            android:textColor="#555555"
+                            android:fontFamily="sans-serif"
+                            android:lineSpacingExtra="4dp"
+                            android:layout_marginBottom="20dp"
+                            android:paddingStart="8dp"/>
+
+                        <!-- Order Status Bar -->
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
-                            android:layout_marginBottom="12dp">
+                            android:gravity="center"
+                            android:layout_marginBottom="24dp">
 
-                            <TextView
-                                android:layout_width="wrap_content"
+                            <com.google.android.material.card.MaterialCardView
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:text="Customer Name: "
-                                android:textColor="#7B68EE"
-                                android:textSize="16sp"
-                                android:textStyle="bold"/>
+                                android:layout_weight="1"
+                                app:cardCornerRadius="16dp"
+                                app:cardElevation="0dp"
+                                app:strokeWidth="0dp"
+                                android:layout_marginEnd="8dp"
+                                app:cardBackgroundColor="#F0F4FF">
 
-                            <TextView
-                                android:id="@+id/customerName"
-                                style="@style/OrderDetailText"
-                                android:layout_width="match_parent"
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical"
+                                    android:gravity="center"
+                                    android:padding="16dp">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Dispatch"
+                                        android:textSize="14sp"
+                                        android:textColor="#666666"
+                                        android:fontFamily="sans-serif-medium"/>
+
+                                    <TextView
+                                        android:id="@+id/dispatchModeText"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Express"
+                                        android:textSize="18sp"
+                                        android:textStyle="bold"
+                                        android:textColor="@color/Lavender"
+                                        android:fontFamily="sans-serif-medium"
+                                        android:layout_marginTop="6dp"/>
+                                </LinearLayout>
+                            </com.google.android.material.card.MaterialCardView>
+
+                            <com.google.android.material.card.MaterialCardView
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:textColor="#4A4A4A"
-                                android:textSize="16sp"/>
+                                android:layout_weight="1"
+                                app:cardCornerRadius="16dp"
+                                app:cardElevation="0dp"
+                                app:strokeWidth="0dp"
+                                android:layout_marginStart="8dp"
+                                app:cardBackgroundColor="#F0F4FF">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical"
+                                    android:gravity="center"
+                                    android:padding="16dp">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Sample"
+                                        android:textSize="14sp"
+                                        android:textColor="#666666"
+                                        android:fontFamily="sans-serif-medium"/>
+
+                                    <TextView
+                                        android:id="@+id/sampleText"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="great"
+                                        android:textSize="18sp"
+                                        android:textStyle="bold"
+                                        android:textColor="@color/Lavender"
+                                        android:fontFamily="sans-serif-medium"
+                                        android:layout_marginTop="6dp"/>
+                                </LinearLayout>
+                            </com.google.android.material.card.MaterialCardView>
                         </LinearLayout>
 
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:background="#E6E1F9"
-                            android:layout_marginBottom="12dp"/>
-
+                        <!-- Segments Section -->
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
-                            android:layout_marginBottom="12dp">
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="24dp">
 
                             <TextView
-                                android:layout_width="wrap_content"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:text="Mobile Number: "
-                                android:textColor="#7B68EE"
+                                android:layout_weight="1"
+                                android:text="Selected Segments"
                                 android:textSize="16sp"
-                                android:textStyle="bold"/>
+                                android:textStyle="bold"
+                                android:textColor="#333333"
+                                android:fontFamily="sans-serif-medium"/>
 
                             <TextView
-                                android:id="@+id/mobileNumber"
-                                style="@style/OrderDetailText"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:textColor="#4A4A4A"
-                                android:textSize="16sp"/>
-                        </LinearLayout>
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:background="#E6E1F9"
-                            android:layout_marginBottom="12dp"/>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_marginBottom="12dp">
-
-                            <TextView
+                                android:id="@+id/segmentsText"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Email: "
-                                android:textColor="#7B68EE"
-                                android:textSize="16sp"
-                                android:textStyle="bold"/>
-
-                            <TextView
-                                android:id="@+id/email"
-                                style="@style/OrderDetailText"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:textColor="#4A4A4A"
-                                android:textSize="16sp"/>
-                        </LinearLayout>
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:background="#E6E1F9"
-                            android:layout_marginBottom="12dp"/>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_marginBottom="12dp">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Dispatch Address: "
-                                android:textColor="#7B68EE"
-                                android:textSize="16sp"
-                                android:textStyle="bold"/>
-
-                            <TextView
-                                android:id="@+id/dispatchAddress"
-                                style="@style/OrderDetailText"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:textColor="#4A4A4A"
-                                android:textSize="16sp"/>
-                        </LinearLayout>
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:background="#E6E1F9"
-                            android:layout_marginBottom="12dp"/>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_marginBottom="12dp">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Mode of Dispatch: "
-                                android:textColor="#7B68EE"
-                                android:textSize="16sp"
-                                android:textStyle="bold"/>
-
-                            <TextView
-                                android:id="@+id/modeOfDispatch"
-                                style="@style/OrderDetailText"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:textColor="#4A4A4A"
-                                android:textSize="16sp"/>
-                        </LinearLayout>
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:background="#E6E1F9"
-                            android:layout_marginBottom="12dp"/>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_marginBottom="12dp"
-                            android:background="#F0EDFF"
-                            android:padding="12dp"
-                            android:gravity="center_vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Total Price: "
-                                android:textColor="#7B68EE"
-                                android:textSize="18sp"
-                                android:textStyle="bold"/>
-
-                            <TextView
-                                android:id="@+id/totalPrice"
-                                style="@style/OrderDetailText"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:textColor="#4A4A4A"
-                                android:textSize="18sp"
-                                android:textStyle="bold"/>
-                        </LinearLayout>
-
-
-                        <ProgressBar
-                            android:id="@+id/orderLoadingProgress"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="20dp"
-                            android:visibility="gone"
-                            style="?android:attr/progressBarStyleLarge" />
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:background="#E6E1F9"
-                            android:layout_marginBottom="12dp"/>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_marginBottom="12dp">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Compliance Statement: "
-                                android:textColor="#7B68EE"
-                                android:textSize="16sp"
-                                android:textStyle="bold"/>
-
-                            <TextView
-                                android:id="@+id/complianceStatement"
-                                style="@style/OrderDetailText"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:textColor="#4A4A4A"
-                                android:textSize="16sp"/>
-                        </LinearLayout>
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:background="#E6E1F9"
-                            android:layout_marginBottom="12dp"/>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_marginBottom="12dp">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Deviation Details: "
-                                android:textColor="#7B68EE"
-                                android:textSize="16sp"
-                                android:textStyle="bold"/>
-
-                            <TextView
-                                android:id="@+id/deviationDetails"
-                                style="@style/OrderDetailText"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:textColor="#4A4A4A"
-                                android:textSize="16sp"/>
-                        </LinearLayout>
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:background="#E6E1F9"
-                            android:layout_marginBottom="12dp"/>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_marginBottom="12dp">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Discussion Details: "
-                                android:textColor="#7B68EE"
-                                android:textSize="16sp"
-                                android:textStyle="bold"/>
-
-                            <TextView
-                                android:id="@+id/discussionDetails"
-                                style="@style/OrderDetailText"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:textColor="#4A4A4A"
-                                android:textSize="16sp"/>
-                        </LinearLayout>
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:background="#E6E1F9"
-                            android:layout_marginBottom="12dp"/>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_marginBottom="12dp">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Standard Deviation: "
-                                android:textColor="#7B68EE"
-                                android:textSize="16sp"
-                                android:textStyle="bold"/>
-
-                            <TextView
-                                android:id="@+id/standardDeviation"
-                                style="@style/OrderDetailText"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:textColor="#4A4A4A"
-                                android:textSize="16sp"/>
-                        </LinearLayout>
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:background="#E6E1F9"
-                            android:layout_marginBottom="12dp"/>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_marginBottom="12dp">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Review Remarks: "
-                                android:textColor="#7B68EE"
-                                android:textSize="16sp"
-                                android:textStyle="bold"/>
-
-                            <TextView
-                                android:id="@+id/reviewRemarks"
-                                style="@style/OrderDetailText"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:textColor="#4A4A4A"
-                                android:textSize="16sp"/>
-                        </LinearLayout>
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:background="#E6E1F9"
-                            android:layout_marginBottom="12dp"/>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_marginBottom="12dp">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Sample Condition: "
-                                android:textColor="#7B68EE"
-                                android:textSize="16sp"
-                                android:textStyle="bold"/>
-
-                            <TextView
-                                android:id="@+id/sampleCondition"
-                                style="@style/OrderDetailText"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:textColor="#4A4A4A"
-                                android:textSize="16sp"/>
-                        </LinearLayout>
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:background="#E6E1F9"
-                            android:layout_marginBottom="12dp"/>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_marginBottom="12dp">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Terms and Conditions: "
-                                android:textColor="#7B68EE"
-                                android:textSize="16sp"
-                                android:textStyle="bold"/>
-
-                            <TextView
-                                android:id="@+id/termsAndConditions"
-                                style="@style/OrderDetailText"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:textColor="#4A4A4A"
-                                android:textSize="16sp"/>
-                        </LinearLayout>
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:background="#E6E1F9"
-                            android:layout_marginBottom="12dp"/>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Testing Requirements: "
-                                android:textColor="#7B68EE"
-                                android:textSize="16sp"
-                                android:textStyle="bold"/>
-
-                            <TextView
-                                android:id="@+id/testingRequirements"
-                                style="@style/OrderDetailText"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:textColor="#4A4A4A"
-                                android:textSize="16sp"/>
+                                android:text="No Test Selection available"
+                                android:textSize="14sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/Lavender"
+                                android:background="@drawable/segment_chip_background"
+                                android:paddingHorizontal="16dp"
+                                android:paddingVertical="8dp"
+                                android:fontFamily="sans-serif-medium"/>
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- Back Button with Enhanced Lavender Style -->
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/backButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Back"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                android:paddingStart="32dp"
-                android:paddingEnd="32dp"
-                android:paddingTop="14dp"
-                android:paddingBottom="14dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginBottom="16dp"
-                android:layout_gravity="center"
-                app:cornerRadius="16dp"
-                app:backgroundTint="@color/Lavender"
-                app:elevation="4dp"
-                app:icon="@drawable/ic_arrow_back"
-                app:iconGravity="textStart"
-                app:iconPadding="8dp"
-                app:layout_constraintTop_toBottomOf="@id/orderCard"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+            </androidx.cardview.widget.CardView>
         </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center"
+        android:visibility="gone"/>
+
+</FrameLayout>

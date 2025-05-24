@@ -105,10 +105,7 @@ public class CustomerProfileFragment extends Fragment {
     private void showImagePickerDialog() {
         new AlertDialog.Builder(requireContext())
                 .setTitle("Choose an option")
-                .setItems(new String[]{"Gallery", "Camera"}, (dialog, which) -> {
-                    if (which == 0) pickImageFromGallery();
-                    else captureImageFromCamera();
-                })
+                .setItems(new String[]{"Gallery"}, (dialog, which) -> pickImageFromGallery())
                 .show();
     }
 
