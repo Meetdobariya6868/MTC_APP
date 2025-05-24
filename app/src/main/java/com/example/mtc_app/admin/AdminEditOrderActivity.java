@@ -99,7 +99,10 @@ public class AdminEditOrderActivity extends AppCompatActivity {
 
         db.collection("Total Orders").document(orderId)
                 .update(updatedData)
-                .addOnSuccessListener(unused -> Toast.makeText(this, "Order updated successfully", Toast.LENGTH_SHORT).show())
+                .addOnSuccessListener(unused -> {
+                    Toast.makeText(this, "Order updated successfully", Toast.LENGTH_SHORT).show();
+                    finish(); // Finish this activity and return to the previous screen
+                })
                 .addOnFailureListener(e -> Toast.makeText(this, "Update failed", Toast.LENGTH_SHORT).show());
     }
 }
