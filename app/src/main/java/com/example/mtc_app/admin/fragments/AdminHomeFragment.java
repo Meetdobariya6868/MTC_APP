@@ -33,6 +33,7 @@ public class AdminHomeFragment extends Fragment {
     private EditText searchView;
     private ProgressBar progressBar;
     private List<DocumentSnapshot> allOrders = new ArrayList<>();
+    private boolean isFragmentVisible = false;  // 🔥 Track fragment visibility
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -61,28 +62,37 @@ public class AdminHomeFragment extends Fragment {
         return rootView;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        isFragmentVisible = true;  // 🔥 Mark fragment as visible
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        isFragmentVisible = false;  // 🔥 Mark fragment as not visible
+    }
+
     private void listenToOrderChanges() {
         progressBar.setVisibility(View.VISIBLE); // Show loading indicator
 
         db.collection("Total Orders")
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                        progressBar.setVisibility(View.GONE); // Hide it once data is received
+                .addSnapshotListener((value, error) -> {
+                    progressBar.setVisibility(View.GONE);
 
-                        if (error != null) {
-                            // Handle error
-                            return;
-                        }
+                    if (error != null) {
+                        // Log or handle error
+                        return;
+                    }
 
-                        if (value != null) {
-                            allOrders = value.getDocuments();
-                            String query = searchView.getText().toString();
-                            if (!query.isEmpty()) {
-                                filterOrders(query);
-                            } else {
-                                displayOrders(allOrders);
-                            }
+                    if (value != null) {
+                        allOrders = value.getDocuments();
+                        String query = searchView.getText().toString();
+                        if (!query.isEmpty()) {
+                            filterOrders(query);
+                        } else {
+                            displayOrders(allOrders);
                         }
                     }
                 });
@@ -94,12 +104,16 @@ public class AdminHomeFragment extends Fragment {
         for (DocumentSnapshot order : allOrders) {
             String customerName = order.getString("Customer Name");
             String phone = order.getString("Mobile Number");
-            String jobId = order.getString("LabJobNumber"); // Get Job ID from Firestore
+            String jobId = order.getString("LabJobNumber");
 
             if ((customerName != null && customerName.toLowerCase().contains(query.toLowerCase())) ||
                     (phone != null && phone.contains(query)) ||
                     (jobId != null && jobId.toLowerCase().contains(query.toLowerCase()))) {
-                filteredOrders.add(order);
+                // 🔥 Exclude "Reported" orders from filtered results
+                String status = order.getString("Status");
+                if (status == null || !status.equalsIgnoreCase("Reported")) {
+                    filteredOrders.add(order);
+                }
             }
         }
 
@@ -107,18 +121,27 @@ public class AdminHomeFragment extends Fragment {
     }
 
     private void displayOrders(List<DocumentSnapshot> orders) {
+        if (!isFragmentVisible || getContext() == null || getView() == null) {
+            // 🔥 Fragment not attached or visible, skip UI updates
+            return;
+        }
+
         orderContainer.removeAllViews();
 
         for (DocumentSnapshot order : orders) {
-            View orderView = getLayoutInflater().inflate(R.layout.order_card, orderContainer, false);
+            String status = order.getString("Status");
+            if (status != null && status.equalsIgnoreCase("Reported")) {
+                continue;  // 🔥 Skip displaying Reported orders
+            }
+
+            View orderView = LayoutInflater.from(getContext()).inflate(R.layout.order_card, orderContainer, false);
+
             TextView jobIdTextView = orderView.findViewById(R.id.jobId);
             TextView customerNameTextView = orderView.findViewById(R.id.customerName);
 
-            // Get the correct data from Firestore
             String jobId = order.getString("LabJobNumber");
             String customerName = order.getString("Customer Name");
 
-            // Display Job ID and Customer Name correctly
             jobIdTextView.setText("Job ID: " + (jobId != null ? jobId : "N/A"));
             customerNameTextView.setText("Customer: " + (customerName != null ? customerName : "N/A"));
 
@@ -128,7 +151,8 @@ public class AdminHomeFragment extends Fragment {
     }
 
     private void openOrderDetail(DocumentSnapshot order) {
-        Intent intent = new Intent(getActivity(), AdminOrderDetail.class);
+        if (getContext() == null) return;
+        Intent intent = new Intent(getContext(), AdminOrderDetail.class);
         intent.putExtra("orderId", order.getId());
         intent.putExtra("name", order.getString("Customer Name"));
         intent.putExtra("address", order.getString("Dispatch Address"));

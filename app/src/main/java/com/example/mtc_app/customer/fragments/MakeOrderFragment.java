@@ -27,6 +27,7 @@ import com.example.mtc_app.R;
 import com.example.mtc_app.customer.CustomerHomePageActivity;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
@@ -145,6 +146,24 @@ public class MakeOrderFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.activity_make_order_fragment, container, false);
+//
+//        // 🔥 Autofill logic added here
+//        SharedPreferences prefs = getContext().getSharedPreferences("user_profile", Context.MODE_PRIVATE);
+//        String savedName = prefs.getString("name", "");
+//        String savedEmail = prefs.getString("email", "");
+//        String savedAddress = prefs.getString("address", "");
+//        String savedPhone = prefs.getString("phone", "");
+//
+//        // Initialize UI elements
+//        etCustomerName = view.findViewById(R.id.customer_name);
+//        etDispatchAddress = view.findViewById(R.id.dispatch_address);
+//        etMobile = view.findViewById(R.id.mobile_number);
+//        etEmail = view.findViewById(R.id.email);
+//        // 🔥 Autofill fields
+//        if (!savedName.isEmpty()) etCustomerName.setText(savedName);
+//        if (!savedEmail.isEmpty()) etEmail.setText(savedEmail);
+//        if (!savedAddress.isEmpty()) etDispatchAddress.setText(savedAddress);
+//        if (!savedPhone.isEmpty()) etMobile.setText(savedPhone);
 
         pointsGroup = view.findViewById(R.id.pointsGroup);
 
@@ -354,16 +373,59 @@ public class MakeOrderFragment extends Fragment {
         cbUltrasonicPulseVelocityNDT = view.findViewById(R.id.NDT_ultrasonic_pulse_velocity);
         cbReboundHammerTestNDT = view.findViewById(R.id.NDT_rebound_hammer_test);
 
-        SharedPreferences prefs = getContext().getSharedPreferences("user_profile", Context.MODE_PRIVATE);
-        String savedName = prefs.getString("name", "");
-        String savedEmail = prefs.getString("email", "");
-        String savedAddress = prefs.getString("address", "");
-        String savedPhone = prefs.getString("phone", "");
+        String customerPhone = null;
+        if (getArguments() != null) {
+            customerPhone = getArguments().getString("customer_phone", null);
+        }
 
-        etCustomerName.setText(savedName);
-        etEmail.setText(savedEmail);
-        etDispatchAddress.setText(savedAddress);
-        etMobile.setText(savedPhone);
+// Initialize Firestore
+        db = FirebaseFirestore.getInstance();
+
+// Initialize UI elements
+        etCustomerName = view.findViewById(R.id.customer_name);
+        etDispatchAddress = view.findViewById(R.id.dispatch_address);
+        etMobile = view.findViewById(R.id.mobile_number);
+        etEmail = view.findViewById(R.id.email);
+
+        if (customerPhone != null && !customerPhone.isEmpty()) {
+            db.collection("users")
+                    .whereEqualTo("phone", customerPhone)
+                    .limit(1)
+                    .get()
+                    .addOnSuccessListener(queryDocumentSnapshots -> {
+                        if (!queryDocumentSnapshots.isEmpty()) {
+                            DocumentSnapshot doc = queryDocumentSnapshots.getDocuments().get(0);
+                            String name = doc.getString("name");
+                            String phone = doc.getString("phone");
+                            String email = doc.getString("email");
+                            String address = doc.getString("address");
+
+                            if (name != null) etCustomerName.setText(name);
+                            if (phone != null) etMobile.setText(phone);
+                            if (email != null) etEmail.setText(email);
+                            if (address != null) etDispatchAddress.setText(address);
+                        }
+                    })
+                    .addOnFailureListener(e -> Log.e("FirestoreError", "Failed to fetch customer details", e));
+        } else {
+            SharedPreferences prefs = getContext().getSharedPreferences("user_profile", Context.MODE_PRIVATE);
+            String savedName = prefs.getString("name", "");
+            String savedEmail = prefs.getString("email", "");
+            String savedAddress = prefs.getString("address", "");
+            String savedPhone = prefs.getString("phone", "");
+
+            if (!savedName.isEmpty()) etCustomerName.setText(savedName);
+            if (!savedEmail.isEmpty()) etEmail.setText(savedEmail);
+            if (!savedAddress.isEmpty()) etDispatchAddress.setText(savedAddress);
+            if (!savedPhone.isEmpty()) etMobile.setText(savedPhone);
+        }
+
+
+//
+//        etCustomerName.setText(savedName);
+//        etEmail.setText(savedEmail);
+//        etDispatchAddress.setText(savedAddress);
+//        etMobile.setText(savedPhone);
 
         // Set up for All checkboxes
         setUpCheckboxListener(cbPowerBlock, tilPowerBlockQuantity);
