@@ -25,6 +25,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.mtc_app.R;
 import com.example.mtc_app.customer.CustomerHomePageActivity;
+import com.example.mtc_app.customerRepresentative.CustomerDetails;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -1107,11 +1108,9 @@ public class MakeOrderFragment extends Fragment {
         updateDisplayedTotalPriceFromManualField();
 
 
-
-
-
         // Validate inputs
-        if (!validateInputs(customerName, dispatchAddress, mobileNumber, email, Lab, LabJob)) return;
+        if (!validateInputs(customerName, dispatchAddress, mobileNumber, email, Lab, LabJob))
+            return;
 
         // Collect radio button selections
         Map<String, String> radioSelections = new HashMap<>();
@@ -1337,7 +1336,7 @@ public class MakeOrderFragment extends Fragment {
         data.put("Radio Selections", radioSelections);
         data.put("Selected Points", selectedPoints);
         data.put("LabNumber", Lab);
-        data.put("LabJobNumber",LabJob);
+        data.put("LabJobNumber", LabJob);
         data.put("Status", "Open"); // Automatically set status to "Pending"
 
         if (!reviewRemarks.isEmpty()) {
@@ -1367,15 +1366,16 @@ public class MakeOrderFragment extends Fragment {
         }
 
 
-
-
         // Store data in Firestore
         db.collection("Total Orders")
                 .add(data)
                 .addOnSuccessListener(documentReference -> {
                     Toast.makeText(requireContext(), "Order submitted successfully!", Toast.LENGTH_SHORT).show();
-                    clearForm();
-                    redirectToHome();
+
+                    // Instead of launching a new fragment, pop back to the previous one
+                    getParentFragmentManager().popBackStack();
+
+                    clearForm(); // Optional, might not be needed if form disappears
                 })
                 .addOnFailureListener(e -> {
                     Toast.makeText(requireContext(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -1385,7 +1385,7 @@ public class MakeOrderFragment extends Fragment {
                     submitButton.setEnabled(true);
                 });
     }
-    private boolean validateInputs(String customerName, String dispatchAddress, String mobileNumber, String email, String lab, String labJob) {
+        private boolean validateInputs(String customerName, String dispatchAddress, String mobileNumber, String email, String lab, String labJob) {
         if (customerName.isEmpty()) {
             showError("Customer name is required");
             return false;
