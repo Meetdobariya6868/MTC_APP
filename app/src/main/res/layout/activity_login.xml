@@ -5,8 +5,73 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/login_gradient_background"
     tools:context=".MainActivity">
+
+    <!-- Splash Screen Background with Gradient -->
+    <View
+        android:id="@+id/backgroundGradient"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/splash_gradient_bg" />
+
+    <!-- Particle Background View from Splash Screen -->
+    <com.example.mtc_app.splashScreen.ParticlesView
+        android:id="@+id/particleView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- Animated Background Elements from Splash Screen -->
+    <!-- Pulsating Outer Circle -->
+    <View
+        android:id="@+id/pulseCircle1"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:background="@drawable/circle_outline"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="80dp"
+        android:alpha="0.3" />
+
+    <!-- Interactive Progress Ring -->
+    <com.mikhaellopez.circularprogressbar.CircularProgressBar
+        android:id="@+id/backgroundProgressBar"
+        android:layout_width="220dp"
+        android:layout_height="220dp"
+        app:cpb_background_progressbar_color="#ECEFF1"
+        app:cpb_background_progressbar_width="2dp"
+        app:cpb_progress_direction="to_right"
+        app:cpb_progress_max="100"
+        app:cpb_progressbar_color="#2196F3"
+        app:cpb_progressbar_width="2dp"
+        app:cpb_round_border="true"
+        android:contentDescription="Background animation"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="70dp"
+        android:alpha="0.4" />
+
+    <!-- Additional Decorative Circles -->
+    <View
+        android:id="@+id/pulseCircle2"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:background="@drawable/circle_outline"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="150dp"
+        android:alpha="0.2" />
+
+    <View
+        android:id="@+id/pulseCircle3"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:background="@drawable/circle_outline"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="60dp"
+        android:layout_marginBottom="250dp"
+        android:alpha="0.25" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/loginCard"
@@ -133,6 +198,5 @@
         android:textSize="16sp"
         android:background="?attr/selectableItemBackground"
         android:padding="8dp"/>
-    >
 
 </RelativeLayout>
