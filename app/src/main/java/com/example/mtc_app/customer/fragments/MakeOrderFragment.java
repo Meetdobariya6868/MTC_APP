@@ -1276,7 +1276,7 @@ public class MakeOrderFragment extends Fragment {
         data.put("Selected Points", selectedPoints);
         data.put("LabNumber", Lab);
         data.put("LabJobNumber",LabJob);
-        data.put("Status", "Pending"); // Automatically set status to "Pending"
+        data.put("Status", "Open"); // Automatically set status to "Pending"
 
         if (!reviewRemarks.isEmpty()) {
             data.put("Review Remarks", reviewRemarks);
