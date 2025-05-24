@@ -1,4 +1,3 @@
-// ✅ Final Optimized: CustomerOrderDetails.java
 package com.example.mtc_app.customer.orders;
 
 import android.annotation.SuppressLint;

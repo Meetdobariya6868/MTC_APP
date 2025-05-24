@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.mtc_app.R;
 import com.example.mtc_app.admin.AdminOrderDetail;
 import com.example.mtc_app.customer.models.CustomerHomePageOrder;
+import com.example.mtc_app.customer.orders.CustomerOrderDetails;
 import com.google.android.material.button.MaterialButton;
 
 import java.util.List;
@@ -45,7 +46,7 @@ public class CustomerOrderAdapter extends RecyclerView.Adapter<CustomerOrderAdap
         holder.segment.setText("Segment: " + order.getSegment());
         holder.price.setText("Total Price: ₹" + order.getPrice());
         holder.orderDetailsButton.setOnClickListener(v -> {
-            Intent intent = new Intent(context, AdminOrderDetail.class);
+            Intent intent = new Intent(context, CustomerOrderDetails.class);
             intent.putExtra("orderId", order.getOrderId());
             context.startActivity(intent);
         });

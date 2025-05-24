@@ -28,6 +28,8 @@ public class CustomerHomePageActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
 
+        
+
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
             if (itemId == R.id.nav_home) {

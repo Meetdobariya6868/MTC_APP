@@ -4,12 +4,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF">
+    android:background="#FFFFFF"
+    android:fitsSystemWindows="false">
 
-    <!-- Oval Background -->
+    <!-- Oval Background - UPDATED -->
     <View
         android:layout_width="match_parent"
-        android:layout_height="380dp"
+        android:layout_height="490dp"
+        android:layout_marginTop="-40dp"
         android:background="@drawable/oval_background" />
 
     <!-- Profile Picture Frame -->
@@ -18,7 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="80dp">
+        android:layout_marginTop="60dp">
 
         <androidx.cardview.widget.CardView
             android:layout_width="160dp"
@@ -108,7 +110,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="25dp">
+            android:padding="29dp">
 
             <!-- Email -->
             <LinearLayout
@@ -147,7 +149,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginBottom="8dp"
                 android:background="#EEEEEE" />
 
@@ -187,7 +189,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginBottom="8dp"
                 android:background="#EEEEEE" />
 
