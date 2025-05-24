@@ -268,7 +268,7 @@ public class staff_profile_page extends AppCompatActivity {
             if (profileImageUrl != null && !profileImageUrl.isEmpty()) {
                 Glide.with(staff_profile_page.this)
                         .load(profileImageUrl)
-                        .placeholder(R.drawable.cust_profile)
+                        .placeholder(R.drawable.ic_profile)
                         .into(profilePicture);
             }
         } else {

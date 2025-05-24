@@ -209,7 +209,7 @@ public class CRProfile extends Fragment {
             if (cachedImageUrl != null && !cachedImageUrl.isEmpty()) {
                 Glide.with(requireContext())
                         .load(cachedImageUrl)
-                        .placeholder(R.drawable.cust_profile)
+                        .placeholder(R.drawable.ic_profile)
                         .into(profilePicture);
             }
 
@@ -258,7 +258,7 @@ public class CRProfile extends Fragment {
                     if (profileImageUrl != null && !profileImageUrl.isEmpty()) {
                         Glide.with(requireContext())
                                 .load(profileImageUrl)
-                                .placeholder(R.drawable.cust_profile)
+                                .placeholder(R.drawable.ic_profile)
                                 .into(profilePicture);
                     }
 
