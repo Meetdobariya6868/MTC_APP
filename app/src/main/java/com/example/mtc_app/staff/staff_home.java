@@ -96,6 +96,8 @@ public class staff_home extends AppCompatActivity {
             productCategories.add("Hardend Concrete");
         } else if ("soil".equalsIgnoreCase(category)) {
             productCategories.add("Soil");
+        } else if ("steel".equalsIgnoreCase(category)) {
+            productCategories.add("Steel");
         }
 
         if (productCategories.isEmpty()) {
@@ -113,13 +115,27 @@ public class staff_home extends AppCompatActivity {
 
                     for (DocumentSnapshot doc : queryDocumentSnapshots.getDocuments()) {
                         Map<String, Object> testSelections = (Map<String, Object>) doc.get("Test Selections");
+                        Map<String, Object> categoryQuantities = (Map<String, Object>) doc.get("Category Quantities");
                         String status = doc.getString("Status");
 
                         if (testSelections != null && !"Reported".equalsIgnoreCase(status)) {
                             Map<String, Object> filteredTestSelections = new HashMap<>();
+                            StringBuilder quantityInfo = new StringBuilder();
+
                             for (String key : testSelections.keySet()) {
                                 if (productCategories.contains(key)) {
                                     filteredTestSelections.put(key, testSelections.get(key));
+
+                                    // Get quantity for this specific category
+                                    if (categoryQuantities != null && categoryQuantities.containsKey(key)) {
+                                        String quantity = (String) categoryQuantities.get(key);
+                                        if (quantity != null && !quantity.isEmpty()) {
+                                            if (quantityInfo.length() > 0) {
+                                                quantityInfo.append(", ");
+                                            }
+                                            quantityInfo.append(key).append(": ").append(quantity);
+                                        }
+                                    }
                                 }
                             }
 
@@ -127,10 +143,15 @@ public class staff_home extends AppCompatActivity {
                                 String title = doc.getString("LabNumber");
                                 String subtitle = doc.getString("Created At");
                                 String categoryItem = doc.getString("Email");
+                                String dueDate = doc.getString("Due Date");
                                 String testSummary = filteredTestSelections.toString();
                                 String documentId = doc.getId();
 
-                                ItemData item = new ItemData(title, subtitle, R.drawable.ic_placeholder, categoryItem, testSummary, status, documentId);
+                                if (quantityInfo.length() > 0) {
+                                    testSummary = "Tests: " + testSummary + "\nQuantities: " + quantityInfo.toString();
+                                }
+
+                                ItemData item = new ItemData(title, subtitle, R.drawable.ic_placeholder, categoryItem, testSummary, status, documentId, dueDate);
                                 itemList.add(item);
                                 itemDocumentIds.add(documentId);
                             }

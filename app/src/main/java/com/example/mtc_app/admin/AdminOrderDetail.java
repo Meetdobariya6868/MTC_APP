@@ -24,7 +24,7 @@ public class AdminOrderDetail extends AppCompatActivity {
     private FirebaseFirestore db;
     private TextView nameText, addressText, phoneText, emailText, discussionDetailsText,
             testSelectionText, totalPriceText, deviationDetailText, discussionDetailText, dateText;
-    private TextView radioSelectionsText, reviewRemarksText, selectedPointsText, testSelectionsText;
+    private TextView radioSelectionsText, reviewRemarksText, selectedPointsText, testSelectionsText,categoryQuantityText;
     private Button editButton, deleteButton;
     private ProgressBar progressBar;
 
@@ -57,6 +57,7 @@ public class AdminOrderDetail extends AppCompatActivity {
         reviewRemarksText = findViewById(R.id.reviewRemarksText);
         selectedPointsText = findViewById(R.id.selectedPointsText);
         testSelectionsText = findViewById(R.id.testSelectionsText);
+        categoryQuantityText = findViewById(R.id.categoryQuantity);
         progressBar = findViewById(R.id.progressBar);
 
         orderId = getIntent().getStringExtra("orderId");
@@ -144,6 +145,9 @@ public class AdminOrderDetail extends AppCompatActivity {
             Map<String, Object> reviewRemarks = (Map<String, Object>) documentSnapshot.get("Review Remarks");
             reviewRemarksText.setText(buildBulletList(reviewRemarks, "No Review Remarks"));
 
+            Map<String, Object> categoryQuantity = (Map<String, Object>) documentSnapshot.get("Category Quantities");
+            categoryQuantityText.setText(buildBulletList(categoryQuantity, "No category Quantity"));
+
             Map<String, Object> selectedPoints = (Map<String, Object>) documentSnapshot.get("Selected Points");
             selectedPointsText.setText(buildBulletList(selectedPoints, "No Selected Points"));
 
@@ -167,6 +171,7 @@ public class AdminOrderDetail extends AppCompatActivity {
             } else {
                 testSelectionsText.setText("No Test Selections available.");
             }
+
         });
     }
 

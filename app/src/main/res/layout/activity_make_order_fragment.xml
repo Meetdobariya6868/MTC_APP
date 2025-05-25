@@ -278,6 +278,51 @@
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
+        <!-- Due date Section -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/card_background"
+            android:padding="14dp"
+            android:elevation="4dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginBottom="20dp">
+
+            <!-- Title TextView -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="7. Pick due date"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:paddingBottom="8dp" />
+
+            <!-- Input Field -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:boxBackgroundMode="outline"
+                app:boxStrokeColor="@color/teal_700"
+                app:boxCornerRadiusTopStart="16dp"
+                app:boxCornerRadiusTopEnd="16dp"
+                app:boxCornerRadiusBottomStart="16dp"
+                app:boxCornerRadiusBottomEnd="16dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/due_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Pick date"
+                    android:focusable="false"
+                    android:clickable="true"
+                    android:inputType="none"
+                    android:textColorHint="@color/gray" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -670,6 +715,7 @@
                             android:visibility="gone">
 
                             <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_steel_quantity"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:inputType="number" />
@@ -742,6 +788,7 @@
                             android:visibility="gone">
 
                             <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_cement_cube_quantity"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:inputType="number" />
@@ -804,6 +851,7 @@
                             android:visibility="gone">
 
                             <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_aac_block_quantity"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:inputType="number" />
@@ -893,6 +941,7 @@
                             android:visibility="gone">
 
                             <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_power_block_quantity"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:inputType="number" />
@@ -938,6 +987,7 @@
                             android:visibility="gone">
 
                             <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_brick_quantity"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:inputType="number" />
@@ -1005,6 +1055,7 @@
                             android:visibility="gone">
 
                             <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_soil_quantity"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:inputType="number" />
@@ -1270,6 +1321,7 @@
                             android:visibility="gone">
 
                             <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_const_water_quantity"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:inputType="number" />
@@ -1381,6 +1433,7 @@
                             android:visibility="gone">
 
                             <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_waste_water_quantity"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:inputType="number" />
@@ -1459,6 +1512,7 @@
                             android:visibility="gone">
 
                             <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_mix_water_quantity"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:inputType="number" />
@@ -1514,6 +1568,7 @@
                             android:visibility="gone">
 
                             <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_fly_ash_quantity"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:inputType="number" />

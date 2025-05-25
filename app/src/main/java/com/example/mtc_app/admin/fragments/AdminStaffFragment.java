@@ -27,7 +27,7 @@ import java.util.List;
 public class AdminStaffFragment extends Fragment {
 
     private FirebaseFirestore db;
-    CardView soil, cement, steel;
+    CardView soil, cement, steel, aggregate;
     private LinearLayout crContainer;
     private List<DocumentSnapshot> allStaffUsers = new ArrayList<>(); // Store all fetched CR users
     private EditText searchView;
@@ -48,10 +48,12 @@ public class AdminStaffFragment extends Fragment {
         soil = view.findViewById(R.id.soil);
         cement = view.findViewById(R.id.cement);
         steel = view.findViewById(R.id.steel);
+        aggregate = view.findViewById(R.id.aggregate);
 
         soil.setOnClickListener(v -> openStaffModule("soil"));
         cement.setOnClickListener(v -> openStaffModule("cement"));
         steel.setOnClickListener(v -> openStaffModule("steel"));
+        aggregate.setOnClickListener(v -> openStaffModule("aggregate"));
 
 
         // Add search listener

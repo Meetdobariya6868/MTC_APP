@@ -285,6 +285,29 @@
                             android:layout_marginBottom="16dp"
                             android:paddingStart="8dp"/>
 
+                        <!-- Category Quantity Selections -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Category quantity"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:textColor="#333333"
+                            android:fontFamily="sans-serif-medium"
+                            android:layout_marginBottom="8dp"/>
+
+                        <TextView
+                            android:id="@+id/categoryQuantity"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Aggregate Fine: 10kg\nCement:\nSoil:15kg"
+                            android:textSize="15sp"
+                            android:textColor="#555555"
+                            android:fontFamily="sans-serif"
+                            android:lineSpacingExtra="2dp"
+                            android:layout_marginBottom="16dp"
+                            android:paddingStart="8dp"/>
+
                         <!-- Review Remarks Section -->
                         <TextView
                             android:layout_width="match_parent"

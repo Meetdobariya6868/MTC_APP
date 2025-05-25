@@ -1,5 +1,6 @@
 package com.example.mtc_app.customer.fragments;
 import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -33,6 +34,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -104,13 +106,16 @@ public class MakeOrderFragment extends Fragment {
     private TextInputLayout tilAggregateFineQuantity, tilAggregateCoarseQuantity, tilCementQuantity, tillConstWaterQuantity, tilWasteWaterQuantity;
     private TextInputLayout tillFlyAsh, tilMixDesignQuantity, tilBitumenQuantity, tilNDTQuantity;
 
+    private EditText etCement,etPowerBlock,etSteel,etCementCube,etBrick,etSoil,etAggregateFine,etAggregateCoarse,etAacBlock,etNdt,etConstWater,etWasteWater,etMixDesign,etFlyAsh,etBitumen;
+
+
     // Price Calculation
     private final Map<CheckBox, Integer> priceMap = new HashMap<>();
     private TextView tvTotalPrice;
     private int totalPrice = 0;
 
     // Customer & Dispatch Details
-    private EditText etCustomerName, etDispatchAddress, etMobile, etEmail, etLab, etLabJob;
+    private EditText etCustomerName, etDispatchAddress, etMobile, etEmail, etLab, etLabJob, etdueDate;
 //    private EditText termsAndConditionsField;
 
     // Dispatch Mode
@@ -138,6 +143,7 @@ public class MakeOrderFragment extends Fragment {
 
     // LinearLayout container for checkboxes
     private LinearLayout pointsGroup;
+    private String selectedDueDate;
 
 
 
@@ -195,9 +201,32 @@ public class MakeOrderFragment extends Fragment {
         radioGroupRemark2 = view.findViewById(R.id.radio_group_remark2);
         radioGroupRemark3 = view.findViewById(R.id.radio_group_remark3);
 
+        etdueDate = view.findViewById(R.id.due_date);
 
-        // Add the ProgressBar
-        ProgressBar loadingProgress = view.findViewById(R.id.loading_progress);
+        etdueDate.setOnClickListener(v -> {
+            final Calendar calendar = Calendar.getInstance();
+            int year = calendar.get(Calendar.YEAR);
+            int month = calendar.get(Calendar.MONTH);
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+            DatePickerDialog datePickerDialog = new DatePickerDialog(
+                    requireContext(),
+                    (datePickerView, selectedYear, selectedMonth, selectedDay) -> {
+                        String selectedDate = selectedDay + "/" + (selectedMonth + 1) + "/" + selectedYear;
+                        etdueDate.setText(selectedDate);
+                        selectedDueDate = selectedDate; // store selected date for Firebase
+                    },
+                    year, month, day
+            );
+
+            // Set minimum and maximum selectable dates
+            datePickerDialog.getDatePicker().setMinDate(calendar.getTimeInMillis());
+            calendar.add(Calendar.DAY_OF_MONTH, 30); // max date = 30 days from now
+            datePickerDialog.getDatePicker().setMaxDate(calendar.getTimeInMillis());
+
+            datePickerDialog.show();
+        });
+
 
         submitButton = view.findViewById(R.id.submit_button);
         submitButton.setOnClickListener(v -> {
@@ -205,6 +234,24 @@ public class MakeOrderFragment extends Fragment {
                 submitData(view);
             }
         });
+
+        etAggregateFine = view.findViewById(R.id.et_aggregate_fine_quantity);
+        etAggregateCoarse = view.findViewById(R.id.et_aggregate_coarse_quantity);
+        etCement = view.findViewById(R.id.et_cement_quantity);
+        etSteel = view.findViewById(R.id.et_steel_quantity);
+        etCementCube = view.findViewById(R.id.et_cement_cube_quantity);
+        etAacBlock = view.findViewById(R.id.et_aac_block_quantity);
+        etPowerBlock = view.findViewById(R.id.et_power_block_quantity);
+        etBrick = view.findViewById(R.id.et_brick_quantity);
+        etSoil = view.findViewById(R.id.et_soil_quantity);
+        etNdt = view.findViewById(R.id.et_ndt_quantity);
+        etConstWater = view.findViewById(R.id.et_const_water_quantity);
+        etWasteWater = view.findViewById(R.id.et_waste_water_quantity);
+        etMixDesign = view.findViewById(R.id.et_mix_water_quantity);
+        etFlyAsh = view.findViewById(R.id.et_fly_ash_quantity);
+        etBitumen = view.findViewById(R.id.et_bitumen_quantity);
+
+
 
         // Initialize CheckBoxes
         cbPowerBlock = view.findViewById(R.id.cb_power_block);
@@ -1141,8 +1188,128 @@ public class MakeOrderFragment extends Fragment {
         String deviationDetails = deviationInput.getText().toString().trim();
         String discussionDetails = discussionInput.getText().toString().trim();
 
+        Map<String, String> categoryQuantities = new HashMap<>();
+
         // Collect segment-wise test selections (only if the main checkbox is checked)
         Map<String, List<String>> testSelections = new HashMap<>();
+
+        if (cbAggregateFine.isChecked() && etAggregateFine != null) {
+            String quantity = etAggregateFine.getText().toString().trim();
+            if (!quantity.isEmpty()) {
+                categoryQuantities.put("Aggregate Fine", quantity + " KG");
+            }
+        }
+
+        if (cbAggregateCoarse.isChecked() && etAggregateCoarse != null) {
+            String quantity = etAggregateCoarse.getText().toString().trim();
+            if (!quantity.isEmpty()) {
+                categoryQuantities.put("Aggregate Coarse", quantity + " KG");
+            }
+        }
+
+        // Cement
+        if (cbCement.isChecked() && etCement != null) {
+            String quantity = etCement.getText().toString().trim();
+            if (!quantity.isEmpty()) {
+                categoryQuantities.put("Cement", quantity + " KG");
+            }
+        }
+
+        // Steel
+        if (cbSteel.isChecked() && etSteel != null) {
+            String quantity = etSteel.getText().toString().trim();
+            if (!quantity.isEmpty()) {
+                categoryQuantities.put("Steel", quantity + " KG");
+            }
+        }
+
+        // Cement Cube
+        if (cbCementCube.isChecked() && etCementCube != null) {
+            String quantity = etCementCube.getText().toString().trim();
+            if (!quantity.isEmpty()) {
+                categoryQuantities.put("Cement Cube", quantity + " KG");
+            }
+        }
+
+        // AAC Block
+        if (cbAacBlock.isChecked() && etAacBlock != null) {
+            String quantity = etAacBlock.getText().toString().trim();
+            if (!quantity.isEmpty()) {
+                categoryQuantities.put("AAC Block", quantity + " KG");
+            }
+        }
+
+        // Power Block
+        if (cbPowerBlock.isChecked() && etPowerBlock != null) {
+            String quantity = etPowerBlock.getText().toString().trim();
+            if (!quantity.isEmpty()) {
+                categoryQuantities.put("Power Block", quantity + " KG");
+            }
+        }
+
+        // Brick
+        if (cbBrick.isChecked() && etBrick != null) {
+            String quantity = etBrick.getText().toString().trim();
+            if (!quantity.isEmpty()) {
+                categoryQuantities.put("Brick", quantity + " KG");
+            }
+        }
+
+        // Soil
+        if (cbSoil.isChecked() && etSoil != null) {
+            String quantity = etSoil.getText().toString().trim();
+            if (!quantity.isEmpty()) {
+                categoryQuantities.put("Soil", quantity + " KG");
+            }
+        }
+
+        // NDT
+        if (cbNDT.isChecked() && etNdt != null) {
+            String quantity = etNdt.getText().toString().trim();
+            if (!quantity.isEmpty()) {
+                categoryQuantities.put("NDT", quantity + " KG");
+            }
+        }
+
+        // Construction Water
+        if (cbConstWater.isChecked() && etConstWater != null) {
+            String quantity = etConstWater.getText().toString().trim();
+            if (!quantity.isEmpty()) {
+                categoryQuantities.put("Construction Water", quantity + " Liters");
+            }
+        }
+
+        // Waste Water
+        if (cbWasteWater.isChecked() && etWasteWater != null) {
+            String quantity = etWasteWater.getText().toString().trim();
+            if (!quantity.isEmpty()) {
+                categoryQuantities.put("Waste Water", quantity + " Liters");
+            }
+        }
+
+        // Mix Design
+        if (cbMixDesign.isChecked() && etMixDesign != null) {
+            String quantity = etMixDesign.getText().toString().trim();
+            if (!quantity.isEmpty()) {
+                categoryQuantities.put("Mix Design", quantity + " KG");
+            }
+        }
+
+        // Fly Ash
+        if (cbFlyAsh.isChecked() && etFlyAsh != null) {
+            String quantity = etFlyAsh.getText().toString().trim();
+            if (!quantity.isEmpty()) {
+                categoryQuantities.put("Fly Ash", quantity + " KG");
+            }
+        }
+
+        // Bitumen
+        if (cbBitumen.isChecked() && etBitumen != null) {
+            String quantity = etBitumen.getText().toString().trim();
+            if (!quantity.isEmpty()) {
+                categoryQuantities.put("Bitumen", quantity + " KG");
+            }
+        }
 
         // Aggregate Fine (Example logic for sub-checkbox storage)
         if (cbAggregateFine.isChecked()) {
@@ -1319,6 +1486,7 @@ public class MakeOrderFragment extends Fragment {
             ));
         }
 
+
         // Prepare final data object
         Map<String, Object> data = new HashMap<>();
         data.put("Customer Name", customerName);
@@ -1327,6 +1495,8 @@ public class MakeOrderFragment extends Fragment {
         data.put("Email", email);
 //        data.put("Terms And Conditions", termsAndConditions);
         data.put("Created At", createdAt);
+        data.put("Due Date", selectedDueDate);
+
 
         String manualPriceStr = etFinalPrice.getText().toString().trim();
         if (!manualPriceStr.isEmpty()) totalPrice = Integer.parseInt(manualPriceStr);
@@ -1348,6 +1518,10 @@ public class MakeOrderFragment extends Fragment {
 
         if (!testSelections.isEmpty()) {
             data.put("Test Selections", testSelections);
+        }
+
+        if (!categoryQuantities.isEmpty()) {
+            data.put("Category Quantities", categoryQuantities);
         }
 
 //        SharedPreferences.Editor editor = requireContext().getSharedPreferences("user_profile", Context.MODE_PRIVATE).edit();
@@ -1447,6 +1621,23 @@ public class MakeOrderFragment extends Fragment {
     }
 
 
+    private Map<String, Object> getTestCategoryData(String quantity, CheckBox... testCheckboxesAndLabels) {
+        List<String> selectedTests = new ArrayList<>();
+        for (int i = 0; i < testCheckboxesAndLabels.length; i += 2) {
+            CheckBox checkbox = testCheckboxesAndLabels[i];
+            String label = testCheckboxesAndLabels[i + 1].getText().toString();
+            if (checkbox != null && checkbox.isChecked()) {
+                selectedTests.add(label);
+            }
+        }
+
+        if (selectedTests.isEmpty()) return null;
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("Quantity", quantity + "kg");
+        data.put("Tests", selectedTests);
+        return data;
+    }
 
 
     private String getSelectedRadioButtonText(RadioGroup radioGroup) {

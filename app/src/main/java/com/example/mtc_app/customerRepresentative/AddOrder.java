@@ -101,13 +101,14 @@ public class AddOrder extends Fragment {
     private TextInputLayout tilAggregateFineQuantity, tilAggregateCoarseQuantity, tilCementQuantity, tillConstWaterQuantity, tilWasteWaterQuantity;
     private TextInputLayout tillFlyAsh, tilMixDesignQuantity, tilBitumenQuantity, tilNDTQuantity;
 
+    private EditText etCementQuantity,etPowerBlock,etSteel,etCementCube,etBrick,etSoil,etAggregateFine,etAggregateCoarse,etCement,etAacBlock,etNdt,etConstWater,etWasteWater,etMixDesign,etFlyAsh,etBitumen;
     // Price Calculation
     private final Map<CheckBox, Integer> priceMap = new HashMap<>();
     private TextView tvTotalPrice;
     private int totalPrice = 0;
 
     // Customer & Dispatch Details
-    private EditText etCustomerName, etDispatchAddress, etMobile, etEmail, etLab, etLabJob;
+    private EditText etCustomerName, etDispatchAddress, etMobile, etEmail, etLab, etLabJob, dueDateEditText;
 //    private EditText termsAndConditionsField;
 TextInputEditText etFinalPrice;
     // Dispatch Mode
@@ -162,10 +163,14 @@ TextInputEditText etFinalPrice;
         standardDeviationGroup = view.findViewById(R.id.standard_deviation_group);
         etLab = view.findViewById(R.id.lab_no);
         etLabJob = view.findViewById(R.id.lab_job_no);
+//        dueDateEditText = view.findViewById(R.id.due_date);
+
 
         cbOnemethedOfTEsting = view.findViewById(R.id.OnemethedOfTEsting);
         cbTwoTestingService = view.findViewById(R.id.TwoTestingService);
         cbThreeTermsAndCondition = view.findViewById(R.id.ThreeTermsAndCondition);
+
+        etAggregateFine = view.findViewById(R.id.et_aggregate_fine_quantity);
 
         deviationInput = view.findViewById(R.id.deviation_input);
         discussionInput = view.findViewById(R.id.discussion_input);
