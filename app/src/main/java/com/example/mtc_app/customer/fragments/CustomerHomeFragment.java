@@ -198,9 +198,7 @@ public class CustomerHomeFragment extends Fragment {
         } else {
             String lower = query.toLowerCase();
             for (CustomerHomePageOrder order : orderList) {
-                if ((order.getOrderId() != null && order.getOrderId().toLowerCase().contains(lower)) ||
-                        (order.getStatus() != null && order.getStatus().toLowerCase().contains(lower)) ||
-                        (order.getDispatchMode() != null && order.getDispatchMode().toLowerCase().contains(lower))) {
+                if (order.getSegment() != null && order.getSegment().toLowerCase().contains(lower)) {
                     filteredOrderList.add(order);
                 }
             }
