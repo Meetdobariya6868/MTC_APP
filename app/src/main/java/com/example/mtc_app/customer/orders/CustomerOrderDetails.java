@@ -23,10 +23,8 @@ import java.util.Map;
 public class CustomerOrderDetails extends AppCompatActivity {
 
     private FirebaseFirestore db;
-    private TextView nameText, addressText, phoneText, emailText, discussionDetailsText,
-            testSelectionText, totalPriceText, deviationDetailText, discussionDetailText, dateText;
+    private TextView nameText, addressText, phoneText, emailText, discussionDetailsText, totalPriceText, deviationDetailText, discussionDetailText, dateText;
     private TextView radioSelectionsText, reviewRemarksText, selectedPointsText, testSelectionsText;
-    private Button editButton, deleteButton;
     private ProgressBar progressBar;
 
     private String orderId;
@@ -47,7 +45,6 @@ public class CustomerOrderDetails extends AppCompatActivity {
         phoneText = findViewById(R.id.phoneText);
         emailText = findViewById(R.id.emailText);
         discussionDetailsText = findViewById(R.id.sampleText);
-        testSelectionText = findViewById(R.id.segmentsText);
         totalPriceText = findViewById(R.id.totalPriceText);
         deviationDetailText = findViewById(R.id.deviationDetailText);
         discussionDetailText = findViewById(R.id.discussionDetailText);
@@ -101,17 +98,6 @@ public class CustomerOrderDetails extends AppCompatActivity {
             Number totalPriceNumber = documentSnapshot.getDouble("Total Price");
             totalPriceText.setText(totalPriceNumber != null ?
                     String.format("₹%,.2f", totalPriceNumber.doubleValue()) : "Not Available");
-
-            List<String> testSelectionList = (List<String>) documentSnapshot.get("Test Selection");
-            if (testSelectionList != null && !testSelectionList.isEmpty()) {
-                StringBuilder testBuilder = new StringBuilder();
-                for (String test : testSelectionList) {
-                    testBuilder.append("• ").append(test).append("\n");
-                }
-                testSelectionText.setText(testBuilder.toString().trim());
-            } else {
-                testSelectionText.setText("No Test Selection available");
-            }
 
             String labJobNumber = documentSnapshot.getString("LabJobNumber");
             TextView labJobNumberText = findViewById(R.id.labJobNumberText);
