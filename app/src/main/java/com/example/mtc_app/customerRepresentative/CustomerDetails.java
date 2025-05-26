@@ -83,8 +83,6 @@ public class CustomerDetails extends Fragment {
         adapter = new CustomerOrderAdapter(requireContext(), orderList, orderIds);
         recyclerView.setAdapter(adapter);
 
-
-
         Bundle args = getArguments();
         if (args != null) {
             customerPhone = args.getString("customer_phone");
@@ -98,7 +96,7 @@ public class CustomerDetails extends Fragment {
         setButtonHandlers(view);
     }
 
-
+    // CORRECTED METHOD - This replaces your existing fetchCustomerOrders method
     private void fetchCustomerOrders(String phone) {
         db.collection("Total Orders")
                 .whereEqualTo("Mobile Number", phone)
@@ -108,7 +106,8 @@ public class CustomerDetails extends Fragment {
                     orderIds.clear();
 
                     SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
-                    List<Pair<CustomerOrder, String>> tempList = new ArrayList<>();
+                    // Create a list to keep order, orderID, and date together
+                    List<OrderWithId> tempList = new ArrayList<>();
 
                     for (DocumentSnapshot doc : querySnapshots.getDocuments()) {
                         String status = doc.getString("Status");
@@ -125,23 +124,27 @@ public class CustomerDetails extends Fragment {
                         }
 
                         CustomerOrder order = new CustomerOrder(segment, dispatchMode, orderDate, price, status);
-                        orderIds.add(doc.getId());
-                        tempList.add(new Pair<>(order, orderDate));
+                        String orderId = doc.getId();
+
+                        // Store order, orderId, and date together
+                        tempList.add(new OrderWithId(order, orderId, orderDate));
                     }
 
                     // Sort by date descending
                     Collections.sort(tempList, (o1, o2) -> {
                         try {
-                            Date d1 = sdf.parse(o1.second);
-                            Date d2 = sdf.parse(o2.second);
+                            Date d1 = sdf.parse(o1.orderDate);
+                            Date d2 = sdf.parse(o2.orderDate);
                             return d2.compareTo(d1); // Newest first
                         } catch (ParseException | java.text.ParseException e) {
                             return 0;
                         }
                     });
 
-                    for (Pair<CustomerOrder, String> pair : tempList) {
-                        orderList.add(pair.first);
+                    // Now add to the lists in the sorted order - this maintains synchronization
+                    for (OrderWithId item : tempList) {
+                        orderList.add(item.order);
+                        orderIds.add(item.orderId);
                     }
 
                     adapter.notifyDataSetChanged();
@@ -150,6 +153,19 @@ public class CustomerDetails extends Fragment {
                     Log.e("OrderFetch", "Error fetching orders", e);
                     Toast.makeText(requireContext(), "Failed to load orders", Toast.LENGTH_SHORT).show();
                 });
+    }
+
+    // Helper class to keep order and orderId together during sorting
+    private static class OrderWithId {
+        CustomerOrder order;
+        String orderId;
+        String orderDate;
+
+        OrderWithId(CustomerOrder order, String orderId, String orderDate) {
+            this.order = order;
+            this.orderId = orderId;
+            this.orderDate = orderDate;
+        }
     }
 
     private void setButtonHandlers(View view) {
@@ -176,8 +192,6 @@ public class CustomerDetails extends Fragment {
                         .commit();
             });
         }
-
-
 
         if (loginButton != null) {
             loginButton.setOnClickListener(v -> loginAsThisUser());
@@ -260,8 +274,6 @@ public class CustomerDetails extends Fragment {
                     Log.e("DeleteCustomer", "Error deleting customer", e);
                 });
     }
-
-
 
     private void loginAsThisUser() {
         if (customerPhone == null || customerPhone.equals("N/A")) {
