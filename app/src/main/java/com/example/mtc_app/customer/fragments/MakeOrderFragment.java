@@ -1125,7 +1125,7 @@ public class MakeOrderFragment extends Fragment {
         submitButton.setEnabled(false);
 
         // Get current date
-        String createdAt = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+        String createdAt = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
 
         // Collect basic form data
         String customerName = etCustomerName.getText().toString().trim();

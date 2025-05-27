@@ -1304,7 +1304,7 @@
                             android:textColor="@color/Lavender"
                             android:visibility="gone" />
 
-                    <!-- CONST. WATER -->
+                        <!-- CONST. WATER -->
                         <CheckBox
                             android:id="@+id/cb_const_water"
                             android:layout_width="wrap_content"

@@ -722,7 +722,7 @@
                             android:textColor="@color/black" />
 
                         <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/til_steel_quantity"
+                            android:id="@+id/et_steel_quantity"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Enter Quantity Set's"
