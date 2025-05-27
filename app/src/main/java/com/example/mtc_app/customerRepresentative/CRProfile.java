@@ -172,6 +172,11 @@ public class CRProfile extends Fragment {
                 .addOnSuccessListener(aVoid -> {
                     Toast.makeText(requireContext(), "Profile Updated", Toast.LENGTH_SHORT).show();
                     Glide.with(requireContext()).load(imageUrl).into(profilePicture);
+
+                    // ✅ Update SharedPreferences cache with new image URL
+                    SharedPreferences prefs = requireContext().getSharedPreferences("cr_profile", Context.MODE_PRIVATE);
+                    prefs.edit().putString("profileImageUrl", imageUrl).apply();
+
                 })
                 .addOnFailureListener(e -> Toast.makeText(requireContext(), "Failed to update profile", Toast.LENGTH_SHORT).show());
     }
