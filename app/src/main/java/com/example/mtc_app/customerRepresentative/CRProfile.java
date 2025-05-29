@@ -19,7 +19,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,11 +26,9 @@ import com.bumptech.glide.Glide;
 import com.example.mtc_app.R;
 import com.example.mtc_app.auth.AuthUtils;
 import com.example.mtc_app.customer.profile.EditProfileActivity;
-import com.example.mtc_app.login.CustomerLoginActivity;
 import com.example.mtc_app.utils.CloudinaryManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.File;
@@ -42,7 +39,7 @@ import java.util.Map;
 public class CRProfile extends Fragment {
 
     private ImageView profilePicture, editProfileIcon;
-    private TextView profileName, profileEmail, profilePhone, addressValue,username;
+    private TextView profileName, profileEmail, profilePhone, addressValue, username;
     private Button btnLogout, btnEditProfile;
     private FirebaseFirestore db;
     private Uri imageUri;
@@ -68,7 +65,6 @@ public class CRProfile extends Fragment {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = auth.getCurrentUser();
 
-        // Initialize UI components
         username = view.findViewById(R.id.username);
         profilePicture = view.findViewById(R.id.profile_image);
         profileName = view.findViewById(R.id.username);
@@ -81,7 +77,7 @@ public class CRProfile extends Fragment {
 
         if (currentUser != null) {
             String userId = currentUser.getUid();
-            fetchProfileData(userId);
+            fetchProfileData(userId, false); // default fetch without force
         } else {
             Toast.makeText(requireContext(), "User not logged in.", Toast.LENGTH_SHORT).show();
             requireActivity().finish();
@@ -148,8 +144,6 @@ public class CRProfile extends Fragment {
                 Map uploadResult = CloudinaryManager.getInstance().uploader().upload(inputStream, uploadParams);
                 String imageUrl = (String) uploadResult.get("secure_url");
 
-//                requireActivity().runOnUiThread(() -> updateProfileImageUrl(imageUrl));
-
                 if (isAdded()) {
                     requireActivity().runOnUiThread(() -> updateProfileImageUrl(imageUrl));
                 }
@@ -173,7 +167,6 @@ public class CRProfile extends Fragment {
                     Toast.makeText(requireContext(), "Profile Updated", Toast.LENGTH_SHORT).show();
                     Glide.with(requireContext()).load(imageUrl).into(profilePicture);
 
-                    // ✅ Update SharedPreferences cache with new image URL
                     SharedPreferences prefs = requireContext().getSharedPreferences("cr_profile", Context.MODE_PRIVATE);
                     prefs.edit().putString("profileImageUrl", imageUrl).apply();
 
@@ -197,6 +190,10 @@ public class CRProfile extends Fragment {
     }
 
     private void fetchProfileData(String userId) {
+        fetchProfileData(userId, false); // default fetch
+    }
+
+    private void fetchProfileData(String userId, boolean forceReload) {
         SharedPreferences prefs = requireContext().getSharedPreferences("cr_profile", Context.MODE_PRIVATE);
         String cachedName = prefs.getString("name", null);
         String cachedEmail = prefs.getString("email", null);
@@ -204,8 +201,7 @@ public class CRProfile extends Fragment {
         String cachedPhone = prefs.getString("phone", null);
         String cachedImageUrl = prefs.getString("profileImageUrl", null);
 
-        if (cachedName != null && cachedEmail != null && cachedPhone != null) {
-            // ✅ Load from cached CR profile
+        if (!forceReload && cachedName != null && cachedEmail != null && cachedPhone != null) {
             profileName.setText(cachedName);
             profileEmail.setText(cachedEmail);
             addressValue.setText(cachedAddress);
@@ -217,11 +213,9 @@ public class CRProfile extends Fragment {
                         .placeholder(R.drawable.ic_profile)
                         .into(profilePicture);
             }
-
-            return; // 🚫 Skip Firestore since CR profile is already cached
+            return;
         }
 
-        // ⛔ No cached CR profile — load from Firestore
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser == null) return;
 
@@ -250,7 +244,6 @@ public class CRProfile extends Fragment {
                         return;
                     }
 
-                    // 🔐 Valid CR — now save
                     String name = documentSnapshot.getString("name");
                     String address = documentSnapshot.getString("address");
                     String profileImageUrl = documentSnapshot.getString("profileImageUrl");
@@ -267,7 +260,6 @@ public class CRProfile extends Fragment {
                                 .into(profilePicture);
                     }
 
-                    // Save for future use
                     prefs.edit()
                             .putString("name", name)
                             .putString("email", email)
@@ -285,11 +277,9 @@ public class CRProfile extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser != null) {
-            fetchProfileData(currentUser.getUid());  // Force fresh reload
+            fetchProfileData(currentUser.getUid(), true); // 🔥 Force Firestore fetch on resume
         }
     }
-
 }
