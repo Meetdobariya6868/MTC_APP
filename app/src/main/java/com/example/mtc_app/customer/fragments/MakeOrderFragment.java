@@ -1211,7 +1211,7 @@ public class MakeOrderFragment extends Fragment {
         if (cbCement.isChecked() && etCement != null) {
             String quantity = etCement.getText().toString().trim();
             if (!quantity.isEmpty()) {
-                categoryQuantities.put("Cement", quantity + " KG");
+                categoryQuantities.put("Cement", quantity + " No");
             }
         }
 
@@ -1219,7 +1219,7 @@ public class MakeOrderFragment extends Fragment {
         if (cbSteel.isChecked() && etSteel != null) {
             String quantity = etSteel.getText().toString().trim();
             if (!quantity.isEmpty()) {
-                categoryQuantities.put("Steel", quantity + " KG");
+                categoryQuantities.put("Steel", quantity + " No");
             }
         }
 
@@ -1227,7 +1227,7 @@ public class MakeOrderFragment extends Fragment {
         if (cbCementCube.isChecked() && etCementCube != null) {
             String quantity = etCementCube.getText().toString().trim();
             if (!quantity.isEmpty()) {
-                categoryQuantities.put("Cement Cube", quantity + " KG");
+                categoryQuantities.put("Cement Cube", quantity + " No");
             }
         }
 
@@ -1235,7 +1235,7 @@ public class MakeOrderFragment extends Fragment {
         if (cbAacBlock.isChecked() && etAacBlock != null) {
             String quantity = etAacBlock.getText().toString().trim();
             if (!quantity.isEmpty()) {
-                categoryQuantities.put("AAC Block", quantity + " KG");
+                categoryQuantities.put("AAC Block", quantity + " No");
             }
         }
 
@@ -1243,7 +1243,7 @@ public class MakeOrderFragment extends Fragment {
         if (cbPowerBlock.isChecked() && etPowerBlock != null) {
             String quantity = etPowerBlock.getText().toString().trim();
             if (!quantity.isEmpty()) {
-                categoryQuantities.put("Power Block", quantity + " KG");
+                categoryQuantities.put("Power Block", quantity + " No");
             }
         }
 
@@ -1251,7 +1251,7 @@ public class MakeOrderFragment extends Fragment {
         if (cbBrick.isChecked() && etBrick != null) {
             String quantity = etBrick.getText().toString().trim();
             if (!quantity.isEmpty()) {
-                categoryQuantities.put("Brick", quantity + " KG");
+                categoryQuantities.put("Brick", quantity + " No");
             }
         }
 
@@ -1267,7 +1267,7 @@ public class MakeOrderFragment extends Fragment {
         if (cbNDT.isChecked() && etNdt != null) {
             String quantity = etNdt.getText().toString().trim();
             if (!quantity.isEmpty()) {
-                categoryQuantities.put("NDT", quantity + " KG");
+                categoryQuantities.put("NDT", quantity + " No");
             }
         }
 
@@ -1275,7 +1275,7 @@ public class MakeOrderFragment extends Fragment {
         if (cbConstWater.isChecked() && etConstWater != null) {
             String quantity = etConstWater.getText().toString().trim();
             if (!quantity.isEmpty()) {
-                categoryQuantities.put("Construction Water", quantity + " Liters");
+                categoryQuantities.put("Construction Water", quantity + " No");
             }
         }
 
@@ -1283,7 +1283,7 @@ public class MakeOrderFragment extends Fragment {
         if (cbWasteWater.isChecked() && etWasteWater != null) {
             String quantity = etWasteWater.getText().toString().trim();
             if (!quantity.isEmpty()) {
-                categoryQuantities.put("Waste Water", quantity + " Liters");
+                categoryQuantities.put("Waste Water", quantity + " No");
             }
         }
 
@@ -1291,7 +1291,7 @@ public class MakeOrderFragment extends Fragment {
         if (cbMixDesign.isChecked() && etMixDesign != null) {
             String quantity = etMixDesign.getText().toString().trim();
             if (!quantity.isEmpty()) {
-                categoryQuantities.put("Mix Design", quantity + " KG");
+                categoryQuantities.put("Mix Design", quantity + " No");
             }
         }
 
@@ -1299,7 +1299,7 @@ public class MakeOrderFragment extends Fragment {
         if (cbFlyAsh.isChecked() && etFlyAsh != null) {
             String quantity = etFlyAsh.getText().toString().trim();
             if (!quantity.isEmpty()) {
-                categoryQuantities.put("Fly Ash", quantity + " KG");
+                categoryQuantities.put("Fly Ash", quantity + " No");
             }
         }
 
@@ -1307,7 +1307,7 @@ public class MakeOrderFragment extends Fragment {
         if (cbBitumen.isChecked() && etBitumen != null) {
             String quantity = etBitumen.getText().toString().trim();
             if (!quantity.isEmpty()) {
-                categoryQuantities.put("Bitumen", quantity + " KG");
+                categoryQuantities.put("Bitumen", quantity + " No");
             }
         }
 

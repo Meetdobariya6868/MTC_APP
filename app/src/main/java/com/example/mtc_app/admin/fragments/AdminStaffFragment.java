@@ -27,7 +27,7 @@ import java.util.List;
 public class AdminStaffFragment extends Fragment {
 
     private FirebaseFirestore db;
-    CardView soil, cement, steel, aggregate;
+    CardView soil, cement, steel, aggregate, cccube, brick, water, ndt, mixdesign, bitumen;
     private LinearLayout crContainer;
     private List<DocumentSnapshot> allStaffUsers = new ArrayList<>(); // Store all fetched CR users
     private EditText searchView;
@@ -49,11 +49,24 @@ public class AdminStaffFragment extends Fragment {
         cement = view.findViewById(R.id.cement);
         steel = view.findViewById(R.id.steel);
         aggregate = view.findViewById(R.id.aggregate);
+        cccube = view.findViewById(R.id.cccube);
+        brick = view.findViewById(R.id.brick);
+        water = view.findViewById(R.id.water);
+        ndt = view.findViewById(R.id.ndt);
+        mixdesign = view.findViewById(R.id.mix_design);
+        bitumen = view.findViewById(R.id.bitumen);
 
         soil.setOnClickListener(v -> openStaffModule("soil"));
+        aggregate.setOnClickListener(v -> openStaffModule("aggregate"));
         cement.setOnClickListener(v -> openStaffModule("cement"));
         steel.setOnClickListener(v -> openStaffModule("steel"));
-        aggregate.setOnClickListener(v -> openStaffModule("aggregate"));
+        cccube.setOnClickListener(v -> openStaffModule("cccube"));
+        brick.setOnClickListener(v -> openStaffModule("brick"));
+        water.setOnClickListener(v -> openStaffModule("water"));
+        ndt.setOnClickListener(v -> openStaffModule("ndt"));
+        mixdesign.setOnClickListener(v -> openStaffModule("mixdesign"));
+        bitumen.setOnClickListener(v -> openStaffModule("bitumen"));
+
 
 
         // Add search listener

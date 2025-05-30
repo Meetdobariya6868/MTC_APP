@@ -78,6 +78,7 @@ public class AdminHomeFragment extends Fragment {
         progressBar.setVisibility(View.VISIBLE); // Show loading indicator
 
         db.collection("Total Orders")
+                .orderBy("LabJobNumber")
                 .addSnapshotListener((value, error) -> {
                     progressBar.setVisibility(View.GONE);
 

@@ -1,5 +1,6 @@
 package com.example.mtc_app.admin;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Button;
@@ -14,12 +15,13 @@ import java.util.Map;
 
 public class AdminEditOrderActivity extends AppCompatActivity {
 
-    private EditText nameEditText, addressEditText, phoneEditText, emailEditText, discussionEditText, priceEditText;
+    private EditText nameEditText, addressEditText, phoneEditText, emailEditText, discussionEditText, priceEditText, jobNoEditText, labNoEditText;
     private Button updateButton;
 
     private FirebaseFirestore db;
     private String orderId;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +41,8 @@ public class AdminEditOrderActivity extends AppCompatActivity {
         discussionEditText = findViewById(R.id.editDiscussionDetails);
         priceEditText = findViewById(R.id.editTotalPrice);
         updateButton = findViewById(R.id.buttonUpdate);
+        jobNoEditText = findViewById(R.id.editJobNo);
+        labNoEditText = findViewById(R.id.editLabNo);
 
         // Fetch and pre-fill data
         fetchOrderData();
@@ -57,6 +61,8 @@ public class AdminEditOrderActivity extends AppCompatActivity {
                         phoneEditText.setText(documentSnapshot.getString("Mobile Number"));
                         emailEditText.setText(documentSnapshot.getString("Email"));
                         discussionEditText.setText(documentSnapshot.getString("Discussion Details"));
+                        jobNoEditText.setText(documentSnapshot.getString("LabJobNumber"));
+                        labNoEditText.setText(documentSnapshot.getString("LabNumber"));
 
                         Number price = documentSnapshot.getDouble("Total Price");
                         if (price != null) {
@@ -74,9 +80,11 @@ public class AdminEditOrderActivity extends AppCompatActivity {
         String email = emailEditText.getText().toString().trim();
         String discussion = discussionEditText.getText().toString().trim();
         String priceStr = priceEditText.getText().toString().trim();
+        String jobNumber = jobNoEditText.getText().toString().trim();
+        String labNumber = labNoEditText.getText().toString().trim();
 
         if (TextUtils.isEmpty(name) || TextUtils.isEmpty(address) || TextUtils.isEmpty(phone) ||
-                TextUtils.isEmpty(email) || TextUtils.isEmpty(priceStr)) {
+                TextUtils.isEmpty(email) || TextUtils.isEmpty(priceStr) || TextUtils.isEmpty(jobNumber) || TextUtils.isEmpty(labNumber)) {
             Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -96,6 +104,8 @@ public class AdminEditOrderActivity extends AppCompatActivity {
         updatedData.put("Email", email);
         updatedData.put("Discussion Details", discussion);
         updatedData.put("Total Price", price);
+        updatedData.put("LabJobNumber", jobNumber);
+        updatedData.put("LabNumber", labNumber);
 
         db.collection("Total Orders").document(orderId)
                 .update(updatedData)

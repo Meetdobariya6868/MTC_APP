@@ -90,14 +90,28 @@ public class staff_home extends AppCompatActivity {
         if ("aggregate".equalsIgnoreCase(category)) {
             productCategories.add("Aggregate Coarse");
             productCategories.add("Aggregate Fine");
-            productCategories.add("Paver Block");
         } else if ("cement".equalsIgnoreCase(category)) {
             productCategories.add("Cement");
-            productCategories.add("Hardend Concrete");
+            productCategories.add("FlyAsh");
+        } else if ("cccube".equalsIgnoreCase(category)) {
+            productCategories.add("CementCube");
         } else if ("soil".equalsIgnoreCase(category)) {
             productCategories.add("Soil");
         } else if ("steel".equalsIgnoreCase(category)) {
             productCategories.add("Steel");
+        } else if("brick".equalsIgnoreCase(category)) {
+            productCategories.add("Brick");
+            productCategories.add("AacBlock");
+            productCategories.add("PowerBlock");
+        } else if ("water".equalsIgnoreCase(category)) {
+            productCategories.add("ConstWater");
+            productCategories.add("WasteWater");
+        } else if ("ndt".equalsIgnoreCase(category)) {
+            productCategories.add(("NDT"));
+        } else if ("mixdesign".equalsIgnoreCase(category)) {
+            productCategories.add("MixDesign");
+        } else if ("bitumen".equalsIgnoreCase(category)) {
+            productCategories.add("Bitumen");
         }
 
         if (productCategories.isEmpty()) {

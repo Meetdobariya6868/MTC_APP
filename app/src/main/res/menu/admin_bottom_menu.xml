@@ -9,7 +9,7 @@
     <item
         android:id="@+id/menu_cr"
         android:icon="@drawable/cr_icon"
-        android:title="CR" />
+        android:title="CCR" />
     <item
         android:id="@+id/menu_staff"
         android:icon="@drawable/staff_icon"

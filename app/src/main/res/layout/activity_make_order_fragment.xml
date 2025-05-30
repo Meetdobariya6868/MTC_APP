@@ -210,49 +210,6 @@
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
-        <!-- Lab Number Section -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@drawable/card_background"
-            android:padding="14dp"
-            android:elevation="4dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginBottom="20dp">
-
-            <!-- Title TextView -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="5. Laboratry Number"
-                android:textColor="@color/black"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:paddingBottom="8dp" />
-
-            <!-- Input Field -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:boxBackgroundMode="outline"
-                app:boxStrokeColor="@color/Lavender"
-                app:boxCornerRadiusTopStart="16dp"
-                app:boxCornerRadiusTopEnd="16dp"
-                app:boxCornerRadiusBottomStart="16dp"
-                app:boxCornerRadiusBottomEnd="16dp">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/lab_no"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Lab Number"
-                    android:inputType="textMultiLine"
-                    android:textColorHint="@color/gray" />
-            </com.google.android.material.textfield.TextInputLayout>
-        </LinearLayout>
-
         <!-- Job Number Section -->
         <LinearLayout
             android:layout_width="match_parent"
@@ -269,7 +226,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="6. Lab Job Number"
+                android:text="6. Job Number"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 android:textStyle="bold"
@@ -290,7 +247,50 @@
                     android:id="@+id/lab_job_no"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Lab Job Number"
+                    android:hint="Enter Job Number"
+                    android:inputType="textMultiLine"
+                    android:textColorHint="@color/gray" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+        <!-- Lab Number Section -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/card_background"
+            android:padding="14dp"
+            android:elevation="4dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginBottom="20dp">
+
+            <!-- Title TextView -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="5. Lab Number"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:paddingBottom="8dp" />
+
+            <!-- Input Field -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:boxBackgroundMode="outline"
+                app:boxStrokeColor="@color/Lavender"
+                app:boxCornerRadiusTopStart="16dp"
+                app:boxCornerRadiusTopEnd="16dp"
+                app:boxCornerRadiusBottomStart="16dp"
+                app:boxCornerRadiusBottomEnd="16dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/lab_no"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Enter Lab Number"
                     android:inputType="textMultiLine"
                     android:textColorHint="@color/gray" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -625,7 +625,7 @@
                             android:id="@+id/til_cement_quantity"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Enter Quantity in Kg's"
+                            android:hint="Enter Quantity in Number's"
                             app:boxBackgroundMode="outline"
                             android:visibility="gone">
 
@@ -728,7 +728,7 @@
                             android:id="@+id/til_steel_quantity"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Enter Quantity Set's"
+                            android:hint="Enter Quantity Number's"
                             app:boxBackgroundMode="outline"
                             android:visibility="gone">
 
@@ -947,7 +947,7 @@
                             android:id="@+id/cb_power_block"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="CONCRETE POWER BLOCK"
+                            android:text="CONCRETE PAWER BLOCK"
                             android:textColor="@color/black" />
 
                         <com.google.android.material.textfield.TextInputLayout
@@ -1000,7 +1000,7 @@
                             android:id="@+id/til_brick_quantity"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Enter Quantity in Set's"
+                            android:hint="Enter Quantity in Number's"
                             app:boxBackgroundMode="outline"
                             android:visibility="gone">
 
@@ -1068,7 +1068,7 @@
                             android:id="@+id/til_soil_quantity"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="SOIL Quantity in Kg's"
+                            android:hint="Enter Quantity in Kg's"
                             app:boxBackgroundMode="outline"
                             android:visibility="gone">
 
@@ -1334,7 +1334,7 @@
                             android:id="@+id/til_const_water_quantity"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Const Water Quantity in Kg's"
+                            android:hint="Enter Quantity in Number's"
                             app:boxBackgroundMode="outline"
                             android:visibility="gone">
 
@@ -1446,7 +1446,7 @@
                             android:id="@+id/til_waste_water_quantity"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Waste Water Quantity in Kg's"
+                            android:hint="Enter Quantity in Number's"
                             app:boxBackgroundMode="outline"
                             android:visibility="gone">
 
@@ -1525,7 +1525,7 @@
                             android:id="@+id/til_mix_water_quantity"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Enter Quantity Set's"
+                            android:hint="Enter Quantity Number's"
                             app:boxBackgroundMode="outline"
                             android:visibility="gone">
 
@@ -1581,7 +1581,7 @@
                             android:id="@+id/til_fly_ash_quantity"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Enter Quantity Set's"
+                            android:hint="Enter Quantity Number's"
                             app:boxBackgroundMode="outline"
                             android:visibility="gone">
 

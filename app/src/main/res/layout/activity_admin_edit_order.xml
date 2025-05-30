@@ -204,6 +204,44 @@
                         android:textSize="15sp"
                         android:maxLines="1" />
                 </com.google.android.material.textfield.TextInputLayout>
+
+                <!--edit job no-->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilJobNo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:boxStrokeColor="@color/Lavender"
+                    app:hintTextColor="@color/Lavender"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editJobNo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Job number"
+                        android:inputType="numberDecimal"
+                        android:textSize="15sp"
+                        android:maxLines="1" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!--edit lab no-->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilLabNo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:boxStrokeColor="@color/Lavender"
+                    app:hintTextColor="@color/Lavender"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editLabNo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Lab number"
+                        android:inputType="numberDecimal"
+                        android:textSize="15sp"
+                        android:maxLines="1" />
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
