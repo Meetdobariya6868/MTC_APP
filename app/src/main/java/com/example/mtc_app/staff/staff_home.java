@@ -154,7 +154,7 @@ public class staff_home extends AppCompatActivity {
                             }
 
                             if (!filteredTestSelections.isEmpty()) {
-                                String title = doc.getString("LabNumber");
+                                String title = doc.getString("LabJobNumber");
                                 String subtitle = doc.getString("Created At");
                                 String categoryItem = doc.getString("Email");
                                 String dueDate = doc.getString("Due Date");
