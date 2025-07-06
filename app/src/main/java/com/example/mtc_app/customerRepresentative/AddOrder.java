@@ -163,7 +163,7 @@ TextInputEditText etFinalPrice;
         standardDeviationGroup = view.findViewById(R.id.standard_deviation_group);
         etLab = view.findViewById(R.id.lab_no);
         etLabJob = view.findViewById(R.id.lab_job_no);
-//        dueDateEditText = view.findViewById(R.id.due_date);
+        dueDateEditText = view.findViewById(R.id.due_date);
 
 
         cbOnemethedOfTEsting = view.findViewById(R.id.OnemethedOfTEsting);
@@ -988,6 +988,8 @@ TextInputEditText etFinalPrice;
             return;
         }
 
+
+
         isSubmitting = true;
         submitButton.setEnabled(false);
 
@@ -1002,6 +1004,7 @@ TextInputEditText etFinalPrice;
 //        String termsAndConditions = termsAndConditionsField.getText().toString().trim();
         String Lab = etLab.getText().toString().trim();
         String LabJob = etLabJob.getText().toString().trim();
+        String dueDate = dueDateEditText.getText().toString().trim();
 
         etFinalPrice = view.findViewById(R.id.et_final_price);
         etFinalPrice.addTextChangedListener(new TextWatcher() {
@@ -1238,6 +1241,8 @@ TextInputEditText etFinalPrice;
         // Prepare final data object
         Map<String, Object> data = new HashMap<>();
         data.put("Customer Name", customerName);
+        // Then add it to your data object
+        data.put("Due Date", dueDate);
         data.put("Dispatch Address", dispatchAddress);
         data.put("Mobile Number", mobileNumber);
         data.put("Email", email);
@@ -1553,8 +1558,4 @@ TextInputEditText etFinalPrice;
             tvTotalPrice.setText("Total Price: " + totalPrice + " /- Rs");
         }
     }
-
-
-
-
 }

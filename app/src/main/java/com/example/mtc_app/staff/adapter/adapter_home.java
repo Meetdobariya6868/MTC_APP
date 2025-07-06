@@ -51,6 +51,12 @@ public class adapter_home extends RecyclerView.Adapter<adapter_home.HomeViewHold
             holder.itemTitle.setText("Job ID: " + (jobId != null ? jobId : "N/A"));
         }
         if (holder.itemSubtitle != null) holder.itemSubtitle.setText(item.getSubtitle() != null ? item.getSubtitle() : "N/A");
+
+        // 🔥 FIX: Add due date binding
+        if (holder.dueDate != null) {
+            holder.dueDate.setText(item.getDueDate() != null ? item.getDueDate() : "N/A");
+        }
+
         if (holder.testSummary != null) holder.testSummary.setText(item.getTestSummary() != null ? item.getTestSummary() : "N/A");
         if (holder.orderStatus != null) holder.orderStatus.setText(item.getOrderStatus() != null ? item.getOrderStatus() : "N/A");
 
@@ -147,7 +153,7 @@ public class adapter_home extends RecyclerView.Adapter<adapter_home.HomeViewHold
     }
 
     public static class HomeViewHolder extends RecyclerView.ViewHolder {
-        TextView itemTitle, itemSubtitle, testSummary, orderStatus;
+        TextView itemTitle, itemSubtitle, testSummary, orderStatus, dueDate; // 🔥 FIX: Added dueDate
         ImageView itemIcon, itemActionIcon;
         CardView cardView;
         Spinner statusDropdown;
@@ -157,6 +163,7 @@ public class adapter_home extends RecyclerView.Adapter<adapter_home.HomeViewHold
             itemTitle = itemView.findViewById(R.id.itemTitle);
             itemSubtitle = itemView.findViewById(R.id.itemSubtitle);
             testSummary = itemView.findViewById(R.id.itemSample);
+            dueDate = itemView.findViewById(R.id.dueDate); // 🔥 FIX: Initialize dueDate TextView
             itemIcon = itemView.findViewById(R.id.itemIcon); // Safe even if unused
             itemActionIcon = itemView.findViewById(R.id.itemActionIcon);
             orderStatus = itemView.findViewById(R.id.orderStatus);

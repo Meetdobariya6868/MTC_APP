@@ -12,7 +12,7 @@
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_app_logo"
         android:roundIcon="@mipmap/ic_app_logo_round"
-        android:label="MTC LAB"
+        android:label="STBS MTC"
         android:supportsRtl="true"
         android:theme="@style/Theme.MTC_APP"
         tools:targetApi="31">

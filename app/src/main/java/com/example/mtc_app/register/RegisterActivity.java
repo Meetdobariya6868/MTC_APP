@@ -248,10 +248,11 @@ public class RegisterActivity extends AppCompatActivity {
         if (TextUtils.isEmpty(name)) {
             nameField.setError("Name is required");
             isValid = false;
-        } else if (!Pattern.matches("^[a-zA-Z ]{2,25}$", name)) {
-            nameField.setError("Name must contain only letters (2–25 characters)");
-            isValid = false;
         }
+//        else if (!Pattern.matches("^[a-zA-Z ]{2,25}$", name)) {
+//            nameField.setError("Name must contain only letters (2–25 characters)");
+//            isValid = false;
+//        }
 
         if (TextUtils.isEmpty(email)) {
             emailField.setError("Email is required");
